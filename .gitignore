@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 Portfolio/.idea/modules.xml
 Portfolio/.idea/Portfolio.iml
+.idea/modules.xml
+.idea/Portfolio.iml
