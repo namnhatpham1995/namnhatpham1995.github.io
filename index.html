@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/lang.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<link rel = "icon" type = "image/png" href = "icons/favicon.png"> <!-- Add Icon to Title -->
 		<!-- For apple devices -->
@@ -28,7 +29,7 @@
 						<div class="content">
 							<div class="inner">
 								<h1>Nam Nhat <u>Pham</u></h1>
-								<p>A graduated software developer who wants to prove his skills and knowledge to the world of IT</p>
+								<p class="shortIntro">Software developer who wants to prove his skills and knowledge to the world of IT</p>
 							</div>
 						</div>
 						<nav>
@@ -266,12 +267,13 @@
 							<p style="text-align: justify">
 								<b>Building scalable microservices with Spring Boot and Spring Cloud</b> <br>
 								(September 2021) <br>
-								<i>Coursera</i> <br>
-								<ul>
+								Coursera
+								<ul style="margin-top: -30px">
 									<li>Building Microservices with Spring Boot and Spring Cloud.</li>
 									<li>Deploy and manage Microservices with Google Cloud. </li>
 								</ul>
 							</p>
+
 							<p style="text-align: justify">
 								<b>Introduction to Machine Learning with TensorFlow</b> <br>
 								(June 2020) <br>
@@ -600,6 +602,15 @@
 
 				<!-- Footer -->
 					<footer id="footer">
+						<div class="container">
+							<div class="langChange">
+								<a href="#" language='english' class="active lang" id="defaultLang">EN</a>
+								<a href="#" language='deutsch' class="lang" >DE</a>
+								<a href="#" language='vietnamese' class="lang">VN</a>
+							</div>
+
+						</div>
+						<br>
 						<p class="copyright">&copy; Nam Nhat Pham.<br> Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
 					</footer>
 
@@ -614,6 +625,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/lang.js"></script>
 
 	</body>
 </html>

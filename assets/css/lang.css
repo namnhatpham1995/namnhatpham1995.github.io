@@ -1,0 +1,11 @@
+.langChange a{
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0 15px;
+    font-weight: bold;
+    background: #555656;
+
+}
+a.active{
+    background: blueviolet;
+}
