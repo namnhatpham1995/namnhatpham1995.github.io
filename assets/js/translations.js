@@ -62,6 +62,26 @@ window.I18N = {
 			</p>`,
 
 		"projects.body": `
+			<b>Persönliches Finanzmanagement</b> <br>
+			<b>Fintrack – Full-Stack-Finanzverwaltung</b> <br>
+			<ul>
+				<li>Full-Stack-Webanwendung zur Verwaltung persönlicher Finanzen, mit der Benutzer Konten, Transaktionen, Budgets und Ausgabenmuster verwalten können.</li>
+				<li>Hauptfunktionen:
+					<ol>
+						<li>Kontoverwaltung mit Kontostandsverfolgung und CRUD-Operationen für Transaktionen mit Filterung und Paginierung.</li>
+						<li>Budgeterstellung und Echtzeit-Fortschrittsüberwachung.</li>
+						<li>Planung und Automatisierung von wiederkehrenden Transaktionen.</li>
+						<li>Analyse-Dashboard: Ausgaben nach Kategorie, Einnahmen-/Ausgabenvergleich und Nettovermögensberechnung.</li>
+						<li>Benutzerauthentifizierung mit JWT-Tokens und rotierenden Refresh-Tokens mit Rate-Limiting.</li>
+					</ol>
+				</li>
+			</ul>
+			<p style="margin-top: -30px">
+				Technologien: Java 21, Spring Boot, Spring Security, PostgreSQL, Flyway, Next.js 14, TypeScript, Tailwind CSS, Recharts, Docker, GitHub Actions. <br>
+				Quelle: <a href="https://github.com/namnhatpham1995/personal-financial-management" target="_blank">https://github.com/namnhatpham1995/personal-financial-management</a> <br>
+				Demo: <a href="https://fintrack-three-wine.vercel.app/" target="_blank">https://fintrack-three-wine.vercel.app/</a>
+			</p>
+
 			<b>M.Sc. Thesis</b> (Februar 2021 – August 2021) <br>
 			<b>Development and Implementation of a solution for
 			remote control of desktops from Software as a service application</b> <br>
@@ -252,6 +272,26 @@ window.I18N = {
 			</p>`,
 
 		"projects.body": `
+			<b>Quản lý Tài chính Cá nhân</b> <br>
+			<b>Fintrack – Ứng dụng Theo dõi Tài chính Full-Stack</b> <br>
+			<ul>
+				<li>Ứng dụng web full-stack giúp theo dõi và quản lý tài chính cá nhân, cho phép người dùng quản lý tài khoản, giao dịch, ngân sách và các mô hình chi tiêu.</li>
+				<li>Tính năng chính:
+					<ol>
+						<li>Quản lý tài khoản với theo dõi số dư và các thao tác CRUD với giao dịch có lọc và phân trang.</li>
+						<li>Tạo ngân sách và theo dõi tiến độ theo thời gian thực.</li>
+						<li>Lên lịch và tự động hóa giao dịch định kỳ.</li>
+						<li>Bảng phân tích: chi tiêu theo danh mục, so sánh thu nhập và chi phí, tính toán tài sản ròng.</li>
+						<li>Xác thực người dùng bằng JWT token và rotating refresh token với giới hạn tốc độ.</li>
+					</ol>
+				</li>
+			</ul>
+			<p style="margin-top: -30px">
+				Công nghệ sử dụng: Java 21, Spring Boot, Spring Security, PostgreSQL, Flyway, Next.js 14, TypeScript, Tailwind CSS, Recharts, Docker, GitHub Actions. <br>
+				Nguồn: <a href="https://github.com/namnhatpham1995/personal-financial-management" target="_blank">https://github.com/namnhatpham1995/personal-financial-management</a> <br>
+				Demo: <a href="https://fintrack-three-wine.vercel.app/" target="_blank">https://fintrack-three-wine.vercel.app/</a>
+			</p>
+
 			<b>Đồ án Thạc sĩ</b> (Tháng 2 năm 2021 – Tháng 8 năm 2021) <br>
 			<b>Development and Implementation of a solution for
 			remote control of desktops from Software as a service application</b> <br>
