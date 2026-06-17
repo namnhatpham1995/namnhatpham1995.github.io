@@ -66,6 +66,7 @@ window.I18N = {
 			<b>Fintrack – Full-Stack-Finanzverwaltung</b> <br>
 			<ul>
 				<li>Full-Stack-Webanwendung zur Verwaltung persönlicher Finanzen, mit der Benutzer Konten, Transaktionen, Budgets und Ausgabenmuster verwalten können.</li>
+				<li>Von Grund auf mit <b>Claude Code</b> und einem <b>spezifikationsgetriebenen, domain-driven Design-Workflow</b> entwickelt &mdash; strukturierte Domain-Spezifikationen für jeden Bounded Context (Konten, Transaktionen, Budgets, Analytics) wurden vor der Implementierung erstellt, was eine kohärente KI-gestützte Entwicklung über den gesamten Stack ermöglichte. Zeigt, wie KI im gesamten Lieferzyklus eingesetzt werden kann: von Anforderungen, Architektur und Domain-Modellierung bis hin zu Implementierung, Tests und Deployment.</li>
 				<li>Hauptfunktionen:
 					<ol>
 						<li>Kontoverwaltung mit Kontostandsverfolgung und CRUD-Operationen für Transaktionen mit Filterung und Paginierung.</li>
@@ -276,6 +277,7 @@ window.I18N = {
 			<b>Fintrack – Ứng dụng Theo dõi Tài chính Full-Stack</b> <br>
 			<ul>
 				<li>Ứng dụng web full-stack giúp theo dõi và quản lý tài chính cá nhân, cho phép người dùng quản lý tài khoản, giao dịch, ngân sách và các mô hình chi tiêu.</li>
+				<li>Được xây dựng hoàn toàn bằng <b>Claude Code</b> với quy trình <b>thiết kế theo đặc tả và domain-driven design</b> &mdash; soạn thảo đặc tả domain có cấu trúc cho từng bounded context (tài khoản, giao dịch, ngân sách, phân tích) trước khi triển khai, cho phép phát triển nhất quán với sự hỗ trợ của AI trên toàn bộ stack. Thể hiện cách AI có thể được tận dụng trong toàn bộ vòng đời bàn giao: từ yêu cầu, kiến trúc và mô hình hóa domain đến triển khai, kiểm thử và deployment.</li>
 				<li>Tính năng chính:
 					<ol>
 						<li>Quản lý tài khoản với theo dõi số dư và các thao tác CRUD với giao dịch có lọc và phân trang.</li>
