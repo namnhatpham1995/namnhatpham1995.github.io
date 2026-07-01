@@ -1,62 +1,128 @@
-const langEl = document.querySelector('.langChange')
-const link = document.querySelectorAll('a.lang')
-document.addEventListener("DOMContentLoaded", function(){
-    document.getElementById("defaultLang").click();
-})
+/*
+ * i18n runtime for the single-file portfolio.
+ *
+ * Content is keyed in index.html with data-i18n="<key>" (and data-i18n-html
+ * for values that contain markup). German/Vietnamese strings live in
+ * translations.js (window.I18N). English is captured from the original DOM on
+ * load, so the raw HTML stays the source of truth and the no-JS fallback.
+ */
+(function () {
+	"use strict";
 
-const shortIntroEl = document.querySelector('.shortIntro')
-const IntroEl = document.querySelector('.introduction')
+	var SUPPORTED = ["en", "de", "vn"];
+	var STORAGE_KEY = "portfolio.lang";
+	var HTML_LANG = { en: "en", de: "de", vn: "vi" }; // <html lang> codes
 
-link.forEach(el =>{
-    el.addEventListener('click',()=>{
-        langEl.querySelector('.active').classList.remove('active');
-        el.classList.add('active');
-        const attr = el.getAttribute('language');
-        shortIntroEl.textContent = data[attr].shortIntro;
-        IntroEl.textContent = data[attr].introduction;
-        });
-    });
-var data = {
-    "english":
-        {
-            "shortIntro":"A software developer who wants to prove his skills and knowledge to the world of IT",
-            "introduction":"Throughout my Bachelor of Engineering (Electrical Engineering and Information Technology)" +
-                "and Master of Computer Science (High Integrity System) studies, I worked on a variety of\n" +
-                "projects and research projects that required me to learn and use a wide range of tools\n" +
-                "(Git, Docker, Flask framework, MySQL), programming languages(C, C#, C++, Java, Python, JavaScript, PHP)\n" +
-                "and project management process (Agile, Scrum). \n" +
-                "With my practical and academic expertise gained via researches and projects,\n" +
-                "I am looking for new challenges in software development field to test and improve myself.\n" +
-                "About my status, I am fully available for work at the moment, and I am ready to relocate if it is necessary for the job.\n" +
-                "If you have any questions, please contact me via my email."
+	var I18N = window.I18N || {};
+	// English baseline, captured from the document.
+	var EN = {};
 
-        },
-    "deutsch":
-        {
-            "shortIntro":"Ein Softwareentwickler, der seine Fähigkeiten und Kenntnisse in der Welt der IT unter Beweis stellen möchte",
-            "introduction":"Während meines Studiums zum Bachelor of Engineering (Elektrotechnik und Informationstechnik)\n" +
-                "\t\t\t\t\t\t\t\t\tund Master of Computer Science (High Integrity System) arbeitete ich an einer Vielzahl von\n" +
-                "\t\t\t\t\t\t\t\t\tProjekten und Forschungsvorhaben gearbeitet, bei denen ich eine breite Palette von <u>Werkzeugen</u> erlernen und einsetzen musste\n" +
-                "\t\t\t\t\t\t\t\t\t<b>(Git, Docker, Flask framework, MySQL)</b>, <u>Programmiersprachen</u> <b>(C, C#, C++, Java, Python, JavaScript, PHP)</b>\n" +
-                "\t\t\t\t\t\t\t\t\tund <u>Projektmanagementprozess</u> <b>(Agile, Scrum)</b>. <br><br>\n" +
-                "\t\t\t\t\t\t\t\t\tMit meiner praktischen und akademischen Expertise, die ich durch Recherchen und Projekte erworben habe,\n" +
-                "\t\t\t\t\t\t\t\t\tIch bin auf der Suche nach neuen Herausforderungen im Bereich der Softwareentwicklung, um mich zu testen und zu verbessern.\n" +
-                "\t\t\t\t\t\t\t\t\tWas meinen Status betrifft, so stehe ich derzeit voll für die Arbeit zur Verfügung und bin bereit, umzuziehen, wenn es für den Job notwendig ist.<br><br>\n" +
-                "\t\t\t\t\t\t\t\t\tWenn Sie irgendwelche Fragen haben, kontaktieren Sie mich bitte über meine E-Mail.\n" +
-                "\n"
+	function normalize(code) {
+		if (!code) return null;
+		code = String(code).toLowerCase();
+		if (code === "vi") code = "vn"; // accept the ISO code as an alias
+		return SUPPORTED.indexOf(code) !== -1 ? code : null;
+	}
 
-        },
-    "vietnamese":
-        {
-            "shortIntro":"Một nhà phát triển phần mềm muốn chứng minh kỹ năng và kiến thức của mình với thế giới CNTT",
-            "introduction":"Trong suốt bằng Cử nhân Kỹ thuật của tôi (Kỹ thuật Điện và Công nghệ Thông tin)\n" +
-                "và Thạc sĩ Khoa học Máy tính (Hệ thống Toàn vẹn Cao), tôi đã nghiên cứu nhiều loại\n" +
-                "các dự án và công trình nghiên cứu yêu cầu tôi phải học và sử dụng nhiều loại <u> công cụ </u>\n" +
-                "<b> (Git, Docker, khung Flask, MySQL) </b>, <u> ngôn ngữ lập trình </u> <b> (C, C #, C ++, Java, Python, JavaScript, PHP) </b>\n" +
-                "và <u> quy trình quản lý dự án </u> <b> (Agile, Scrum) </b>. <br> <br>\n" +
-                "Với chuyên môn thực tế và học thuật của tôi có được thông qua các nghiên cứu và dự án,\n" +
-                "Tôi đang tìm kiếm những thách thức mới trong lĩnh vực phát triển phần mềm để thử nghiệm và cải thiện bản thân.\n" +
-                "Về tình trạng của tôi, hiện tại tôi hoàn toàn sẵn sàng cho công việc và tôi sẵn sàng chuyển nơi làm việc nếu cần thiết. <br> <br>\n" +
-                "Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với tôi qua email của tôi."
-        },
-}
+	function captureEnglish(nodes) {
+		nodes.forEach(function (el) {
+			var key = el.getAttribute("data-i18n");
+			if (key in EN) return; // first occurrence wins
+			EN[key] = el.hasAttribute("data-i18n-html") ? el.innerHTML : el.textContent;
+		});
+		I18N.en = EN;
+	}
+
+	function valueFor(lang, key) {
+		var dict = lang === "en" ? EN : I18N[lang];
+		if (dict && Object.prototype.hasOwnProperty.call(dict, key)) return dict[key];
+		console.warn("[i18n] missing key '" + key + "' for language '" + lang + "', falling back to English.");
+		return EN[key];
+	}
+
+	function applyLanguage(lang, nodes) {
+		nodes.forEach(function (el) {
+			var key = el.getAttribute("data-i18n");
+			var val = valueFor(lang, key);
+			if (val == null) return;
+			if (el.hasAttribute("data-i18n-html")) {
+				el.innerHTML = val;
+			} else {
+				el.textContent = val;
+			}
+		});
+		document.documentElement.setAttribute("lang", HTML_LANG[lang] || "en");
+		markActive(lang);
+	}
+
+	function markActive(lang) {
+		var links = document.querySelectorAll(".langChange [data-lang]");
+		Array.prototype.forEach.call(links, function (a) {
+			a.classList.toggle("active", a.getAttribute("data-lang") === lang);
+		});
+	}
+
+	function resolveInitial() {
+		// 1) URL ?lang=
+		var params = new URLSearchParams(window.location.search);
+		var fromUrl = normalize(params.get("lang"));
+		if (fromUrl) return fromUrl;
+
+		// 2) saved choice
+		try {
+			var saved = normalize(window.localStorage.getItem(STORAGE_KEY));
+			if (saved) return saved;
+		} catch (e) { /* storage unavailable */ }
+
+		// 3) browser language (only if German or Vietnamese)
+		var prefs = navigator.languages || [navigator.language || ""];
+		for (var i = 0; i < prefs.length; i++) {
+			var p = (prefs[i] || "").toLowerCase();
+			if (p.indexOf("de") === 0) return "de";
+			if (p.indexOf("vi") === 0) return "vn";
+		}
+
+		// 4) default
+		return "en";
+	}
+
+	function updateUrl(lang) {
+		try {
+			var url = new URL(window.location.href);
+			url.searchParams.set("lang", lang);
+			window.history.replaceState(null, "", url);
+		} catch (e) { /* older browser: skip URL sync */ }
+	}
+
+	function persist(lang) {
+		try { window.localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignore */ }
+	}
+
+	function init() {
+		var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));
+		captureEnglish(nodes);
+
+		var lang = resolveInitial();
+		applyLanguage(lang, nodes);
+		updateUrl(lang);
+
+		// Wire the footer switcher.
+		var links = document.querySelectorAll(".langChange [data-lang]");
+		Array.prototype.forEach.call(links, function (a) {
+			a.addEventListener("click", function (e) {
+				e.preventDefault();
+				var chosen = normalize(a.getAttribute("data-lang"));
+				if (!chosen) return;
+				applyLanguage(chosen, nodes);
+				persist(chosen);
+				updateUrl(chosen);
+			});
+		});
+	}
+
+	if (document.readyState === "loading") {
+		document.addEventListener("DOMContentLoaded", init);
+	} else {
+		init();
+	}
+})();

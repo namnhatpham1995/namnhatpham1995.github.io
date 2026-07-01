@@ -132,3 +132,23 @@ Portfolio/.idea/Portfolio.iml
 .idea/modules.xml
 .idea/Portfolio.iml
 .idea/workspace.xml
+
+# AI & LLM related
+.claude/
+.anthropic/
+.openai/
+*.openai
+llm-cache/
+.llm-cache
+claude-cache/
+.claude-cache
+ai-cache/
+.ai-cache
+.gpt*
+.chatgpt
+node_modules/.bin/claude-*
+.ai-session
+.aider*
+
+# OpenSpec (local project planning)
+openspec/

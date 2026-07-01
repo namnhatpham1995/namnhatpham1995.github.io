@@ -4,7 +4,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html lang="en">
 	<head>
 		<title>Nam Nhat Pham Portfolio (designed by HTML5 UP)</title>
 		<meta charset="utf-8" />
@@ -29,18 +29,20 @@
 						<div class="content">
 							<div class="inner">
 								<h1>Nam Nhat <u>Pham</u></h1>
-								<p class="shortIntro">Software developer who wants to prove his skills and knowledge to the world of IT</p>
+								<p class="shortIntro" data-i18n="hero.tagline">Software Engineer with 6+ years building scalable backend services and cloud-native applications</p>
 							</div>
 						</div>
 						<nav>
 							<ul>
-								<li><a href="#intro">Intro</a></li>
-								<li><a href="#education">Education</a></li>
-								<li><a href="#experience">Experience</a></li>
-								<li><a href="#projects">Projects</a></li>
-								<li><a href="#certificates">Certificates</a></li>
+								<li><a href="#intro" data-i18n="nav.intro">Intro</a></li>
+								<li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+								<li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+								<li><a href="#education" data-i18n="nav.education">Education</a></li>
+								<li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+								<li><a href="#certificates" data-i18n="nav.certificates">Certificates</a></li>
+								<li><a href="#languages" data-i18n="nav.languages">Languages</a></li>
 								<!--<li><a href="#contact">Contact</a></li>-->
-								<li><a href="#hobbies">Hobbies</a></li>
+								<li><a href="#hobbies" data-i18n="nav.hobbies">Hobbies</a></li>
 								<!--<li><a href="#elements">Elements</a></li>-->
 							</ul>
 						</nav>
@@ -51,241 +53,214 @@
 
 						<!-- Intro -->
 							<article id="intro">
-								<h2 class="major">Intro</h2>
+								<h2 class="major" data-i18n="intro.title">Intro</h2>
 								<span class="image main"><img src="images/CV2026-2.png" alt="" /></span>
 
 								<table class="tg">
 									<tbody>
 										<tr>
-											<th class="tg-baqh">Mobile</th>
-											<th class="tg-baqh">+49.01525.7614.000</th>
-										</tr>
-									</tbody>
-									<tbody>
-										<tr>
 											<td class="tg-baqh">Email</td>
-											<td class="tg-baqh"><a href="mailto: nam95.pn@gmail.com">nam95.pn@gmail.com</a></td>
+											<td class="tg-baqh"><a href="mailto:nam95.pn@gmail.com">nam95.pn@gmail.com</a></td>
 										</tr>
 									</tbody>
 								</table>
 
 								<ul class="icons" style="text-align: center">
-									<li><a href="https://www.linkedin.com/in/namnhatpham1995/" class="icon brands fa-linkedin" target=”_blank”><span class="label">Twitter</span></a></li>
+									<li><a href="https://www.linkedin.com/in/namnhatpham1995/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
 									<!-- <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li> -->
 									<!--<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
-									<li><a href="https://github.com/namnhatpham1995" class="icon brands fa-github" target=”_blank”><span class="label">GitHub</span></a></li>
+									<li><a href="https://github.com/namnhatpham1995" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
 								</ul>
-								<p style="text-align: justify" class="introduction">
-									I am working in <a href="https://www.softwareag.cloud/site/product/cumulocity-iot.html#/" target=”_blank”><b>Software AG</b></a> as an associate Java developer for Cumulocity product in the R&D department.
-									My work is mainly to support my senior colleagues in debugging and testing. Reading logs on Elasticsearch or logs in pods, and containers and doing research along with them to figure out what are the causes of the issues and fix them. Also, I work with "chefs" and "cookbooks" to implement new parameters or features to our system environment on AWS.<br><br>
+								<p style="text-align: justify" class="introduction" data-i18n="intro.body" data-i18n-html>
+									I am a <b>Software Engineer</b> with 6+ years of experience designing and delivering scalable backend services and cloud-native applications.
+									I currently work in R&amp;D at <a href="https://www.cumulocity.com/" target="_blank"><b>Cumulocity GmbH</b></a>, where I develop and modernize the <b>Digital Twin Management (DTM)</b> microservice.<br><br>
 
-									Throughout my Bachelor of Engineering (Electrical Engineering and Information Technology)
-									and Master of Computer Science (High Integrity System) studies, I worked on a variety of
-									projects and research projects that required me to learn and use a wide range of <u>tools</u>
-									<b>(Git, Docker, Flask framework, MySQL)</b>, <u>programming languages</u> <b>(C, C#, C++, Java, Python, JavaScript, PHP)</b>
-									and <u>project management process</u> <b>(Agile, Scrum)</b>. <br><br>
-									With my practical and academic expertise gained via researches and projects,
-									I am looking for new challenges in software development field to test and improve myself.<br><br>
-									If you have any questions, please contact me via my email.
+									I have strong skills in <u>CI/CD automation</u> and in migrating monolithic architectures into maintainable <b>Java/Spring Boot</b> microservices.
+									As a collaborative team player and an <u>AI-native developer</u>, I have a proven track record of driving modern engineering practices across teams &mdash; from requirement analysis and implementation to automated testing and delivery.<br><br>
+
+									If you have any questions, please feel free to contact me via my email.
 								</p>
+							</article>
+
+						<!-- Skills -->
+							<article id="skills">
+								<h2 class="major" data-i18n="skills.title">Skills</h2>
+								<div class="skills">
+									<div class="skill-group">
+										<h3 data-i18n="skills.g1">Programming Languages</h3>
+										<ul class="skill-tags">
+											<li>Python</li>
+											<li>Java</li>
+											<li>Bash</li>
+										</ul>
+									</div>
+									<div class="skill-group">
+										<h3 data-i18n="skills.g2">Backend &amp; Frameworks</h3>
+										<ul class="skill-tags">
+											<li>Spring Boot</li>
+											<li>Flask</li>
+										</ul>
+									</div>
+									<div class="skill-group">
+										<h3 data-i18n="skills.g3">Cloud, DevOps &amp; Tools</h3>
+										<ul class="skill-tags">
+											<li>AWS</li>
+											<li>GitHub Actions</li>
+											<li>Docker</li>
+											<li>Kubernetes</li>
+										</ul>
+									</div>
+									<div class="skill-group">
+										<h3 data-i18n="skills.g4">Databases</h3>
+										<ul class="skill-tags">
+											<li>MySQL</li>
+											<li>PostgreSQL</li>
+										</ul>
+									</div>
+								</div>
 							</article>
 
 						<!-- Education -->
 							<article id="education">
-								<h2 class="major">Education</h2>
-								<span class="image main"><img src="images/education.jpg" alt="" /></span>
-								<p style="text-align: justify">
-									<b>Master of Science | High Integrity System</b> <br>
-									(April 2019 - September 2021) <br>
-									<i>Frankfurt University of Applied Sciences.</i> <br>
-									Specialization in the management, design and development of complex software-controlled systems
-								</p>
-								<p style="text-align: justify">
-									<b>Bachelor of Engineering | Electrical Engineering and Information Technology (EEIT)</b> <br>
-									(October 2013 - July 2018) <br>
-									<i>Frankfurt University of Applied Sciences & Vietnamese-German University (VGU).</i> <br>
-									Specialization in software development and hardware design for information and communication system.
-								</p>
-
+								<h2 class="major" data-i18n="education.title">Education</h2>
+								<div data-i18n="education.body" data-i18n-html>
+									<p style="text-align: justify">
+										<b>Master of Science | High Integrity Systems</b> <br>
+										(April 2019 - September 2021) <br>
+										<i>Frankfurt University of Applied Sciences, Frankfurt, Germany.</i> <br>
+										Specialization in the management, design and development of complex software-controlled systems
+									</p>
+									<p style="text-align: justify">
+										<b>Bachelor of Engineering | Electrical Engineering and Information Technology (EEIT)</b> <br>
+										(October 2013 - July 2018) <br>
+										<i>Frankfurt University of Applied Sciences &amp; Vietnamese-German University (VGU).</i> <br>
+										Specialization in software development and hardware design for information and communication system.
+									</p>
+								</div>
 							</article>
 
 						<!-- Projects -->
 							<article id="projects">
-								<h2 class="major">Projects</h2>
-								<span class="image main"><img src="images/projects.jpg" alt="" /></span>
-
-								<b>Practice projects</b> (present)<br>
-								<ol>
-									<li><b>Spring Boot</b><br></li>
+								<h2 class="major" data-i18n="projects.title">Projects</h2>
+								<div data-i18n="projects.body" data-i18n-html>
+									<b>Personal Financial Management</b> <br>
+									<b>Fintrack – Full-Stack Finance Tracker</b> <br>
 									<ul>
-										<li><b>Authentication web application</b></li>
-										<p>
-											Follow <a href="https://www.youtube.com/watch?v=QwQuro7ekvc" target="_blank">instruction</a>
-											to create an Authentication application with Email Verification feature. <br>
-											Source: <a href="https://github.com/namnhatpham1995/UserRegister" target="_blank">https://git.io/Ju70X</a>
-										</p>
+										<li>Full-stack web application for tracking and managing personal finances, enabling users to monitor accounts, transactions, budgets, and spending patterns.</li>
+										<li>Built end-to-end using <b>Claude Code</b> with a <b>spec-driven, domain-driven design workflow</b> &mdash; authored structured domain specifications for each bounded context (accounts, transactions, budgets, analytics) before implementation, enabling coherent AI-assisted development across the full stack. Demonstrates how AI can be leveraged throughout the entire delivery lifecycle: from requirements, architecture, and domain modelling to implementation, testing, and deployment.</li>
+										<li>Key features:
+											<ol>
+												<li>Account management with balance tracking and transaction CRUD operations with filtering and pagination.</li>
+												<li>Budget creation and real-time progress monitoring.</li>
+												<li>Recurring transaction scheduling with automation.</li>
+												<li>Analytics dashboard: spending by category, income vs. expense comparisons, and net worth calculations.</li>
+												<li>User authentication with JWT tokens and rotating refresh tokens with rate limiting.</li>
+											</ol>
+										</li>
 									</ul>
+									<p style="margin-top: -30px">
+										Technologies: Java 21, Spring Boot, Spring Security, PostgreSQL, Flyway, Next.js 14, TypeScript, Tailwind CSS, Recharts, Docker, GitHub Actions. <br>
+										Source: <a href="https://github.com/namnhatpham1995/personal-financial-management" target="_blank">https://github.com/namnhatpham1995/personal-financial-management</a> <br>
+										Demo: <a href="https://fintrack-three-wine.vercel.app/" target="_blank">https://fintrack-three-wine.vercel.app/</a>
+									</p>
 
-									<li><b>Flask</b><br></li>
-									<ul>
-										<li><b>Validate Json request</b></li>
-										<p>
-											Check JSON request to figure it out if it matches with the required format.<br>
-											Source: <a href="https://github.com/namnhatpham1995/Check_Json" target="_blank">https://git.io/Ju70A</a>
-										</p>
-
-										<li style="margin-top: -30px"><b>Utilizing Mercedes-Benz Experimental Connected Vehicle API</b></li>
-										<p>
-											A python web application in Flask framework to utilize Mercedes-Benz's Experimental Connected Vehicle API.<br>
-											Source: <a href="https://github.com/namnhatpham1995/Check_vehicles_data" target="_blank">https://git.io/Ju7Ef</a><br>
-											Demo: <a href="http://namnhatpham1995.pythonanywhere.com/" target="_blank">http://namnhatpham1995.pythonanywhere.com/</a>
-										</p>
-									</ul>
-
-									<li><b>AWS</b></li>
-									<ul>
-										<li><b>Portfolio Website</b></li>
-										<p>
-											Use AWS Amplify to automatically deploy my portfolio website from Github <br>
-											Link: <a href="https://main.d1m0w3qwa2euvu.amplifyapp.com/" target="_blank">https://main.d1m0w3qwa2euvu.amplifyapp.com/</a>
-										</p>
-									</ul>
-
-									<li><b>Heroku</b></li>
-									<ul>
-										<li><b>Portfolio Website</b></li>
-										<p>
-											Use Heroku Deployment Integrations to automatically deploy my portfolio website from Github <br>
-											Link: <a href="https://pnn-portfolio.herokuapp.com/" target="_blank">https://pnn-portfolio.herokuapp.com/</a>
-										</p>
-									</ul>
-								</ol>
-
-
-								<b>M.Sc. Thesis</b> (February 2021 – July 2021) <br>
+									<b>M.Sc. Thesis</b> (February 2021 – August 2021) <br>
 									<b>Development and Implementation of a solution for
 									remote control of desktops from Software as a service application</b> <br>
-								<i>Frankfurt University of Applied Sciences.</i> <br>
-								Working with <a href="https://www.christianbaun.de/" target="_blank">Prof. Dr. Christian Baun</a> to create a personal
-								remote desktop control solution based on open-source projects:
-								<ol>
-									<li>Study of Oneye, a PHP-based web application which simulates an Operation System (Web OS)</li>
-									<li>Comparison of Oneye with similar solutions.</li>
-									<li>Code enhancements to make Oneye work with recent PHP 8 revisions.</li>
-									<li>Analysis and comparison of software which can handle the control of remote desktop.</li>
-									<li>Development of an application in Oneye to handle the connection to remote desktop.</li>
-									<li>Upgrade of RemotePy, a Python-based open-source remote desktop control application
-									which is made in Flask framework:</li>
-									<ol style="list-style-type: lower-latin">
-										<li>Improve User Interface (UI) to provide better user experience (Bootstrap and Font Awesome).</li>
-										<li>Development of a data exchange functionality.</li>
-										<li>Development keyboard input function.</li>
-										<li>Improvement of mouse input function.</li>
-										<li>Analysis and comparison ways to improve screen sharing framerate.</li>
-										<li>Development authentication function.</li>
-										<li>Integration of SSL/TLS protocol.</li>
-									</ol>
-								</ol>
-								<p style="margin-top: -30px">
-									Technologies: MySQL, Docker, PHP, Python (Flask framework), jQuery,
-									AJAX, Bootstrap, Javascript, HTML, CSS, SSL/TLS, Git. <br>
-									Source: <a href="https://github.com/namnhatpham1995/Master-Thesis" target="_blank">https://git.io/Ju7Eq</a>
-								</p>
-
-
-								<b>HIS project summer 2020</b> (April 2020 – September 2020) <br>
-									<b>Verifying Papyrus-RT Models with nuXmv for conveyor belt</b> <br>
-								<i>Frankfurt University of Applied Sciences.</i> <br>
-								<ul>
-									<li>Design a simple conveyor belt system. Then, converting the design into model in Papyrus-RT. Finally,
-										verifying the correctness of the model by translating it into nuXmv language and use it to check.</li>
-									<li>Working in group of 4 students and applying Agile to manage work flow</li>
-									<li>Publication: <a href="https://easychair.org/publications/preprint/JdHQ" target="_blank">https://easychair.org/publications/preprint/JdHQ</a></li>
-								</ul>
-								<p style="margin-top: -30px">
-									Technologies: Papyrus-RT, nuXmv.<br>
-									Source: <a href="https://github.com/namnhatpham1995/Conveyor-Belt-Project-HIS" target="_blank">https://git.io/Ju7E8</a>
-								</p>
-
-								<b>Udacity Nanodegree Program</b> (April 2020 – June 2020) <br>
-								<b> Introduction to Machine Learning with TensorFlow</b> <br>
-								<ul>
-									<li>Developing Python programs and applications to filter data before applying data analysis techniques and
-										TensorFlow library to analyze data and report the results.</li>
-									<li>Names of projects (exercises):
-										<ol>
-											<li><a href="https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML" target="_blank">Donors for CharityML</a></li>
-											<li><a href="https://github.com/namnhatpham1995/Udacity-Creating-Customer-Segments-with-Arvato" target="_blank">Creating Customer Segments with Arvato</a></li>
-											<li><a href="https://github.com/namnhatpham1995/Udacity-Image-Classifier-TensorFlow" target="_blank">Image Classifier with Deep Learning</li>
+									<i>Frankfurt University of Applied Sciences.</i> <br>
+									Working with <a href="https://www.christianbaun.de/" target="_blank">Prof. Dr. Christian Baun</a> to create a personal
+									remote desktop control solution based on open-source projects:
+									<ol>
+										<li>Study of Oneye, a PHP-based web application which simulates an Operation System (Web OS)</li>
+										<li>Comparison of Oneye with similar solutions.</li>
+										<li>Code enhancements to make Oneye work with recent PHP 8 revisions.</li>
+										<li>Analysis and comparison of software which can handle the control of remote desktop.</li>
+										<li>Development of an application in Oneye to handle the connection to remote desktop.</li>
+										<li>Upgrade of RemotePy, a Python-based open-source remote desktop control application
+										which is made in Flask framework:</li>
+										<ol style="list-style-type: lower-latin">
+											<li>Improve User Interface (UI) to provide better user experience (Bootstrap and Font Awesome).</li>
+											<li>Development of a data exchange functionality.</li>
+											<li>Development keyboard input function.</li>
+											<li>Improvement of mouse input function.</li>
+											<li>Analysis and comparison ways to improve screen sharing framerate.</li>
+											<li>Development authentication function.</li>
+											<li>Integration of SSL/TLS protocol.</li>
 										</ol>
-									<li style="margin-top: -30px">Degree: <a href="https://confirm.udacity.com/G9GHDGQU" target="_blank">https://confirm.udacity.com/G9GHDGQU</a></li>
-								</ul>
-								<p style="margin-top: -30px">Technologies: Python, Jupyter notebook, TensorFlow.</p>
+									</ol>
+									<p style="margin-top: -30px">
+										Technologies: MySQL, Docker, PHP, Python (Flask framework), jQuery,
+										AJAX, Bootstrap, Javascript, HTML, CSS, SSL/TLS, Git. <br>
+										Source: <a href="https://github.com/namnhatpham1995/Master-Thesis" target="_blank">https://git.io/Ju7Eq</a>
+									</p>
 
-
-								<b>Developing Application in MQL4 for Forex (FX) auto trading </b> (July 2018 – March 2019) <br>
-								<i> Vietnamese-German Forex Club</i> <br>
-								<p>
-									Programming applications (forex bots or Expert Advisers (EA)) on metatrader 4 platform for VGU forex club.<br>
-									Technologies: MQL4 (based on C programming language), Metatrader 4.<br>
-									Source: <a href="https://github.com/namnhatpham1995/Forex-bot" target="_blank">https://git.io/Ju7E9</a><br>
-								</p>
-
-								<b>B.Eng. Thesis</b> (January 2018 – July 2018) <br>
-								<b>Physical Layer Security for Cooperative Networks
-									with Beamforming and Jamming</b> <br>
-								<i>Frankfurt University of Applied Sciences & Vietnamese-German University.</i> <br>
-								Working with <a href="https://sites.google.com/site/chandaitruyenthai" target="_blank">Prof. Dr. Chan Dai Truyen Thai</a> in topic
-								physical layer security in wireless communications:
-								<ul>
-									<li>Researching the arrangement of transmitters, receivers and wiretappers to analyze which concept provides the best security level with
-										the lowest cost required.</li>
-									<li>Developing a program on MATLAB to simulate the theories.</li>
-								</ul>
-								<p style="margin-top: -30px">
-									Technologies: MATLAB.<br>
-									Source: <a href="https://github.com/namnhatpham1995/Physical-Layer-Security-for-Cooperative-Networks-with-Beamforming-and-Jamming" target="_blank">https://git.io/JuQki</a><br>
-								</p>
-
-								<b>EEIT Project</b> (October 2016 – March 2017) <br>
-								<b>Information Processing</b> <br>
-								<i>Frankfurt University of Applied Sciences & Vietnamese-German University.</i> <br>
-								<ul>
-									<li>Warehouse management: developing a simple warehouse management application.</li>
-									<li>Real Time Process Monitor: developing a simple application to extract data from a process on website and
-										monitor it</li>
-								</ul>
-								<p style="margin-top: -30px">
-									Technologies: C#.<br>
-									Source: <a href="https://github.com/namnhatpham1995/Information-Processing-EEIT-2013" target="_blank">https://git.io/JuQIH</a><br>
-								</p>
-
+									<b>Udacity Nanodegree Program</b> (April 2020 – June 2020) <br>
+									<b>Introduction to Machine Learning with TensorFlow</b> <br>
+									<ul>
+										<li>Developing Python programs and applications to filter data before applying data analysis techniques and
+											TensorFlow library to analyze data and report the results.</li>
+										<li>Names of projects (exercises):
+											<ol>
+												<li><a href="https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML" target="_blank">Donors for CharityML</a></li>
+												<li><a href="https://github.com/namnhatpham1995/Udacity-Creating-Customer-Segments-with-Arvato" target="_blank">Creating Customer Segments with Arvato</a></li>
+												<li><a href="https://github.com/namnhatpham1995/Udacity-Image-Classifier-TensorFlow" target="_blank">Image Classifier with Deep Learning</a></li>
+											</ol>
+										</li>
+										<li style="margin-top: -30px">Degree: <a href="https://confirm.udacity.com/G9GHDGQU" target="_blank">https://confirm.udacity.com/G9GHDGQU</a></li>
+									</ul>
+									<p style="margin-top: -30px">Technologies: Python, Jupyter notebook, TensorFlow.</p>
+								</div>
 							</article>
 
 						<!-- Certificates -->
 						<article id="certificates">
-							<h2 class="major">Certificates</h2>
-							<span class="image main"><img src="images/certificates.jpg" alt="" /></span>
-							<p style="text-align: justify">
-								<b>Building scalable microservices with Spring Boot and Spring Cloud</b> <br>
-								(September 2021) <br>
-								Coursera
-								<ul style="margin-top: -30px">
-									<li>Building Microservices with Spring Boot and Spring Cloud.</li>
-									<li>Deploy and manage Microservices with Google Cloud. </li>
-								</ul>
-							</p>
-
-							<p style="text-align: justify">
-								<b>Introduction to Machine Learning with TensorFlow</b> <br>
-								(June 2020) <br>
-								<i>Udacity Nanodegree Program</i> <br>
-								Analyzing, processing data and applying TensorFlow to train computer.
-							</p>
-							<p style="text-align: justify">
-								<b>IELTS 7.0 (English C1-level)</b> <br>
-								(October 2018) <br>
-							</p>
+							<h2 class="major" data-i18n="certificates.title">Certificates</h2>
+							<div data-i18n="certificates.body" data-i18n-html>
+								<p style="text-align: justify">
+									<b>telc Deutsch B1</b> <br>
+									(July 2024)
+								</p>
+								<p style="text-align: justify">
+									<b>Software AG Leadership Essentials Professional</b> <br>
+									(November 2023)
+								</p>
+								<p style="text-align: justify">
+									<b>AWS Certified Developer &ndash; Associate</b> <br>
+									(August 2023) <br>
+									AWS
+								</p>
+								<p style="text-align: justify">
+									<b>AWS Certified Cloud Practitioner</b> <br>
+									(August 2023) <br>
+									AWS
+									<ul style="margin-top: -30px">
+										<li>Broad knowledge of core AWS services (S3, EC2, RDS, and more), their strengths, and optimal use cases for informed service selection.</li>
+									</ul>
+								</p>
+								<p style="text-align: justify">
+									<b>Lean Six Sigma White Belt Certification</b> <br>
+									(March 2022)
+								</p>
+								<p style="text-align: justify">
+									<b>Building Scalable Java Microservices with Spring Boot and Spring Cloud</b> <br>
+									(September 2021) <br>
+									Coursera
+									<ul style="margin-top: -30px">
+										<li>Building Microservices with Spring Boot and Spring Cloud.</li>
+										<li>Deploy and manage Microservices with Google Cloud.</li>
+									</ul>
+								</p>
+								<p style="text-align: justify">
+									<b>Introduction to Machine Learning with TensorFlow</b> <br>
+									(June 2020) <br>
+									<i>Udacity Nanodegree Program</i> <br>
+									Analyzing, processing data and applying TensorFlow to train computer.
+								</p>
+								<p style="text-align: justify">
+									<b>IELTS 7.0</b> <br>
+									(October 2018)
+								</p>
+							</div>
 						</article>
 
 						<!-- Contact -->
@@ -314,61 +289,73 @@
 								</form>
 								<ul class="icons">
 									<li><a href="https://www.linkedin.com/in/namnhatpham1995/" class="icon brands fa-linkedin"><span class="label">Twitter</span></a></li>
-									<li><a href="https://github.com/namnhatpham1995" class="icon brands fa-github" target=”_blank”><span class="label">GitHub</span></a></li>
+									<li><a href="https://github.com/namnhatpham1995" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
 								</ul>
 							</article> -->
 
 						<!-- Experience -->
 						<article id="experience">
-							<h2 class="major">Experience</h2>
-							<span class="image main"><img src="images/experience.jpg" alt="" /></span>
+							<h2 class="major" data-i18n="experience.title">Experience</h2>
+							<div data-i18n="experience.body" data-i18n-html>
+								<p style="text-align: justify">
+									<b>Software Engineer in R&amp;D</b> <br>
+									(November 2024 - September 2026) <br>
+									<i><b>Cumulocity GmbH</b></i> <br>
+									Develop and modernize the <b>Digital Twin Management (DTM)</b> microservice:
+									<ul style="margin-top: -30px">
+										<li>Own implementation and testing across multiple delivered features through the full development lifecycle.</li>
+										<li>Leverage AI coding tools (e.g. <b>GitHub Copilot</b>, <b>Claude Code</b>) across the development lifecycle, improving throughput by an estimated 20&ndash;30% per ticket &mdash; covering requirement analysis, implementation, debugging, test writing, and delivery.</li>
+										<li>Authored project-specific AI instructions and shared prompt strategies with the team, driving broader adoption and measurable productivity gains.</li>
+										<li>Contributed to refactoring the DTM microservice, reducing class complexity and improving readability and long-term maintainability.</li>
+										<li>Took part in migrating the integration test suite to <b>Cypress</b>, improving test execution speed and CI feedback cycles.</li>
+										<li>Delivered features iteratively within <b>Agile/Scrum</b> ceremonies, contributing to backlog refinement and story estimation.</li>
+									</ul>
+								</p>
 
-							<p style="text-align: justify">
-								<b>Associate Software Developer Java IoT Cross R&D</b> <br>
-								(October 2021 - October 2022) <br>
-								<i><b>Software AG</b></i> <br>
-								Maintain and implement new features for Cumulocity IoT platform:
-							<ul style="margin-top: -30px">
-								<li>Work with Chef and Cookbook to implement new features for the platform environment, and create a new
-									cluster on <b>Amazon Web Service (AWS)</b> to test the deployment.</li>
-								<li>Analyze pods’ and containers’ logs of the system to provide a solution for bugs fix.</li>
-								<li>Create and run the <b>Cucumber tests</b> to assess the new functionalities.</li>
-								<li>Analyze logs using <b>Elastic Stacks</b>, create and maintain team’s dashboard to monitor essential system
-									hardware metrics.</li>
-								<li>Document changes of the new implementations.</li>
+								<p style="text-align: justify">
+									<b>Software Engineer in R&amp;D</b> <br>
+									(October 2021 - November 2024) <br>
+									<i><b>Software AG</b></i> <br>
+									Built automation and deployment tooling for Cumulocity IoT:
+									<ul style="margin-top: -30px">
+										<li>Modernized the OEE microservice by migrating Python-based functionality into the DTM microservice using <b>Java Spring Boot</b>.</li>
+										<li>Implemented and maintained <b>GitHub Actions</b> workflows to automate testing, release, and deployment for applications and microservices.</li>
+										<li>Designed a <b>Bash</b>-based deployment helper around an internal CLI tool to automate the Cumulocity upload process, with automated validation of package structure, version compatibility, and naming conventions.</li>
+										<li>Created <b>Python</b> simulation scripts for stress and integration testing of the OEE application.</li>
+										<li>Supported refactoring of the Cumulocity core platform from a monolithic toward a microservices-based architecture.</li>
+										<li>Analyzed pod and container logs for root-cause analysis, and wrote Bash scripts to automate new cluster provisioning on <b>AWS</b> (~10% faster setup).</li>
+									</ul>
+								</p>
+
+								<p style="text-align: justify">
+									<b>Software Developer</b> <br>
+									(April 2018 - March 2019) <br>
+									<i><b>Vietnamese-German University (VGU) Forex Club</b></i> <br>
+									Developed automated trading tools with MetaTrader 4 &amp; 5:
+									<ul style="margin-top: -30px">
+										<li>Worked directly with forex traders to convert manual strategies into rule-based automated systems (Expert Advisors) and custom indicators.</li>
+										<li>Backtested trading strategies using historical market data to evaluate profitability and risk.</li>
+									</ul>
+								</p>
+							</div>
+						</article>
+
+						<!-- Languages -->
+						<article id="languages">
+							<h2 class="major" data-i18n="languages.title">Languages</h2>
+							<ul class="languages" data-i18n="languages.body" data-i18n-html>
+								<li><span class="lang-name">Vietnamese</span><span class="lang-level">Native</span></li>
+								<li><span class="lang-name">English</span><span class="lang-level">Fluent (B2)</span></li>
+								<li><span class="lang-name">German</span><span class="lang-level">Intermediate (B1)</span></li>
 							</ul>
-							</p>
-
-							<p style="text-align: justify">
-								<b>Software Developer / Software Engineer</b> <br>
-								(April 2018 - March 2021) <br>
-								<i><b>Vietnamese-German University Forex Club</b></i> <br>
-								Programming applications (metatrader 4 bots) to trade forex automatically:
-								<ul style="margin-top: -30px">
-									<li>Scalping automatic trading applications for common currency pairs.</li>
-									<li>Additional applications to check budget and time to decide if the trading applications should be stopped.</li>
-								</ul>
-							</p>
-							<p style="text-align: justify">
-								<b>Internship Electrical Engineering</b> <br>
-								(July 2014 - October 2014) <br>
-								<i><b>Vietnamese-German Center</b></i> <br>
-								Training course for engineering skills
-								<ul style="margin-top: -30px">
-									<li>Designing and creating printed circuit board.</li>
-									<li>Soldering practice.</li>
-									<li>Designing and assembling simple industrial electricity systems.</li>
-								</ul>
-							</p>
 						</article>
 
 						<!-- Hobbies -->
 						<article id="hobbies">
-							<h2 class="major">Hobbies</h2>
-							<span class="image main"><img src="images/hobbies.JPG" alt="" /></span>
-							<ul>
+							<h2 class="major" data-i18n="hobbies.title">Hobbies</h2>
+							<ul data-i18n="hobbies.body" data-i18n-html>
 								<li>Workout</li>
-								<li>Traveling & Hiking </li>
+								<li>Traveling &amp; Hiking</li>
 								<li>Cooking</li>
 								<li>Play game or hangout with friends</li>
 							</ul>
@@ -623,9 +610,9 @@
 					<footer id="footer">
 						<div class="container">
 							<div class="langChange">
-								<a href="#" language='english' class="active lang" id="defaultLang">EN</a>
-								<a href="DE.html" language='deutsch' class="lang" >DE</a>
-								<a href="VN.html" language='vietnamese' class="lang">VN</a>
+								<a href="?lang=en" data-lang="en" class="lang active">EN</a>
+								<a href="?lang=de" data-lang="de" class="lang">DE</a>
+								<a href="?lang=vn" data-lang="vn" class="lang">VN</a>
 							</div>
 
 						</div>
@@ -633,18 +620,20 @@
 						<p class="copyright">&copy; Nam Nhat Pham.<br> Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
 					</footer>
 
-			</div>
+				</div>
 
-		<!-- BG -->
-			<div id="bg"></div>
+			<!-- BG -->
+				<div id="bg"></div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<!--<script src="assets/js/lang.js"></script>-->
+			<!-- Scripts -->
+				<script src="assets/js/jquery.min.js"></script>
+				<script src="assets/js/browser.min.js"></script>
+				<script src="assets/js/breakpoints.min.js"></script>
+				<script src="assets/js/util.js"></script>
+				<script src="assets/js/main.js"></script>
+				<script src="assets/js/translations.js"></script>
+				<script src="assets/js/lang.js"></script>
+				<script src="assets/js/backdrops.js"></script>
 
 	</body>
 </html>
