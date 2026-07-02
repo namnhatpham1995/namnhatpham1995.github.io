@@ -1,0 +1,91 @@
+---
+import type { ExperienceEntry } from '../i18n/content/types';
+
+interface Props {
+  entry: ExperienceEntry;
+}
+
+const { entry } = Astro.props;
+
+function shortHash(input: string): string {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
+  }
+  return hash.toString(16).slice(0, 7).padStart(7, '0');
+}
+
+const hash = shortHash(entry.role + entry.company + entry.dates);
+---
+
+<article class="experience-entry">
+  <div class="experience-entry__marker" aria-hidden="true">
+    <span class="experience-entry__hash">{hash}</span>
+    <span class="experience-entry__line"></span>
+  </div>
+  <div class="experience-entry__content">
+    <h3 class="experience-entry__role">{entry.role}</h3>
+    <p class="experience-entry__meta">
+      <span>{entry.company}</span>
+      <span class="experience-entry__dates">{entry.dates}</span>
+    </p>
+    <ul class="experience-entry__bullets">
+      {entry.bullets.map((bullet) => <li>{bullet}</li>)}
+    </ul>
+  </div>
+</article>
+
+<style>
+  .experience-entry {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
+  .experience-entry__marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .experience-entry__hash {
+    font-size: 0.75rem;
+    color: var(--color-accent-amber);
+    white-space: nowrap;
+  }
+
+  .experience-entry__line {
+    flex: 1;
+    width: 1px;
+    background: var(--color-border);
+    margin-top: var(--space-1);
+  }
+
+  .experience-entry__role {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .experience-entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin: var(--space-1) 0 var(--space-2);
+  }
+
+  .experience-entry__dates {
+    color: var(--color-accent-green);
+  }
+
+  .experience-entry__bullets {
+    margin: 0;
+    padding-left: 1.1em;
+  }
+
+  .experience-entry__bullets li {
+    margin-bottom: var(--space-1);
+  }
+</style>

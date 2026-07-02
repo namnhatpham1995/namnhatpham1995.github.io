@@ -1,0 +1,72 @@
+---
+interface Props {
+  promptUser: string;
+}
+
+const { promptUser } = Astro.props;
+---
+
+<div class="terminal-window">
+  <div class="terminal-window__chrome" role="presentation">
+    <span class="dot dot--red" aria-hidden="true"></span>
+    <span class="dot dot--amber" aria-hidden="true"></span>
+    <span class="dot dot--green" aria-hidden="true"></span>
+    <span class="terminal-window__path">{promptUser}:~$</span>
+  </div>
+  <div class="terminal-window__body">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .terminal-window {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .terminal-window__chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot--red {
+    background: var(--color-accent-red);
+  }
+
+  .dot--amber {
+    background: var(--color-accent-amber);
+  }
+
+  .dot--green {
+    background: var(--color-accent-green);
+  }
+
+  .terminal-window__path {
+    margin-left: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .terminal-window__body {
+    padding: var(--space-4) var(--space-4);
+  }
+
+  @media (max-width: 480px) {
+    .terminal-window__body {
+      padding: var(--space-3);
+    }
+  }
+</style>

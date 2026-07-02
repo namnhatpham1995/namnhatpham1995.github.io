@@ -1,0 +1,60 @@
+---
+import { locales, localePath, type Locale } from '../i18n/locale-utils';
+
+interface Props {
+  current: Locale;
+  label: string;
+}
+
+const { current, label } = Astro.props;
+
+const names: Record<Locale, string> = { en: 'EN', de: 'DE', vi: 'VI' };
+---
+
+<nav class="language-switcher" aria-label={label}>
+  <ul>
+    {
+      locales.map((loc) => (
+        <li>
+          {loc === current ? (
+            <span aria-current="true">{names[loc]}</span>
+          ) : (
+            <a href={localePath(loc)}>{names[loc]}</a>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .language-switcher ul {
+    list-style: none;
+    display: flex;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+    font-size: 0.8125rem;
+  }
+
+  .language-switcher a,
+  .language-switcher span {
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+    text-decoration: none;
+  }
+
+  .language-switcher a {
+    color: var(--color-text-muted);
+  }
+
+  .language-switcher a:hover,
+  .language-switcher a:focus-visible {
+    color: var(--color-text);
+  }
+
+  .language-switcher span[aria-current='true'] {
+    color: var(--color-accent-green);
+    border: 1px solid var(--color-border);
+  }
+</style>

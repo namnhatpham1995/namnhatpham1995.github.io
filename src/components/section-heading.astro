@@ -1,0 +1,47 @@
+---
+interface Props {
+  id: string;
+  command: string;
+  label: string;
+  level?: 'h2';
+}
+
+const { id, command, label } = Astro.props;
+---
+
+<h2 id={id} class="section-heading">
+  <span class="section-heading__prompt" aria-hidden="true">$</span>
+  <span class="section-heading__command">{command}</span>
+  <span class="section-heading__label">{label}</span>
+</h2>
+
+<style>
+  .section-heading {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    font-size: 1.25rem;
+    margin: 0 0 var(--space-3);
+    scroll-margin-top: 4rem;
+  }
+
+  .section-heading__prompt {
+    color: var(--color-accent-green);
+  }
+
+  .section-heading__command {
+    color: var(--color-accent-green);
+    font-weight: 600;
+  }
+
+  .section-heading__label {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+
+  .section-heading__label::before {
+    content: '// ';
+  }
+</style>
