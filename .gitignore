@@ -150,5 +150,10 @@ node_modules/.bin/claude-*
 .ai-session
 .aider*
 
+# ClaudeKit (local planning/tooling artifacts)
+plans/
+release-manifest.json
+.repomixignore
+
 # OpenSpec (local project planning)
 openspec/
