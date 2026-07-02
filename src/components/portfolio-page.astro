@@ -1,0 +1,226 @@
+---
+import type { CvContent } from '../i18n/content/types';
+import type { Locale } from '../i18n/locale-utils';
+import { uiLabels } from '../i18n/ui-labels';
+import CommandNav from './command-nav.astro';
+import TerminalWindow from './terminal-window.astro';
+import SectionHeading from './section-heading.astro';
+import SkillGroup from './skill-group.astro';
+import ExperienceEntry from './experience-entry.astro';
+import ProjectCard from './project-card.astro';
+import LanguageSwitcher from './language-switcher.astro';
+import Typewriter from './typewriter.astro';
+
+interface Props {
+  locale: Locale;
+  content: CvContent;
+}
+
+const { locale, content } = Astro.props;
+const labels = uiLabels[locale];
+
+const navItems = [
+  { id: 'intro', label: content.nav.intro },
+  { id: 'skills', label: content.nav.skills },
+  { id: 'experience', label: content.nav.experience },
+  { id: 'education', label: content.nav.education },
+  { id: 'projects', label: content.nav.projects },
+  { id: 'certificates', label: content.nav.certificates },
+  { id: 'languages', label: content.nav.languages },
+  { id: 'hobbies', label: content.nav.hobbies },
+];
+---
+
+<CommandNav items={navItems}>
+  <LanguageSwitcher slot="end" current={locale} label={labels.languageSwitcherLabel} />
+</CommandNav>
+
+<main id="main">
+  <TerminalWindow promptUser={labels.promptUser}>
+    <section id="intro" aria-labelledby="intro-heading">
+      <SectionHeading id="intro-heading" command="$ whoami" label={content.nav.intro} />
+      <div class="hero">
+        <img class="hero__photo" src="/images/profile.jpg" alt={content.hero.name} width="120" height="120" loading="eager" />
+        <div>
+          <h1 class="hero__name">{content.hero.name}</h1>
+          <p class="hero__role">{content.hero.role} · {content.hero.location}</p>
+          <Typewriter text={content.hero.summary} />
+          <p class="hero__links">
+            <a href={`mailto:${content.hero.email}`}>{labels.emailLabel}</a>
+            {' · '}
+            <a href={content.hero.linkedin} target="_blank" rel="noopener noreferrer">{labels.linkedinLabel}</a>
+            {' · '}
+            <a href={content.hero.github} target="_blank" rel="noopener noreferrer">{labels.githubLabel}</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-heading">
+      <SectionHeading id="skills-heading" command={content.skills.heading} label={content.nav.skills} />
+      {content.skills.groups.map((group) => <SkillGroup group={group} />)}
+    </section>
+
+    <section id="experience" aria-labelledby="experience-heading">
+      <SectionHeading id="experience-heading" command={content.experience.heading} label={content.nav.experience} />
+      {content.experience.entries.map((entry) => <ExperienceEntry entry={entry} />)}
+    </section>
+
+    <section id="education" aria-labelledby="education-heading">
+      <SectionHeading id="education-heading" command={content.education.heading} label={content.nav.education} />
+      {
+        content.education.entries.map((entry) => (
+          <article class="education-entry">
+            <h3 class="education-entry__degree">{entry.degree}</h3>
+            <p class="education-entry__meta">
+              <span>{entry.institution}</span>
+              <span class="education-entry__dates">{entry.dates}</span>
+            </p>
+            <p>{entry.description}</p>
+          </article>
+        ))
+      }
+    </section>
+
+    <section id="projects" aria-labelledby="projects-heading">
+      <SectionHeading id="projects-heading" command={content.projects.heading} label={content.nav.projects} />
+      {content.projects.entries.map((entry) => <ProjectCard entry={entry} />)}
+    </section>
+
+    <section id="certificates" aria-labelledby="certificates-heading">
+      <SectionHeading id="certificates-heading" command={content.certificates.heading} label={content.nav.certificates} />
+      <ul class="certificate-list">
+        {
+          content.certificates.entries.map((cert) => (
+            <li>
+              <span class="certificate-list__title">{cert.title}</span>
+              <span class="certificate-list__meta">
+                {cert.date}
+                {cert.issuer && ` · ${cert.issuer}`}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="languages" aria-labelledby="languages-heading">
+      <SectionHeading id="languages-heading" command={content.languages.heading} label={content.nav.languages} />
+      <ul class="language-list">
+        {
+          content.languages.entries.map((lang) => (
+            <li>
+              <span>{lang.name}</span>
+              <span class="language-list__level">{lang.level}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section id="hobbies" aria-labelledby="hobbies-heading">
+      <SectionHeading id="hobbies-heading" command={content.hobbies.heading} label={content.nav.hobbies} />
+      <ul class="hobbies-list">
+        {content.hobbies.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+  </TerminalWindow>
+</main>
+
+<style>
+  main {
+    padding: var(--space-4) var(--space-3) var(--space-6);
+  }
+
+  section {
+    margin-bottom: var(--space-6);
+  }
+
+  section:last-child {
+    margin-bottom: 0;
+  }
+
+  .hero {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .hero__photo {
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .hero__name {
+    margin: 0 0 var(--space-1);
+    font-size: 1.5rem;
+  }
+
+  .hero__role {
+    margin: 0 0 var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .hero__links {
+    margin-top: var(--space-2);
+    font-size: 0.875rem;
+  }
+
+  .education-entry {
+    margin-bottom: var(--space-4);
+  }
+
+  .education-entry__degree {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .education-entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin: var(--space-1) 0 var(--space-1);
+  }
+
+  .education-entry__dates {
+    color: var(--color-accent-green);
+  }
+
+  .certificate-list,
+  .language-list,
+  .hobbies-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .certificate-list li,
+  .language-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9375rem;
+  }
+
+  .certificate-list__meta,
+  .language-list__level {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  .hobbies-list li {
+    padding: var(--space-1) 0;
+  }
+
+  @media (max-width: 480px) {
+    .hero {
+      flex-direction: column;
+    }
+  }
+</style>

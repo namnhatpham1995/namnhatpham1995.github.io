@@ -1,0 +1,106 @@
+---
+interface NavItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  items: NavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="command-nav" aria-label="Section navigation">
+  <ul class="command-nav__list">
+    {
+      items.map((item) => (
+        <li>
+          <a href={`#${item.id}`} data-nav-link data-target={item.id}>
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="command-nav__end">
+    <slot name="end" />
+  </div>
+</nav>
+
+<style>
+  .command-nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+  }
+
+  .command-nav__list {
+    flex: 1;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-2) var(--space-3);
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .command-nav__end {
+    display: flex;
+    align-items: center;
+    padding-right: var(--space-3);
+  }
+
+  .command-nav__list a {
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+  }
+
+  .command-nav__list a:hover,
+  .command-nav__list a:focus-visible {
+    color: var(--color-text);
+  }
+
+  .command-nav__list a[aria-current='true'] {
+    color: var(--color-accent-green);
+    background: color-mix(in srgb, var(--color-accent-green) 12%, transparent);
+  }
+</style>
+
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+  const targets = Array.from(links)
+    .map((link) => document.getElementById(link.dataset.target ?? ''))
+    .filter((el): el is HTMLElement => el !== null);
+
+  if (targets.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const id = entry.target.id;
+          links.forEach((link) => {
+            link.toggleAttribute('aria-current', link.dataset.target === id);
+            if (link.dataset.target === id) {
+              link.setAttribute('aria-current', 'true');
+            } else {
+              link.removeAttribute('aria-current');
+            }
+          });
+        }
+      },
+      { rootMargin: '-40% 0px -55% 0px' },
+    );
+    targets.forEach((target) => observer.observe(target));
+  }
+</script>

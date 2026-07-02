@@ -1,0 +1,60 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="typewriter" data-typewriter data-text={text}>
+  <span class="typewriter__text">{text}</span><span class="typewriter__cursor" aria-hidden="true">▌</span>
+</p>
+
+<style>
+  .typewriter {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .typewriter__cursor {
+    display: inline-block;
+    color: var(--color-accent-green);
+    animation: blink 1s step-end infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typewriter__cursor {
+      animation: none;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach((el) => {
+    if (reduceMotion) return;
+
+    const textEl = el.querySelector<HTMLElement>('.typewriter__text');
+    const fullText = el.dataset.text ?? '';
+    if (!textEl || !fullText) return;
+
+    textEl.textContent = '';
+    let i = 0;
+    const step = () => {
+      textEl.textContent = fullText.slice(0, i);
+      i += 1;
+      if (i <= fullText.length) {
+        window.setTimeout(step, 28);
+      }
+    };
+    step();
+  });
+</script>
