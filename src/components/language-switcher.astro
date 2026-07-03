@@ -8,53 +8,154 @@ interface Props {
 
 const { current, label } = Astro.props;
 
-const names: Record<Locale, string> = { en: 'EN', de: 'DE', vi: 'VI' };
+const names: Record<Locale, string> = { en: 'English', de: 'Deutsch', vi: 'Tiếng Việt' };
+
+// Inline SVG flags — emoji flags don't render on all platforms (e.g. Windows).
+const flags: Record<Locale, string> = {
+  en: `<svg viewBox="0 0 60 30" aria-hidden="true">
+    <rect width="60" height="30" fill="#012169"/>
+    <path d="M0,0 60,30 M60,0 0,30" stroke="#fff" stroke-width="6"/>
+    <path d="M0,0 60,30 M60,0 0,30" stroke="#C8102E" stroke-width="2.5"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+  </svg>`,
+  de: `<svg viewBox="0 0 30 20" aria-hidden="true">
+    <rect width="30" height="20" fill="#000"/>
+    <rect y="6.67" width="30" height="13.33" fill="#D00"/>
+    <rect y="13.33" width="30" height="6.67" fill="#FFCE00"/>
+  </svg>`,
+  vi: `<svg viewBox="0 0 30 20" aria-hidden="true">
+    <rect width="30" height="20" fill="#DA251D"/>
+    <polygon points="15,4 16.35,8.15 20.71,8.15 17.18,10.71 18.53,14.85 15,12.29 11.47,14.85 12.82,10.71 9.29,8.15 13.65,8.15" fill="#FF0"/>
+  </svg>`,
+};
 ---
 
-<nav class="language-switcher" aria-label={label}>
+<details class="language-switcher" data-language-switcher>
+  <summary aria-label={label} title={label}>
+    <span class="language-switcher__flag" set:html={flags[current]} />
+    <svg
+      class="language-switcher__chevron"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </summary>
   <ul>
     {
       locales.map((loc) => (
         <li>
           {loc === current ? (
-            <span aria-current="true">{names[loc]}</span>
+            <span aria-current="true" aria-label={names[loc]} title={names[loc]}>
+              <span class="language-switcher__flag" set:html={flags[loc]} />
+            </span>
           ) : (
-            <a href={localePath(loc)}>{names[loc]}</a>
+            <a href={localePath(loc)} aria-label={names[loc]} title={names[loc]}>
+              <span class="language-switcher__flag" set:html={flags[loc]} />
+            </a>
           )}
         </li>
       ))
     }
   </ul>
-</nav>
+</details>
 
 <style>
-  .language-switcher ul {
-    list-style: none;
-    display: flex;
-    gap: var(--space-2);
-    padding: 0;
-    margin: 0;
+  .language-switcher {
+    position: relative;
     font-size: 0.8125rem;
   }
 
-  .language-switcher a,
-  .language-switcher span {
+  .language-switcher summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
     padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    text-decoration: none;
-  }
-
-  .language-switcher a {
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
     color: var(--color-text-muted);
   }
 
-  .language-switcher a:hover,
-  .language-switcher a:focus-visible {
+  .language-switcher summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .language-switcher summary:hover,
+  .language-switcher summary:focus-visible {
     color: var(--color-text);
   }
 
-  .language-switcher span[aria-current='true'] {
-    color: var(--color-accent-green);
+  .language-switcher[open] .language-switcher__chevron {
+    transform: rotate(180deg);
+  }
+
+  .language-switcher__flag {
+    display: flex;
+  }
+
+  .language-switcher__flag :global(svg) {
+    width: 24px;
+    height: 16px;
+    border-radius: 2px;
     border: 1px solid var(--color-border);
   }
+
+  .language-switcher ul {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    right: 0;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .language-switcher ul a,
+  .language-switcher ul span[aria-current] {
+    display: flex;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius);
+  }
+
+  .language-switcher ul a:hover,
+  .language-switcher ul a:focus-visible {
+    background: color-mix(in srgb, var(--color-text-muted) 15%, transparent);
+  }
+
+  .language-switcher ul span[aria-current='true'] {
+    background: color-mix(in srgb, var(--color-accent-green) 12%, transparent);
+  }
 </style>
+
+<script>
+  const switcher = document.querySelector<HTMLDetailsElement>('[data-language-switcher]');
+  if (switcher) {
+    document.addEventListener('click', (event) => {
+      if (switcher.open && !switcher.contains(event.target as Node)) {
+        switcher.open = false;
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        switcher.open = false;
+      }
+    });
+  }
+</script>

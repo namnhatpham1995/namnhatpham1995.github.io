@@ -31,9 +31,11 @@ const navItems = [
 ];
 ---
 
-<CommandNav items={navItems}>
-  <LanguageSwitcher slot="end" current={locale} label={labels.languageSwitcherLabel} />
-</CommandNav>
+<CommandNav items={navItems} />
+
+<div class="language-switcher-corner">
+  <LanguageSwitcher current={locale} label={labels.languageSwitcherLabel} />
+</div>
 
 <main id="main">
   <TerminalWindow promptUser={labels.promptUser}>
@@ -132,6 +134,20 @@ const navItems = [
     padding: var(--space-4) var(--space-3) var(--space-6);
   }
 
+  .language-switcher-corner {
+    position: fixed;
+    top: var(--space-2);
+    right: var(--space-2);
+    z-index: 20;
+  }
+
+  @media (max-width: 1000px) {
+    main {
+      /* Clear the fixed section-nav rail on the left edge. */
+      padding-left: calc(var(--space-2) + 46px + var(--space-2));
+    }
+  }
+
   section {
     margin-bottom: var(--space-6);
   }
@@ -142,9 +158,10 @@ const navItems = [
 
   .hero {
     display: flex;
+    flex-direction: column;
     gap: var(--space-4);
-    align-items: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
   }
 
   .hero__photo {
@@ -216,11 +233,5 @@ const navItems = [
 
   .hobbies-list li {
     padding: var(--space-1) 0;
-  }
-
-  @media (max-width: 480px) {
-    .hero {
-      flex-direction: column;
-    }
   }
 </style>
