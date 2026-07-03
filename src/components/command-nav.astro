@@ -9,6 +9,25 @@ interface Props {
 }
 
 const { items } = Astro.props;
+
+// Feather-style icon paths (24x24 viewBox, stroked), keyed by section id.
+const icons: Record<string, string> = {
+  intro:
+    '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  skills: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+  experience:
+    '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  education:
+    '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/>',
+  projects:
+    '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  certificates:
+    '<circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>',
+  languages:
+    '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+  hobbies:
+    '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+};
 ---
 
 <nav class="command-nav" aria-label="Section navigation">
@@ -16,53 +35,59 @@ const { items } = Astro.props;
     {
       items.map((item) => (
         <li>
-          <a href={`#${item.id}`} data-nav-link data-target={item.id}>
-            {item.label}
+          <a href={`#${item.id}`} data-nav-link data-target={item.id} aria-label={item.label}>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              set:html={icons[item.id]}
+            />
+            <span class="command-nav__tooltip">{item.label}</span>
           </a>
         </li>
       ))
     }
   </ul>
-  <div class="command-nav__end">
-    <slot name="end" />
-  </div>
 </nav>
 
 <style>
   .command-nav {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    left: var(--space-2);
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 10;
-    background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
     backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--color-border);
-    display: flex;
-    justify-content: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   .command-nav__list {
-    flex: 1;
-    max-width: var(--max-width);
-    margin: 0 auto;
-    padding: var(--space-2) var(--space-3);
     list-style: none;
+    margin: 0;
+    padding: var(--space-1);
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .command-nav__end {
-    display: flex;
-    align-items: center;
-    padding-right: var(--space-3);
+    flex-direction: column;
+    gap: var(--space-1);
   }
 
   .command-nav__list a {
-    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
     color: var(--color-text-muted);
-    font-size: 0.875rem;
-    padding: var(--space-1) var(--space-2);
     border-radius: var(--radius);
   }
 
@@ -74,6 +99,29 @@ const { items } = Astro.props;
   .command-nav__list a[aria-current='true'] {
     color: var(--color-accent-green);
     background: color-mix(in srgb, var(--color-accent-green) 12%, transparent);
+  }
+
+  .command-nav__tooltip {
+    position: absolute;
+    left: calc(100% + var(--space-2));
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-surface);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  @media (hover: hover) {
+    .command-nav__list a:hover .command-nav__tooltip,
+    .command-nav__list a:focus-visible .command-nav__tooltip {
+      opacity: 1;
+    }
   }
 </style>
 
