@@ -73,11 +73,11 @@ const navItems = [
       {
         content.education.entries.map((entry) => (
           <article class="education-entry">
-            <h3 class="education-entry__degree">{entry.degree}</h3>
-            <p class="education-entry__meta">
-              <span>{entry.institution}</span>
+            <header class="education-entry__header">
+              <h3 class="education-entry__degree">{entry.degree}</h3>
               <span class="education-entry__dates">{entry.dates}</span>
-            </p>
+            </header>
+            <p class="education-entry__meta">{entry.institution}</p>
             <p>{entry.description}</p>
           </article>
         ))
@@ -197,15 +197,19 @@ const navItems = [
     margin-bottom: var(--space-4);
   }
 
+  .education-entry__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: baseline;
+    column-gap: var(--space-2);
+  }
+
   .education-entry__degree {
     margin: 0;
     font-size: 1rem;
   }
 
   .education-entry__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
     color: var(--color-text-muted);
     font-size: 0.875rem;
     margin: var(--space-1) 0 var(--space-1);
@@ -213,6 +217,8 @@ const navItems = [
 
   .education-entry__dates {
     color: var(--color-accent-green);
+    font-size: 0.875rem;
+    white-space: nowrap;
   }
 
   .certificate-list,
@@ -242,5 +248,11 @@ const navItems = [
 
   .hobbies-list li {
     padding: var(--space-1) 0;
+  }
+
+  @media (max-width: 640px) {
+    .education-entry__header {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
