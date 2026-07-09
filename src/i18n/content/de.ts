@@ -126,18 +126,29 @@ export const de: CvContent = {
       {
         title: 'M.Sc.-Thesis: Remote-Desktop-Steuerung aus einer SaaS-Anwendung',
         dates: 'Feb – Aug 2021',
+        // TODO: native review
         description: [
-          'Containerisierter Stack (Docker, MySQL, oneye OS, Apache) mit einem Python-Flask-Backend für browserbasierte Remote-Desktop-Steuerung auf Terminal-Ebene.',
-          'MySQL-basierte Authentifizierung.',
+          'Entwicklung einer webbasierten Remote-Desktop-Steuerung, zugänglich über gängige Webbrowser.',
+          'Aufbau von RemotePy, einer von einer Open-Source-Basis geforkten und erweiterten Python-Flask-Anwendung, mit browsergesteuerter Maus-, Tastatur- und Touch-Steuerung sowie Live-Bildschirmstreaming, bereitgestellt über ein Werkzeug/Gunicorn-Backend mit eigener CLI zur Konfiguration von Worker- und Thread-Nebenläufigkeit.',
+          'Entwurf des browserseitigen Frontends mit HTML-, CSS- und JavaScript-Templates für die Echtzeit-Interaktion der Fernsteuerung.',
+          'MySQL-basierte Authentifizierung; Containerisierung der Serverumgebung mit Docker und Apache.',
         ],
-        tech: ['Python', 'Flask', 'Docker', 'MySQL'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' }],
+        tech: ['Python', 'Flask', 'Werkzeug', 'Gunicorn', 'HTML', 'CSS', 'JavaScript', 'Docker', 'MySQL'],
+        links: [
+          { label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' },
+          { label: 'RemotePy-Modul', url: 'https://github.com/namnhatpham1995/Master-Thesis/tree/main/RemotePy' },
+        ],
       },
       {
         title: 'Udacity: Intro to Machine Learning with TensorFlow',
         dates: '2020',
-        description: ['Nanodegree-Programm zu Datenanalyse und angewandtem maschinellem Lernen mit TensorFlow.'],
-        tech: ['Python', 'TensorFlow'],
+        // TODO: native review
+        description: [
+          'Aufbau und Vergleich von drei Klassifikationsmodellen des überwachten Lernens (Random Forest, Gaussian Naive Bayes, AdaBoost) auf US-Volkszählungsdaten (45.000 Datensätze) mit Log-Transformation, MinMax-Skalierung und One-Hot-Encoding, verglichen mit einer naiven Baseline.',
+          'Kundensegmentierungsanalyse auf Basis realer deutscher demografischer Daten (Arvato/AZ Direct, ca. 891.000 Datensätze, 85 Merkmale), unter Einsatz von PCA (28 Komponenten, ca. 87 % erklärte Varianz) und K-Means-Clustering zur Identifikation über- und unterrepräsentierter Segmente.',
+          'Aufbau eines Bilderkennungsmodells mit TensorFlow/Keras mittels Transfer Learning (MobileNet) zur Erkennung von 102 Blumenarten (Oxford-Flowers-Datensatz) mit 71 % Testgenauigkeit, verpackt in ein Python-Kommandozeilentool zur Inferenz.',
+        ],
+        tech: ['Python', 'pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'TensorFlow Hub', 'Matplotlib', 'Seaborn'],
         links: [
           { label: 'Finding Donors for CharityML', url: 'https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML' },
           {
