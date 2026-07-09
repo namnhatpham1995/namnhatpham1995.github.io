@@ -148,6 +148,15 @@ const navItems = [
     }
   }
 
+  @media (max-width: 480px) {
+    main {
+      /* The nav rail collapses into a bottom bar at this width (see
+         command-nav.astro) — clear the bottom edge instead of the left. */
+      padding-left: var(--space-3);
+      padding-bottom: calc(var(--space-2) + 32px + var(--space-2));
+    }
+  }
+
   section {
     margin-bottom: var(--space-6);
   }

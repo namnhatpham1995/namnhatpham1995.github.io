@@ -123,6 +123,50 @@ const icons: Record<string, string> = {
       opacity: 1;
     }
   }
+
+  /* Small screens: collapse the left icon rail into a compact bottom bar so it
+     doesn't eat into the narrow content width. */
+  @media (max-width: 480px) {
+    .command-nav {
+      left: 0;
+      right: 0;
+      top: auto;
+      bottom: 0;
+      transform: none;
+      width: 100%;
+      max-height: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      border-radius: 0;
+    }
+
+    .command-nav__list {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: var(--space-1) var(--space-2);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .command-nav__list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .command-nav__list a {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+    }
+
+    /* Tooltips only ever appear under (hover: hover); touch devices never
+       trigger them, but the element still occupies layout space (opacity
+       doesn't remove it), which was overflowing the bottom bar's scroll
+       width. Drop it from layout entirely at this breakpoint. */
+    .command-nav__tooltip {
+      display: none;
+    }
+  }
 </style>
 
 <script>
