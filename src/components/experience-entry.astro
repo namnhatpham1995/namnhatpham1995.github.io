@@ -24,11 +24,11 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
     <span class="experience-entry__line"></span>
   </div>
   <div class="experience-entry__content">
-    <h3 class="experience-entry__role">{entry.role}</h3>
-    <p class="experience-entry__meta">
-      <span>{entry.company}</span>
+    <header class="experience-entry__header">
+      <h3 class="experience-entry__role">{entry.role}</h3>
       <span class="experience-entry__dates">{entry.dates}</span>
-    </p>
+    </header>
+    <p class="experience-entry__meta">{entry.company}</p>
     <ul class="experience-entry__bullets">
       {entry.bullets.map((bullet) => <li>{bullet}</li>)}
     </ul>
@@ -55,6 +55,13 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
     white-space: nowrap;
   }
 
+  .experience-entry__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: baseline;
+    column-gap: var(--space-2);
+  }
+
   .experience-entry__line {
     flex: 1;
     width: 1px;
@@ -68,9 +75,6 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
   }
 
   .experience-entry__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
     color: var(--color-text-muted);
     font-size: 0.875rem;
     margin: var(--space-1) 0 var(--space-2);
@@ -78,6 +82,8 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
 
   .experience-entry__dates {
     color: var(--color-accent-green);
+    font-size: 0.875rem;
+    white-space: nowrap;
   }
 
   .experience-entry__bullets {
@@ -87,5 +93,11 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
 
   .experience-entry__bullets li {
     margin-bottom: var(--space-1);
+  }
+
+  @media (max-width: 640px) {
+    .experience-entry__header {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

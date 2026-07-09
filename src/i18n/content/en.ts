@@ -153,14 +153,12 @@ export const en: CvContent = {
   certificates: {
     heading: 'ls certificates/',
     entries: [
-      { title: 'telc Deutsch B1', date: 'Jul 2024' },
       { title: 'Software AG Leadership Essentials Professional', date: 'Nov 2023' },
       { title: 'AWS Certified Developer – Associate', date: 'Aug 2023', issuer: 'AWS' },
       { title: 'AWS Certified Cloud Practitioner', date: 'Aug 2023', issuer: 'AWS' },
       { title: 'Lean Six Sigma White Belt', date: 'Mar 2022' },
       { title: 'Building Scalable Java Microservices with Spring Boot & Spring Cloud', date: 'Sep 2021', issuer: 'Coursera' },
       { title: 'Intro to Machine Learning with TensorFlow', date: 'Jun 2020', issuer: 'Udacity Nanodegree Program' },
-      { title: 'IELTS 7.0', date: 'Oct 2018' },
     ],
   },
   languages: {
