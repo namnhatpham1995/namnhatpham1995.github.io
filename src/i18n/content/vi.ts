@@ -176,8 +176,8 @@ export const vi: CvContent = {
     heading: 'locale -a',
     entries: [
       { name: 'Tiếng Việt', level: 'Bản ngữ' },
-      { name: 'Tiếng Anh', level: 'Thành thạo (B2)' },
-      { name: 'Tiếng Đức', level: 'Trung cấp (B1)' },
+      { name: 'Tiếng Anh', level: 'Thành thạo (C1)' },
+      { name: 'Tiếng Đức', level: 'Giao tiếp công việc (B2)' },
     ],
   },
   hobbies: {

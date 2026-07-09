@@ -167,8 +167,8 @@ export const en: CvContent = {
     heading: 'locale -a',
     entries: [
       { name: 'Vietnamese', level: 'Native' },
-      { name: 'English', level: 'Fluent (B2)' },
-      { name: 'German', level: 'Intermediate (B1)' },
+      { name: 'English', level: 'Fluent (C1)' },
+      { name: 'German', level: 'Professional (B2)' },
     ],
   },
   hobbies: {
