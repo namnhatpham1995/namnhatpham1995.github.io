@@ -118,17 +118,26 @@ export const en: CvContent = {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
         dates: 'Feb – Aug 2021',
         description: [
-          'Containerized stack (Docker, MySQL, oneye OS, Apache) with a Python Flask backend for browser-based, terminal-level remote desktop control.',
-          'MySQL-backed authentication.',
+          'Developed a web-based remote desktop control solution accessible through common web browsers.',
+          'Built RemotePy, a Python Flask application forked and extended from an open-source remote-control base, adding browser-driven mouse, keyboard, and touch-screen control plus live screen streaming, served via a Werkzeug/Gunicorn backend with a custom CLI for worker and thread concurrency.',
+          'Designed the browser-facing frontend with HTML, CSS, and JavaScript templates to drive real-time remote-control interactions.',
+          'MySQL-backed authentication; containerized the server environment with Docker and Apache.',
         ],
-        tech: ['Python', 'Flask', 'Docker', 'MySQL'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' }],
+        tech: ['Python', 'Flask', 'Werkzeug', 'Gunicorn', 'HTML', 'CSS', 'JavaScript', 'Docker', 'MySQL'],
+        links: [
+          { label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' },
+          { label: 'RemotePy module', url: 'https://github.com/namnhatpham1995/Master-Thesis/tree/main/RemotePy' },
+        ],
       },
       {
         title: 'Udacity: Intro to Machine Learning with TensorFlow',
         dates: '2020',
-        description: ['Nanodegree program covering data analysis and applied machine learning with TensorFlow.'],
-        tech: ['Python', 'TensorFlow'],
+        description: [
+          'Built and benchmarked three supervised learning classifiers (Random Forest, Gaussian Naive Bayes, AdaBoost) on U.S. Census income data (45K records) using log-transform, MinMax scaling, and one-hot encoding, benchmarked against a naive baseline.',
+          'Built a customer segmentation analysis on German demographic data (Arvato/AZ Direct, ~891K records, 85 features), applying PCA (28 components, ~87% variance explained) and K-Means clustering to identify over- and under-represented segments.',
+          'Built a TensorFlow/Keras image classifier via MobileNet transfer learning to recognize 102 flower species (Oxford Flowers dataset), reaching 71% test accuracy, packaged into a Python CLI tool for inference.',
+        ],
+        tech: ['Python', 'pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'TensorFlow Hub', 'Matplotlib', 'Seaborn'],
         links: [
           { label: 'Finding Donors for CharityML', url: 'https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML' },
           {

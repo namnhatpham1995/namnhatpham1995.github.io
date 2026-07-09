@@ -124,18 +124,29 @@ export const vi: CvContent = {
       {
         title: 'Đồ án Thạc sĩ: Điều khiển Remote Desktop từ Ứng dụng SaaS',
         dates: 'Th2 – Th8 2021',
+        // TODO: native review
         description: [
-          'Stack container hóa (Docker, MySQL, oneye OS, Apache) với backend Python Flask cho phép điều khiển remote desktop ở mức terminal qua trình duyệt.',
-          'Xác thực dựa trên MySQL.',
+          'Phát triển giải pháp điều khiển remote desktop qua nền web, truy cập được từ các trình duyệt phổ biến.',
+          'Xây dựng RemotePy, một ứng dụng Python Flask được fork và mở rộng từ một dự án mã nguồn mở, bổ sung khả năng điều khiển chuột, bàn phím, cảm ứng qua trình duyệt cùng streaming màn hình trực tiếp, chạy trên nền Werkzeug/Gunicorn với CLI tùy chỉnh để cấu hình số worker và thread.',
+          'Thiết kế giao diện frontend phía trình duyệt bằng HTML, CSS và JavaScript để xử lý tương tác điều khiển từ xa theo thời gian thực.',
+          'Xác thực dựa trên MySQL; đóng gói container hóa môi trường server với Docker và Apache.',
         ],
-        tech: ['Python', 'Flask', 'Docker', 'MySQL'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' }],
+        tech: ['Python', 'Flask', 'Werkzeug', 'Gunicorn', 'HTML', 'CSS', 'JavaScript', 'Docker', 'MySQL'],
+        links: [
+          { label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' },
+          { label: 'Module RemotePy', url: 'https://github.com/namnhatpham1995/Master-Thesis/tree/main/RemotePy' },
+        ],
       },
       {
         title: 'Udacity: Intro to Machine Learning with TensorFlow',
         dates: '2020',
-        description: ['Chương trình Nanodegree về phân tích dữ liệu và machine learning ứng dụng với TensorFlow.'],
-        tech: ['Python', 'TensorFlow'],
+        // TODO: native review
+        description: [
+          'Xây dựng và so sánh ba mô hình phân loại học có giám sát (Random Forest, Gaussian Naive Bayes, AdaBoost) trên dữ liệu điều tra dân số Hoa Kỳ (45.000 bản ghi), áp dụng log-transform, chuẩn hóa MinMax và one-hot encoding, so sánh với baseline ngẫu nhiên.',
+          'Phân tích phân khúc khách hàng trên dữ liệu nhân khẩu học thực tế của Đức (Arvato/AZ Direct, khoảng 891.000 bản ghi, 85 đặc trưng), áp dụng PCA (28 thành phần, giải thích khoảng 87% phương sai) và phân cụm K-Means để xác định các phân khúc được đại diện quá mức hoặc thiếu.',
+          'Xây dựng mô hình phân loại ảnh bằng TensorFlow/Keras sử dụng transfer learning (MobileNet) để nhận diện 102 loài hoa (bộ dữ liệu Oxford Flowers), đạt độ chính xác kiểm thử 71%, đóng gói thành công cụ dòng lệnh Python để suy luận.',
+        ],
+        tech: ['Python', 'pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'TensorFlow Hub', 'Matplotlib', 'Seaborn'],
         links: [
           { label: 'Finding Donors for CharityML', url: 'https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML' },
           {
