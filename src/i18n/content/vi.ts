@@ -39,7 +39,8 @@ export const vi: CvContent = {
         title: 'Backend & Frontend',
         items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'Next.js', 'Flask'],
       },
-      { title: 'Cloud, DevOps & Công cụ', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Chef'] },
+      // TODO: native review — bổ sung Helm theo CV đã cập nhật
+      { title: 'Cloud, DevOps & Công cụ', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
       { title: 'Kiểm thử', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
       { title: 'Cơ sở dữ liệu', items: ['PostgreSQL', 'MySQL'] },
       { title: 'Phương pháp làm việc', items: ['Agile/Scrum', 'CI/CD'] },
@@ -70,8 +71,10 @@ export const vi: CvContent = {
         company: 'Software AG — Đội Cumulocity Platform Core',
         dates: 'Th10 2021 – Th10 2022',
         bullets: [
-          'Gỡ lỗi nền tảng và phân tích nguyên nhân gốc rễ trên nền tảng lõi Cumulocity.',
-          'Viết Chef cookbooks và thiết kế kiến trúc cụm Kubernetes.',
+          // TODO: native review — cập nhật theo kinh nghiệm Cumulocity Platform Core đã mở rộng trong cv.md
+          'Điều tra các lỗi cụm Kubernetes trong quá trình khởi tạo và vận hành, phân tích nguyên nhân gốc rễ và hỗ trợ khắc phục.',
+          'Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa cụm Kubernetes dựa trên Helm để triển khai và vận hành các môi trường Cumulocity.',
+          'Xác định các điểm nghẽn trong quá trình tạo cụm và đóng góp các bản sửa lỗi cùng cải tiến để việc cấp phát nhanh và ổn định hơn.',
           'Tự động hóa việc cấp phát AWS bằng Bash và AWS CLI, giảm khoảng 10% thời gian thiết lập.',
         ],
       },
