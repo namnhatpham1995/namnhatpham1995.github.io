@@ -40,7 +40,8 @@ export const de: CvContent = {
         title: 'Backend & Frontend',
         items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'Next.js', 'Flask'],
       },
-      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Chef'] },
+      // TODO: native review — Helm added per updated CV
+      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
       { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
       { title: 'Datenbanken', items: ['PostgreSQL', 'MySQL'] },
       { title: 'Praktiken', items: ['Agile/Scrum', 'CI/CD'] },
@@ -71,8 +72,10 @@ export const de: CvContent = {
         company: 'Software AG — Cumulocity Platform Core Team',
         dates: 'Okt 2021 – Okt 2022',
         bullets: [
-          'Plattform-Debugging und Ursachenanalyse auf der Cumulocity-Kernplattform.',
-          'Erstellung von Chef-Cookbooks und Entwurf der Kubernetes-Cluster-Architektur.',
+          // TODO: native review — updated to match the expanded Cumulocity Platform Core experience in cv.md
+          'Untersuchte Kubernetes-Clusterfehler während der Bereitstellung und im laufenden Betrieb, führte Ursachenanalysen durch und unterstützte deren Behebung.',
+          'Pflegte und verbesserte Chef-Cookbooks sowie Helm-basierte Kubernetes-Cluster-Automatisierung für die Bereitstellung und den Betrieb von Cumulocity-Umgebungen.',
+          'Identifizierte Engpässe bei der Cluster-Erstellung und trug mit Korrekturen und Verbesserungen zu einer schnelleren und zuverlässigeren Bereitstellung bei.',
           'Automatisierung der AWS-Bereitstellung mit Bash und der AWS CLI, wodurch die Einrichtungszeit um rund 10 % reduziert wurde.',
         ],
       },
