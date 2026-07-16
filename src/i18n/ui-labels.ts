@@ -11,6 +11,7 @@ export interface UiLabels {
   networkHint: string;
   networkSkip: string;
   networkMapButton: string;
+  networkSectionClose: string;
 }
 
 export const uiLabels: Record<Locale, UiLabels> = {
@@ -25,6 +26,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkHint: 'Select a node to open that section',
     networkSkip: 'view --full-page',
     networkMapButton: 'Open network map',
+    networkSectionClose: 'Close section window',
   },
   de: {
     skipToContent: 'Zum Inhalt springen',
@@ -37,6 +39,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkHint: 'Wähle einen Knoten, um den Abschnitt zu öffnen',
     networkSkip: 'view --full-page',
     networkMapButton: 'Netzwerkkarte öffnen',
+    networkSectionClose: 'Abschnittsfenster schließen',
   },
   vi: {
     skipToContent: 'Chuyển đến nội dung',
@@ -49,5 +52,6 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkHint: 'Chọn một nút để mở mục tương ứng',
     networkSkip: 'view --full-page',
     networkMapButton: 'Mở bản đồ mạng lưới',
+    networkSectionClose: 'Đóng cửa sổ nội dung',
   },
 };

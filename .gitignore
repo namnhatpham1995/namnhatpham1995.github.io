@@ -162,3 +162,7 @@ release-manifest.json
 
 # OpenSpec (local project planning)
 openspec/
+
+# Playwright test artifacts
+test-results/
+playwright-report/
