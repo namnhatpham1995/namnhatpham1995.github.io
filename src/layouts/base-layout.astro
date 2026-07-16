@@ -9,7 +9,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { locale, title, description, ogImage = '/images/profile.jpg' } = Astro.props;
+const { locale, title, description, ogImage = '/images/profile.png' } = Astro.props;
 const canonicalUrl = new URL(localePath(locale), Astro.site);
 ---
 
