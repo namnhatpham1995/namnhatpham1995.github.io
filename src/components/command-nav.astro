@@ -205,16 +205,6 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     .map((link) => document.getElementById(link.dataset.target ?? ''))
     .filter((el): el is HTMLElement => el !== null);
 
-  // A network-map node click can isolate a single section (see
-  // network-intro.astro / portfolio-page.astro). Regular nav-rail links
-  // should always behave like normal in-page navigation, so exit that mode
-  // first — synchronously, before the anchor's default jump runs.
-  links.forEach((link) => {
-    link.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('portfolio:exit-section-focus'));
-    });
-  });
-
   if (targets.length && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(
       (entries) => {

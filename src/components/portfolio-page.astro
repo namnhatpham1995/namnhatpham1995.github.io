@@ -42,6 +42,7 @@ const navItems = [
     dialogLabel: labels.networkDialogLabel,
     hint: labels.networkHint,
     skip: labels.networkSkip,
+    close: labels.networkSectionClose,
   }}
 />
 
@@ -272,38 +273,3 @@ const navItems = [
     }
   }
 </style>
-
-<script>
-  // Reacts to custom events dispatched by network-intro.astro (map node
-  // clicks) and command-nav.astro (normal nav-rail links). This component
-  // owns the <section> elements, so it's responsible for actually hiding
-  // siblings when a single section should be "focused".
-  const ENTER_FOCUS = 'portfolio:enter-section-focus';
-  const EXIT_FOCUS = 'portfolio:exit-section-focus';
-
-  const main = document.getElementById('main');
-  const sections = main ? Array.from(main.querySelectorAll<HTMLElement>('section[id]')) : [];
-
-  const enterSectionFocus = (targetId: string) => {
-    const target = sections.find((section) => section.id === targetId);
-    if (!target) return;
-    sections.forEach((section) => {
-      section.hidden = section !== target;
-    });
-    window.scrollTo({ top: 0 });
-    target.setAttribute('tabindex', '-1');
-    target.focus({ preventScroll: true });
-  };
-
-  const exitSectionFocus = () => {
-    sections.forEach((section) => {
-      section.hidden = false;
-    });
-  };
-
-  document.addEventListener(ENTER_FOCUS, (event) => {
-    const targetId = (event as CustomEvent<{ targetId: string }>).detail?.targetId;
-    if (targetId) enterSectionFocus(targetId);
-  });
-  document.addEventListener(EXIT_FOCUS, exitSectionFocus);
-</script>
