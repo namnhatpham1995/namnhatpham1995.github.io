@@ -145,6 +145,12 @@ const ringLinks = nodes.map((node, i) => ({
   </button>
 </div>
 
+<div class="network-focus-bar" id="network-focus-bar" hidden>
+  <button type="button" data-focus-exit>
+    <span aria-hidden="true">‹ </span>{labels.skip}
+  </button>
+</div>
+
 <style>
   .network-intro {
     position: fixed;
@@ -422,17 +428,58 @@ const ringLinks = nodes.map((node, i) => ({
   }
 </style>
 
+<style>
+  /* --- Section-focus exit bar ---------------------------------------------
+     Shown when a single section is isolated after a node click; lets the
+     visitor return to the normal full scrolling page. */
+  .network-focus-bar {
+    position: fixed;
+    top: var(--space-2);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+  }
+
+  .network-focus-bar button {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    backdrop-filter: blur(6px);
+    color: var(--color-text-muted);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .network-focus-bar button:hover,
+  .network-focus-bar button:focus-visible {
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+</style>
+
 <script>
+  // Custom events shared with portfolio-page.astro (owns the actual
+  // <section> elements) and command-nav.astro (normal nav-rail links).
+  const ENTER_FOCUS = 'portfolio:enter-section-focus';
+  const EXIT_FOCUS = 'portfolio:exit-section-focus';
+
   const SEEN_KEY = 'network-intro-seen';
   const overlay = document.getElementById('network-intro');
+  const focusBar = document.getElementById('network-focus-bar');
 
   if (overlay) {
     const openOverlay = () => {
+      document.dispatchEvent(new CustomEvent(EXIT_FOCUS));
       overlay.hidden = false;
       document.body.style.overflow = 'hidden';
       overlay.focus({ preventScroll: true });
     };
 
+    // targetId set → isolate just that section ("focus to that part").
+    // targetId omitted (skip/Escape) → plain full scrolling page, as before.
     const closeOverlay = (targetId?: string) => {
       try {
         sessionStorage.setItem(SEEN_KEY, '1');
@@ -444,11 +491,10 @@ const ringLinks = nodes.map((node, i) => ({
         overlay.hidden = true;
         overlay.classList.remove('is-leaving');
         document.body.style.overflow = '';
-        const target = targetId ? document.getElementById(targetId) : null;
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          target.setAttribute('tabindex', '-1');
-          target.focus({ preventScroll: true });
+        if (targetId) {
+          document.dispatchEvent(new CustomEvent(ENTER_FOCUS, { detail: { targetId } }));
+        } else {
+          document.dispatchEvent(new CustomEvent(EXIT_FOCUS));
         }
       }, 320);
     };
@@ -502,5 +548,21 @@ const ringLinks = nodes.map((node, i) => ({
     if (!seen) {
       openOverlay();
     }
+  }
+
+  // The "‹ view full page" bar only concerns itself with its own visibility;
+  // portfolio-page.astro owns actually showing/hiding sections.
+  if (focusBar) {
+    document.addEventListener(ENTER_FOCUS, () => {
+      focusBar.hidden = false;
+    });
+    document.addEventListener(EXIT_FOCUS, () => {
+      focusBar.hidden = true;
+    });
+    focusBar.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('[data-focus-exit]')) {
+        document.dispatchEvent(new CustomEvent(EXIT_FOCUS));
+      }
+    });
   }
 </script>
