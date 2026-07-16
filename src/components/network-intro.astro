@@ -1,0 +1,506 @@
+---
+import { sectionIcons } from './section-icons';
+
+interface NodeItem {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  /** Peripheral section nodes (everything except the intro/center node). */
+  items: NodeItem[];
+  name: string;
+  role: string;
+  photoUrl: string;
+  labels: {
+    dialogLabel: string;
+    hint: string;
+    skip: string;
+  };
+}
+
+const { items, name, role, photoUrl, labels } = Astro.props;
+
+// Node centers in a 0–100 coordinate space (percent of the stage).
+// Hand-tuned ellipse around the center node with slight jitter for an
+// organic constellation feel. Order matches the `items` prop.
+const positions = [
+  { x: 50, y: 15 },
+  { x: 79, y: 28 },
+  { x: 86, y: 58 },
+  { x: 67, y: 82 },
+  { x: 33, y: 83 },
+  { x: 14, y: 56 },
+  { x: 21, y: 27 },
+];
+
+const center = { x: 50, y: 50 };
+
+const nodes = items.map((item, i) => ({
+  ...item,
+  ...positions[i % positions.length],
+}));
+
+// Faint ring links between neighbouring nodes complete the "web" look.
+const ringLinks = nodes.map((node, i) => ({
+  from: node,
+  to: nodes[(i + 1) % nodes.length],
+}));
+---
+
+<div
+  class="network-intro"
+  id="network-intro"
+  role="dialog"
+  aria-modal="true"
+  aria-label={labels.dialogLabel}
+  tabindex="-1"
+  hidden
+>
+  <div class="network-intro__stage">
+    <svg
+      class="network-intro__lines"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {
+        ringLinks.map((link, i) => (
+          <line
+            class="network-intro__ring-link"
+            x1={link.from.x}
+            y1={link.from.y}
+            x2={link.to.x}
+            y2={link.to.y}
+            pathLength="1"
+            style={`--line-delay: ${450 + i * 90}ms`}
+            vector-effect="non-scaling-stroke"
+          />
+        ))
+      }
+      {
+        nodes.map((node, i) => (
+          <line
+            class="network-intro__spoke"
+            x1={center.x}
+            y1={center.y}
+            x2={node.x}
+            y2={node.y}
+            pathLength="1"
+            style={`--line-delay: ${150 + i * 80}ms`}
+            vector-effect="non-scaling-stroke"
+          />
+        ))
+      }
+    </svg>
+
+    <p class="network-intro__prompt" aria-hidden="true">
+      <span class="network-intro__prompt-cmd">$ ssh nam@portfolio</span>
+      <span class="network-intro__prompt-hint">{labels.hint}</span>
+    </p>
+
+    <button
+      type="button"
+      class="network-intro__center"
+      data-network-node="intro"
+      style={`left: ${center.x}%; top: ${center.y}%; --node-delay: 80ms;`}
+    >
+      <span class="network-intro__center-ring" aria-hidden="true"></span>
+      <img src={photoUrl} alt="" width="88" height="88" loading="eager" />
+      <span class="network-intro__center-label">
+        <strong>{name}</strong>
+        <small>{role}</small>
+      </span>
+    </button>
+
+    {
+      nodes.map((node, i) => (
+        <button
+          type="button"
+          class="network-intro__node"
+          data-network-node={node.id}
+          style={`left: ${node.x}%; top: ${node.y}%; --node-delay: ${350 + i * 90}ms; --float-delay: ${i * -1.3}s;`}
+        >
+          <span class="network-intro__node-circle" aria-hidden="true">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={sectionIcons[node.id]}
+            />
+          </span>
+          <span class="network-intro__node-label">{node.label}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <button type="button" class="network-intro__skip" data-network-skip>
+    <span aria-hidden="true">$&nbsp;</span>{labels.skip}
+  </button>
+</div>
+
+<style>
+  .network-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--color-accent-green) 5%, transparent), transparent 60%),
+      radial-gradient(color-mix(in srgb, var(--color-text-muted) 18%, transparent) 1px, transparent 1px) 0 0 / 26px 26px,
+      var(--color-bg);
+    opacity: 1;
+    transition: opacity 320ms ease;
+  }
+
+  .network-intro.is-leaving {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .network-intro__stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    animation: network-zoom-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes network-zoom-in {
+    from {
+      transform: scale(1.14);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .network-intro__lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .network-intro__spoke,
+  .network-intro__ring-link {
+    stroke: color-mix(in srgb, var(--color-accent-green) 45%, var(--color-border));
+    stroke-width: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: network-draw 700ms ease-out var(--line-delay) forwards;
+  }
+
+  .network-intro__ring-link {
+    stroke: color-mix(in srgb, var(--color-border) 70%, transparent);
+  }
+
+  @keyframes network-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .network-intro__prompt {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: 0.875rem;
+  }
+
+  .network-intro__prompt-cmd {
+    color: var(--color-accent-green);
+  }
+
+  .network-intro__prompt-hint {
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  /* --- Nodes ------------------------------------------------------------ */
+
+  .network-intro__node,
+  .network-intro__center {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--color-text);
+    font-family: inherit;
+    cursor: pointer;
+    animation: network-node-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--node-delay) both;
+  }
+
+  @keyframes network-node-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .network-intro__node-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+    color: var(--color-text-muted);
+    transition:
+      border-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
+    animation: network-float 7s ease-in-out var(--float-delay, 0s) infinite;
+  }
+
+  @keyframes network-float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -5px;
+    }
+  }
+
+  .network-intro__node:hover .network-intro__node-circle,
+  .network-intro__node:focus-visible .network-intro__node-circle {
+    border-color: var(--color-accent-green);
+    color: var(--color-accent-green);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent-green) 35%, transparent);
+    transform: scale(1.08);
+  }
+
+  .network-intro__node-label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius);
+    max-width: 130px;
+    transition: color 160ms ease;
+  }
+
+  .network-intro__node:hover .network-intro__node-label,
+  .network-intro__node:focus-visible .network-intro__node-label {
+    color: var(--color-text);
+  }
+
+  /* --- Center node -------------------------------------------------------- */
+
+  .network-intro__center img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent-green);
+    object-fit: cover;
+    object-position: 50% 24%;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .network-intro__center-ring {
+    position: absolute;
+    top: 44px; /* img half-height: ring centers on the photo */
+    left: 50%;
+    width: 104px;
+    height: 104px;
+    transform: translate(-50%, -50%);
+    border: 1px solid color-mix(in srgb, var(--color-accent-green) 45%, transparent);
+    border-radius: 50%;
+    animation: network-pulse 2.6s ease-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes network-pulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.9;
+    }
+    70%,
+    100% {
+      transform: translate(-50%, -50%) scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  .network-intro__center:hover img,
+  .network-intro__center:focus-visible img {
+    box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent-green) 45%, transparent);
+    transform: scale(1.04);
+  }
+
+  .network-intro__center-label {
+    display: flex;
+    flex-direction: column;
+    background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+    border-radius: var(--radius);
+    padding: 0 var(--space-2);
+  }
+
+  .network-intro__center-label strong {
+    font-size: 0.9375rem;
+  }
+
+  .network-intro__center-label small {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  /* --- Skip -------------------------------------------------------------- */
+
+  .network-intro__skip {
+    align-self: center;
+    margin: 0 0 var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+    color: var(--color-text-muted);
+    font-family: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+    animation: network-node-in 500ms ease 900ms both;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .network-intro__skip:hover,
+  .network-intro__skip:focus-visible {
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+
+  @media (max-width: 640px) {
+    .network-intro__node-circle {
+      width: 50px;
+      height: 50px;
+    }
+
+    .network-intro__node-label {
+      font-size: 0.75rem;
+      max-width: 96px;
+      line-height: 1.3;
+    }
+
+    .network-intro__center img {
+      width: 72px;
+      height: 72px;
+    }
+
+    .network-intro__center-ring {
+      top: 36px;
+      width: 86px;
+      height: 86px;
+    }
+
+    .network-intro__prompt {
+      font-size: 0.8125rem;
+    }
+  }
+</style>
+
+<script>
+  const SEEN_KEY = 'network-intro-seen';
+  const overlay = document.getElementById('network-intro');
+
+  if (overlay) {
+    const openOverlay = () => {
+      overlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      overlay.focus({ preventScroll: true });
+    };
+
+    const closeOverlay = (targetId?: string) => {
+      try {
+        sessionStorage.setItem(SEEN_KEY, '1');
+      } catch {
+        // Storage may be unavailable (private mode); the intro just replays.
+      }
+      overlay.classList.add('is-leaving');
+      window.setTimeout(() => {
+        overlay.hidden = true;
+        overlay.classList.remove('is-leaving');
+        document.body.style.overflow = '';
+        const target = targetId ? document.getElementById(targetId) : null;
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        }
+      }, 320);
+    };
+
+    overlay.addEventListener('click', (event) => {
+      const el = event.target as HTMLElement;
+      const node = el.closest<HTMLElement>('[data-network-node]');
+      if (node) {
+        closeOverlay(node.dataset.networkNode);
+        return;
+      }
+      if (el.closest('[data-network-skip]')) {
+        closeOverlay();
+      }
+    });
+
+    overlay.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeOverlay();
+        return;
+      }
+      // Minimal focus trap: keep Tab cycling inside the dialog.
+      if (event.key === 'Tab') {
+        const focusables = overlay.querySelectorAll<HTMLElement>('button');
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    // Re-open from anywhere (e.g. the nav rail's map button).
+    document.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('[data-open-network]')) {
+        openOverlay();
+      }
+    });
+
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(SEEN_KEY) === '1';
+    } catch {
+      seen = false;
+    }
+    if (!seen) {
+      openOverlay();
+    }
+  }
+</script>
