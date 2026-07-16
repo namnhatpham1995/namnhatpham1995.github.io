@@ -10,6 +10,7 @@ import ExperienceEntry from './experience-entry.astro';
 import ProjectCard from './project-card.astro';
 import LanguageSwitcher from './language-switcher.astro';
 import Typewriter from './typewriter.astro';
+import NetworkIntro from './network-intro.astro';
 
 interface Props {
   locale: Locale;
@@ -18,6 +19,9 @@ interface Props {
 
 const { locale, content } = Astro.props;
 const labels = uiLabels[locale];
+const profileImageUrl =
+  import.meta.env.PUBLIC_PROFILE_IMAGE_URL ||
+  (import.meta.env.DEV ? '/images/profile-private.png' : '/images/profile.jpg');
 
 const navItems = [
   { id: 'intro', label: content.nav.intro },
@@ -31,7 +35,19 @@ const navItems = [
 ];
 ---
 
-<CommandNav items={navItems} />
+<NetworkIntro
+  items={navItems.filter((item) => item.id !== 'intro')}
+  name={content.hero.name}
+  role={content.hero.role}
+  photoUrl={profileImageUrl}
+  labels={{
+    dialogLabel: labels.networkDialogLabel,
+    hint: labels.networkHint,
+    skip: labels.networkSkip,
+  }}
+/>
+
+<CommandNav items={navItems} mapButtonLabel={labels.networkMapButton} />
 
 <div class="language-switcher-corner">
   <LanguageSwitcher current={locale} label={labels.languageSwitcherLabel} />
@@ -42,7 +58,7 @@ const navItems = [
     <section id="intro" aria-labelledby="intro-heading">
       <SectionHeading id="intro-heading" command="$ whoami" label={content.nav.intro} />
       <div class="hero">
-        <img class="hero__photo" src="/images/profile.jpg" alt={content.hero.name} width="120" height="120" loading="eager" />
+        <img class="hero__photo" src={profileImageUrl} alt={content.hero.name} width="120" height="120" loading="eager" />
         <div>
           <h1 class="hero__name">{content.hero.name}</h1>
           <p class="hero__role">{content.hero.role} · {content.hero.location}</p>
@@ -176,6 +192,8 @@ const navItems = [
   .hero__photo {
     border-radius: var(--radius);
     border: 1px solid var(--color-border);
+    object-fit: cover;
+    object-position: 50% 24%;
   }
 
   .hero__name {
