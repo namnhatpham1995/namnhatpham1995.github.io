@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_PROFILE_IMAGE_URL: ${{ vars.PUBLIC_PROFILE_IMAGE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

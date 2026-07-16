@@ -19,7 +19,9 @@ interface Props {
 
 const { locale, content } = Astro.props;
 const labels = uiLabels[locale];
-const profileImageUrl = '/images/profile.png';
+const profileImageUrl =
+  import.meta.env.PUBLIC_PROFILE_IMAGE_URL ||
+  (import.meta.env.DEV ? '/images/profile-private.png' : '/images/profile-placeholder.svg');
 
 const navItems = [
   { id: 'intro', label: content.nav.intro },

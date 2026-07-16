@@ -115,6 +115,9 @@ ENV/
 env.bak/
 venv.bak/
 
+# Private local portfolio media. Keep originals and local previews out of Git.
+public/images/profile-private.*
+
 # Spyder project settings
 .spyderproject
 .spyproject

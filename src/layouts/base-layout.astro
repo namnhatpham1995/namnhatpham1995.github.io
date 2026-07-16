@@ -9,7 +9,8 @@ interface Props {
   ogImage?: string;
 }
 
-const { locale, title, description, ogImage = '/images/profile.png' } = Astro.props;
+const defaultProfileImage = import.meta.env.PUBLIC_PROFILE_IMAGE_URL || '/images/profile-placeholder.svg';
+const { locale, title, description, ogImage = defaultProfileImage } = Astro.props;
 const canonicalUrl = new URL(localePath(locale), Astro.site);
 ---
 
