@@ -34,7 +34,9 @@ const navItems = [
 ---
 
 <NetworkIntro
+  locale={locale}
   items={navItems.filter((item) => item.id !== 'intro')}
+  introLabel={content.nav.intro}
   name={content.hero.name}
   role={content.hero.role}
   photoUrl={profileImageUrl}
@@ -43,10 +45,15 @@ const navItems = [
     hint: labels.networkHint,
     skip: labels.networkSkip,
     close: labels.networkSectionClose,
+    languageSwitcher: labels.languageSwitcherLabel,
   }}
 />
 
-<CommandNav items={navItems} mapButtonLabel={labels.networkMapButton} />
+<CommandNav
+  items={navItems}
+  navigationLabel={labels.sectionNavigationLabel}
+  mapButtonLabel={labels.networkMapButton}
+/>
 
 <div class="language-switcher-corner">
   <LanguageSwitcher current={locale} label={labels.languageSwitcherLabel} />
@@ -101,7 +108,11 @@ const navItems = [
 
     <section id="projects" aria-labelledby="projects-heading">
       <SectionHeading id="projects-heading" command={content.projects.heading} label={content.nav.projects} />
-      {content.projects.entries.map((entry) => <ProjectCard entry={entry} />)}
+      {
+        content.projects.entries.map((entry) => (
+          <ProjectCard entry={entry} technologiesLabel={labels.technologiesLabel} />
+        ))
+      }
     </section>
 
     <section id="certificates" aria-labelledby="certificates-heading">

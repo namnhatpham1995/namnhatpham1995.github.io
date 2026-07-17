@@ -1,5 +1,7 @@
 ---
 import { sectionIcons } from './section-icons';
+import LanguageSwitcher from './language-switcher.astro';
+import type { Locale } from '../i18n/locale-utils';
 
 interface NodeItem {
   id: string;
@@ -7,8 +9,10 @@ interface NodeItem {
 }
 
 interface Props {
+  locale: Locale;
   /** Peripheral section nodes (everything except the intro/center node). */
   items: NodeItem[];
+  introLabel: string;
   name: string;
   role: string;
   photoUrl: string;
@@ -17,10 +21,11 @@ interface Props {
     hint: string;
     skip: string;
     close: string;
+    languageSwitcher: string;
   };
 }
 
-const { items, name, role, photoUrl, labels } = Astro.props;
+const { locale, items, introLabel, name, role, photoUrl, labels } = Astro.props;
 
 // Node centers in a 0–100 coordinate space (percent of the stage).
 // Hand-tuned ellipse around the center node with slight jitter for an
@@ -58,6 +63,14 @@ const ringLinks = nodes.map((node, i) => ({
   tabindex="-1"
   hidden
 >
+  <div class="network-intro__language">
+    <LanguageSwitcher
+      current={locale}
+      label={labels.languageSwitcher}
+      context="network"
+    />
+  </div>
+
   <div class="network-intro__stage">
     <svg
       class="network-intro__lines"
@@ -104,6 +117,7 @@ const ringLinks = nodes.map((node, i) => ({
       type="button"
       class="network-intro__center"
       data-network-node="intro"
+      data-network-label={introLabel}
       style={`left: ${center.x}%; top: ${center.y}%; --node-delay: 80ms;`}
     >
       <span class="network-intro__center-ring" aria-hidden="true"></span>
@@ -120,6 +134,7 @@ const ringLinks = nodes.map((node, i) => ({
           type="button"
           class="network-intro__node"
           data-network-node={node.id}
+          data-network-label={node.label}
           style={`left: ${node.x}%; top: ${node.y}%; --node-delay: ${350 + i * 90}ms; --float-delay: ${i * -1.3}s;`}
         >
           <span class="network-intro__node-circle" aria-hidden="true">
@@ -153,6 +168,13 @@ const ringLinks = nodes.map((node, i) => ({
       <span class="network-section-dialog__dot network-section-dialog__dot--amber" aria-hidden="true"></span>
       <span class="network-section-dialog__dot network-section-dialog__dot--green" aria-hidden="true"></span>
       <span class="network-section-dialog__path" data-network-dialog-path></span>
+      <div class="network-section-dialog__language">
+        <LanguageSwitcher
+          current={locale}
+          label={labels.languageSwitcher}
+          context="dialog"
+        />
+      </div>
       <button
         type="button"
         class="network-section-dialog__close"
@@ -183,6 +205,13 @@ const ringLinks = nodes.map((node, i) => ({
 
   .network-intro[hidden] {
     display: none;
+  }
+
+  .network-intro__language {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    z-index: 3;
   }
 
   .network-intro.is-leaving {
@@ -515,6 +544,10 @@ const ringLinks = nodes.map((node, i) => ({
     white-space: nowrap;
   }
 
+  .network-section-dialog__language {
+    flex: 0 0 auto;
+  }
+
   .network-section-dialog__close {
     display: flex;
     align-items: center;
@@ -566,11 +599,23 @@ const ringLinks = nodes.map((node, i) => ({
     .network-section-dialog__body {
       padding: var(--space-3);
     }
+
+    .network-section-dialog__path {
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .network-section-dialog__path {
+      display: none;
+    }
   }
 </style>
 
 <script>
   const SEEN_KEY = 'network-intro-seen';
+  const PENDING_NETWORK_KEY = 'network-intro-pending';
+  const PENDING_SECTION_KEY = 'network-intro-pending-section';
   const overlay = document.getElementById('network-intro');
   const sectionDialog = document.querySelector<HTMLDialogElement>('#network-section-dialog');
   const sectionDialogBody = sectionDialog?.querySelector<HTMLElement>('[data-network-dialog-body]');
@@ -668,7 +713,8 @@ const ringLinks = nodes.map((node, i) => ({
 
     const headingId = target.getAttribute('aria-labelledby');
     if (headingId) sectionDialog.setAttribute('aria-labelledby', headingId);
-    if (sectionDialogPath) sectionDialogPath.textContent = `$ view #${targetId}`;
+    const localizedLabel = node.dataset.networkLabel ?? targetId;
+    if (sectionDialogPath) sectionDialogPath.textContent = `$ view --section // ${localizedLabel}`;
 
     sectionDialog.showModal();
     void runDialogAnimation(true);
@@ -677,9 +723,27 @@ const ringLinks = nodes.map((node, i) => ({
 
   sectionDialog?.addEventListener('close', restoreSection);
   sectionDialog?.addEventListener('cancel', (event) => {
+    const openSwitcher = sectionDialog.querySelector<HTMLDetailsElement>('[data-language-switcher][open]');
+    if (openSwitcher) {
+      event.preventDefault();
+      openSwitcher.open = false;
+      return;
+    }
     event.preventDefault();
     void closeSectionDialog();
   });
+  sectionDialog?.addEventListener(
+    'keydown',
+    (event) => {
+      const openSwitcher = sectionDialog.querySelector<HTMLDetailsElement>('[data-language-switcher][open]');
+      if (event.key === 'Escape' && openSwitcher) {
+        event.preventDefault();
+        event.stopPropagation();
+        openSwitcher.open = false;
+      }
+    },
+    true,
+  );
   sectionDialog?.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;
     if (target.closest('[data-network-dialog-close]')) {
@@ -733,12 +797,20 @@ const ringLinks = nodes.map((node, i) => ({
 
     overlay.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
+        const openSwitcher = overlay.querySelector<HTMLDetailsElement>('[data-language-switcher][open]');
+        if (openSwitcher) {
+          event.preventDefault();
+          openSwitcher.open = false;
+          return;
+        }
         closeOverlay();
         return;
       }
-      // Minimal focus trap: keep Tab cycling inside the dialog.
+      // Minimal focus trap: keep Tab cycling inside the full-screen dialog.
       if (event.key === 'Tab') {
-        const focusables = overlay.querySelectorAll<HTMLElement>('button');
+        const focusables = Array.from(
+          overlay.querySelectorAll<HTMLElement>('button, summary, a[href]'),
+        ).filter((element) => element.getClientRects().length > 0);
         if (!focusables.length) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
@@ -754,19 +826,49 @@ const ringLinks = nodes.map((node, i) => ({
 
     // Re-open from anywhere (e.g. the nav rail's map button).
     document.addEventListener('click', (event) => {
-      if ((event.target as HTMLElement).closest('[data-open-network]')) {
+      const target = event.target as HTMLElement;
+      const networkLanguageLink = target.closest<HTMLAnchorElement>(
+        '[data-language-context="network"] [data-language-target], [data-language-context="dialog"] [data-language-target]',
+      );
+      if (networkLanguageLink) {
+        try {
+          sessionStorage.setItem(PENDING_NETWORK_KEY, '1');
+          sessionStorage.removeItem(SEEN_KEY);
+          if (activeSection?.id) {
+            sessionStorage.setItem(PENDING_SECTION_KEY, activeSection.id);
+          } else {
+            sessionStorage.removeItem(PENDING_SECTION_KEY);
+          }
+        } catch {
+          // Navigation still works if storage is unavailable; only context is lost.
+        }
+      }
+
+      if (target.closest('[data-open-network]')) {
         openOverlay();
       }
     });
 
     let seen = false;
+    let pendingNetwork = false;
+    let pendingSection: string | null = null;
     try {
       seen = sessionStorage.getItem(SEEN_KEY) === '1';
+      pendingNetwork = sessionStorage.getItem(PENDING_NETWORK_KEY) === '1';
+      pendingSection = sessionStorage.getItem(PENDING_SECTION_KEY);
+      sessionStorage.removeItem(PENDING_NETWORK_KEY);
+      sessionStorage.removeItem(PENDING_SECTION_KEY);
     } catch {
       seen = false;
     }
-    if (!seen) {
+    if (!seen || pendingNetwork) {
       openOverlay();
+      if (pendingSection) {
+        const pendingNode = Array.from(
+          overlay.querySelectorAll<HTMLElement>('[data-network-node]'),
+        ).find((node) => node.dataset.networkNode === pendingSection);
+        if (pendingNode) openSectionDialog(pendingSection, pendingNode);
+      }
     }
   }
 </script>

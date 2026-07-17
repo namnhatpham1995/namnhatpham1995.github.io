@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { locales, defaultLocale, localePath, type Locale } from '../i18n/locale-utils';
+import { uiLabels } from '../i18n/ui-labels';
 
 interface Props {
   locale: Locale;
@@ -11,6 +12,7 @@ interface Props {
 
 const { locale, title, description, ogImage = '/images/profile.png' } = Astro.props;
 const canonicalUrl = new URL(localePath(locale), Astro.site);
+const labels = uiLabels[locale];
 ---
 
 <!doctype html>
@@ -35,7 +37,7 @@ const canonicalUrl = new URL(localePath(locale), Astro.site);
     <title>{title}</title>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">{labels.skipToContent}</a>
     <slot />
   </body>
 </html>
