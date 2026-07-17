@@ -6,16 +6,17 @@ interface NavItem {
 
 interface Props {
   items: NavItem[];
+  navigationLabel: string;
   /** When set, renders a button that re-opens the network intro map. */
   mapButtonLabel?: string;
 }
 
-const { items, mapButtonLabel } = Astro.props;
+const { items, navigationLabel, mapButtonLabel } = Astro.props;
 
 import { sectionIcons as icons, networkIcon } from './section-icons';
 ---
 
-<nav class="command-nav" aria-label="Section navigation">
+<nav class="command-nav" aria-label={navigationLabel}>
   <ul class="command-nav__list">
     {
       mapButtonLabel && (

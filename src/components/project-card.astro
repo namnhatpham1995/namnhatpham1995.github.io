@@ -3,9 +3,10 @@ import type { ProjectEntry } from '../i18n/content/types';
 
 interface Props {
   entry: ProjectEntry;
+  technologiesLabel: string;
 }
 
-const { entry } = Astro.props;
+const { entry, technologiesLabel } = Astro.props;
 ---
 
 <article class="project-card">
@@ -16,7 +17,7 @@ const { entry } = Astro.props;
   <ul class="project-card__description">
     {entry.description.map((line) => <li>{line}</li>)}
   </ul>
-  <ul class="project-card__tech" aria-label="Technologies">
+  <ul class="project-card__tech" aria-label={technologiesLabel}>
     {
       entry.tech.map((tech) => (
         <li>
