@@ -179,6 +179,74 @@ test('switching language from the full page stays on the full page', async ({ pa
   await expect(page.locator('#main')).toBeVisible();
 });
 
+test('desktop menu gives a strong helper without moving the main content', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('[data-network-skip]').click();
+
+  const main = page.locator('#main');
+  const mapButton = page.locator('[data-open-network]');
+  const tooltip = mapButton.locator('[role="tooltip"]');
+  const mainBefore = await main.boundingBox();
+
+  await mapButton.hover();
+
+  await expect(tooltip).toBeVisible();
+  await expect(tooltip).toHaveText('Open network map');
+  await expect
+    .poll(() =>
+      mapButton.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          background: style.backgroundColor,
+          border: style.borderColor,
+          shadow: style.boxShadow,
+        };
+      }),
+    )
+    .not.toEqual({
+      background: 'rgba(0, 0, 0, 0)',
+      border: 'rgba(0, 0, 0, 0)',
+      shadow: 'none',
+    });
+  expect(await main.boundingBox()).toEqual(mainBefore);
+});
+
+test('mobile long press shows helper above the compact menu', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.locator('[data-network-skip]').click();
+
+  const mapButton = page.locator('[data-open-network]');
+  const touchTooltip = page.locator('[data-nav-touch-tooltip]');
+  const mainBefore = await page.locator('#main').boundingBox();
+
+  await mapButton.dispatchEvent('pointerdown', {
+    pointerType: 'touch',
+    clientX: 24,
+    clientY: 820,
+  });
+  await expect(touchTooltip).toBeVisible({ timeout: 750 });
+  await expect(touchTooltip).toHaveText('Open network map');
+  await expect(mapButton).toHaveAttribute('data-help-active', '');
+
+  await mapButton.dispatchEvent('pointerup', {
+    pointerType: 'touch',
+    clientX: 24,
+    clientY: 820,
+  });
+  const mainAfter = await page.locator('#main').boundingBox();
+  expect(mainAfter?.x).toBe(mainBefore?.x);
+  expect(mainAfter?.width).toBe(mainBefore?.width);
+
+  // The synthetic click paired with the long press is ignored, while a later
+  // deliberate tap keeps the button's normal action.
+  await mapButton.dispatchEvent('click');
+  await expect(page.locator('#network-intro')).toBeHidden();
+  await page.waitForTimeout(350);
+  await mapButton.click();
+  await expect(page.locator('#network-intro')).toBeVisible();
+});
+
 test('Escape closes language menus before closing their network layer', async ({ page }) => {
   await page.goto('/');
 
