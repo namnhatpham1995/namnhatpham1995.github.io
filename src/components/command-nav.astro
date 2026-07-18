@@ -21,7 +21,13 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     {
       mapButtonLabel && (
         <li class="command-nav__map-item">
-          <button type="button" data-open-network aria-label={mapButtonLabel}>
+          <button
+            type="button"
+            data-open-network
+            data-nav-help={mapButtonLabel}
+            aria-label={mapButtonLabel}
+            aria-describedby="command-nav-map-tooltip"
+          >
             <svg
               width="20"
               height="20"
@@ -34,7 +40,9 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
               aria-hidden="true"
               set:html={networkIcon}
             />
-            <span class="command-nav__tooltip">{mapButtonLabel}</span>
+            <span id="command-nav-map-tooltip" class="command-nav__tooltip" role="tooltip">
+              {mapButtonLabel}
+            </span>
           </button>
         </li>
       )
@@ -42,7 +50,14 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     {
       items.map((item) => (
         <li>
-          <a href={`#${item.id}`} data-nav-link data-target={item.id} aria-label={item.label}>
+          <a
+            href={`#${item.id}`}
+            data-nav-link
+            data-nav-help={item.label}
+            data-target={item.id}
+            aria-label={item.label}
+            aria-describedby={`command-nav-${item.id}-tooltip`}
+          >
             <svg
               width="20"
               height="20"
@@ -55,12 +70,16 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
               aria-hidden="true"
               set:html={icons[item.id]}
             />
-            <span class="command-nav__tooltip">{item.label}</span>
+            <span id={`command-nav-${item.id}-tooltip`} class="command-nav__tooltip" role="tooltip">
+              {item.label}
+            </span>
           </a>
         </li>
       ))
     }
   </ul>
+  <div class="command-nav__touch-tooltip" data-nav-touch-tooltip role="tooltip" aria-hidden="true">
+  </div>
 </nav>
 
 <style>
@@ -75,7 +94,7 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     max-height: 90vh;
-    overflow-y: auto;
+    overflow: visible;
   }
 
   .command-nav__list {
@@ -93,27 +112,54 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     color: var(--color-text-muted);
     border-radius: var(--radius);
-    border: none;
-    background: none;
+    border: 1px solid transparent;
+    background: transparent;
     padding: 0;
     font-family: inherit;
     cursor: pointer;
+    transition:
+      color 140ms ease,
+      background-color 140ms ease,
+      border-color 140ms ease,
+      box-shadow 140ms ease,
+      transform 140ms ease;
   }
 
   .command-nav__list a:hover,
   .command-nav__list a:focus-visible,
   .command-nav__list button:hover,
-  .command-nav__list button:focus-visible {
+  .command-nav__list button:focus-visible,
+  .command-nav__list [data-help-active] {
     color: var(--color-text);
+    background: color-mix(in srgb, var(--color-accent-green) 24%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--color-accent-green) 82%, var(--color-text));
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-accent-green) 28%, transparent),
+      0 0 14px color-mix(in srgb, var(--color-accent-green) 42%, transparent);
+    transform: scale(1.08);
+  }
+
+  .command-nav__list a:hover svg,
+  .command-nav__list a:focus-visible svg,
+  .command-nav__list button:hover svg,
+  .command-nav__list button:focus-visible svg,
+  .command-nav__list [data-help-active] svg {
+    filter: drop-shadow(0 0 3px currentColor);
   }
 
   .command-nav__map-item {
     border-bottom: 1px solid var(--color-border);
     padding-bottom: var(--space-1);
+  }
+
+  .command-nav__map-item button {
+    color: var(--color-accent-green);
+    background: color-mix(in srgb, var(--color-accent-green) 12%, transparent);
+    border-color: color-mix(in srgb, var(--color-accent-green) 42%, var(--color-border));
   }
 
   .command-nav__list a[aria-current='true'] {
@@ -130,20 +176,38 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     color: var(--color-text);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
-    padding: var(--space-1) var(--space-2);
-    font-size: 0.75rem;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.875rem;
+    font-weight: 650;
+    line-height: 1.25;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
+    visibility: hidden;
+    z-index: 2;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-bg) 70%, transparent);
+    transition:
+      opacity 120ms ease,
+      transform 120ms ease,
+      visibility 120ms ease;
   }
 
-  @media (hover: hover) {
+  .command-nav__list a:focus-visible .command-nav__tooltip,
+  .command-nav__list button:focus-visible .command-nav__tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
     .command-nav__list a:hover .command-nav__tooltip,
-    .command-nav__list a:focus-visible .command-nav__tooltip,
-    .command-nav__list button:hover .command-nav__tooltip,
-    .command-nav__list button:focus-visible .command-nav__tooltip {
+    .command-nav__list button:hover .command-nav__tooltip {
       opacity: 1;
+      visibility: visible;
     }
+  }
+
+  .command-nav__touch-tooltip {
+    display: none;
   }
 
   /* Small screens: collapse the left icon rail into a compact bottom bar so it
@@ -177,8 +241,8 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
 
     .command-nav__list a,
     .command-nav__list button {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       flex-shrink: 0;
     }
 
@@ -196,6 +260,41 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
        width. Drop it from layout entirely at this breakpoint. */
     .command-nav__tooltip {
       display: none;
+    }
+
+    .command-nav__touch-tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + var(--space-2));
+      display: block;
+      max-width: min(180px, calc(100vw - 2 * var(--space-3)));
+      transform: translate(-50%, 4px);
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-accent-green);
+      border-radius: var(--radius);
+      padding: var(--space-2) var(--space-3);
+      font-size: 0.875rem;
+      font-weight: 650;
+      line-height: 1.3;
+      text-align: center;
+      overflow-wrap: anywhere;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      box-shadow:
+        0 0 0 2px color-mix(in srgb, var(--color-accent-green) 20%, transparent),
+        0 8px 24px color-mix(in srgb, var(--color-bg) 75%, transparent);
+      transition:
+        opacity 120ms ease,
+        transform 120ms ease,
+        visibility 120ms ease;
+    }
+
+    .command-nav__touch-tooltip[data-visible] {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
     }
   }
 </style>
@@ -226,4 +325,101 @@ import { sectionIcons as icons, networkIcon } from './section-icons';
     );
     targets.forEach((target) => observer.observe(target));
   }
+
+  const nav = document.querySelector<HTMLElement>('.command-nav');
+  const touchTooltip = nav?.querySelector<HTMLElement>('[data-nav-touch-tooltip]');
+  const helpControls = nav
+    ? Array.from(nav.querySelectorAll<HTMLElement>('[data-nav-help]'))
+    : [];
+  const HOLD_DELAY_MS = 500;
+  const HELP_VISIBLE_MS = 2_000;
+  const MOVE_TOLERANCE_PX = 10;
+  let holdTimer: number | undefined;
+  let hideTimer: number | undefined;
+  let pressedControl: HTMLElement | null = null;
+  let suppressNextClick: HTMLElement | null = null;
+  let suppressClickUntil = 0;
+  let longPressControl: HTMLElement | null = null;
+  let startX = 0;
+  let startY = 0;
+
+  const clearHoldTimer = () => {
+    if (holdTimer !== undefined) window.clearTimeout(holdTimer);
+    holdTimer = undefined;
+  };
+
+  const hideTouchHelp = () => {
+    if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+    hideTimer = undefined;
+    touchTooltip?.removeAttribute('data-visible');
+    touchTooltip?.setAttribute('aria-hidden', 'true');
+    helpControls.forEach((control) => control.removeAttribute('data-help-active'));
+  };
+
+  const showTouchHelp = (control: HTMLElement) => {
+    if (!touchTooltip) return;
+    if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+    helpControls.forEach((item) => item.removeAttribute('data-help-active'));
+    control.setAttribute('data-help-active', '');
+    touchTooltip.textContent = control.dataset.navHelp ?? control.getAttribute('aria-label') ?? '';
+    touchTooltip.setAttribute('data-visible', '');
+    touchTooltip.setAttribute('aria-hidden', 'false');
+    longPressControl = control;
+  };
+
+  nav?.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'mouse') return;
+    const control = (event.target as HTMLElement).closest<HTMLElement>('[data-nav-help]');
+    if (!control) return;
+    clearHoldTimer();
+    hideTouchHelp();
+    pressedControl = control;
+    startX = event.clientX;
+    startY = event.clientY;
+    holdTimer = window.setTimeout(() => showTouchHelp(control), HOLD_DELAY_MS);
+  });
+
+  nav?.addEventListener('pointermove', (event) => {
+    if (!pressedControl) return;
+    if (
+      Math.abs(event.clientX - startX) > MOVE_TOLERANCE_PX ||
+      Math.abs(event.clientY - startY) > MOVE_TOLERANCE_PX
+    ) {
+      clearHoldTimer();
+      pressedControl = null;
+    }
+  });
+
+  const finishTouch = () => {
+    clearHoldTimer();
+    pressedControl = null;
+    if (!touchTooltip?.hasAttribute('data-visible')) return;
+    suppressNextClick = longPressControl;
+    suppressClickUntil = Date.now() + 300;
+    longPressControl = null;
+    hideTimer = window.setTimeout(hideTouchHelp, HELP_VISIBLE_MS);
+  };
+
+  nav?.addEventListener('pointerup', finishTouch);
+  nav?.addEventListener('pointercancel', finishTouch);
+  nav?.addEventListener('contextmenu', (event) => {
+    const control = (event.target as HTMLElement).closest<HTMLElement>('[data-nav-help]');
+    if (control && (control === pressedControl || control === suppressNextClick)) {
+      event.preventDefault();
+    }
+  });
+  nav?.addEventListener(
+    'click',
+    (event) => {
+      const control = (event.target as HTMLElement).closest<HTMLElement>('[data-nav-help]');
+      if (!control || control !== suppressNextClick) return;
+      if (Date.now() <= suppressClickUntil) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+      suppressNextClick = null;
+      suppressClickUntil = 0;
+    },
+    true,
+  );
 </script>
