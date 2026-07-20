@@ -46,15 +46,27 @@ const { text } = Astro.props;
     const fullText = el.dataset.text ?? '';
     if (!textEl || !fullText) return;
 
-    textEl.textContent = '';
-    let i = 0;
-    const step = () => {
-      textEl.textContent = fullText.slice(0, i);
-      i += 1;
-      if (i <= fullText.length) {
-        window.setTimeout(step, 28);
-      }
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      textEl.textContent = '';
+      let i = 0;
+      const step = () => {
+        textEl.textContent = fullText.slice(0, i);
+        i += 1;
+        if (i <= fullText.length) {
+          window.setTimeout(step, 28);
+        }
+      };
+      step();
     };
-    step();
+
+    const networkIntro = document.getElementById('network-intro');
+    if (networkIntro && !networkIntro.hidden) {
+      document.addEventListener('network-intro:closed', start, { once: true });
+    } else {
+      start();
+    }
   });
 </script>

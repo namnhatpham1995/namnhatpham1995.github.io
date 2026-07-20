@@ -315,7 +315,6 @@ const ringLinks = nodes.map((node, i) => ({
     stroke-dasharray: 0.07 0.93;
     stroke-dashoffset: 0.07;
     opacity: 0;
-    filter: drop-shadow(0 0 4px var(--color-accent-green));
     pointer-events: none;
   }
 
@@ -350,6 +349,7 @@ const ringLinks = nodes.map((node, i) => ({
 
   .network-intro__edge[data-active] .network-intro__edge-signal {
     opacity: 1;
+    filter: drop-shadow(0 0 4px var(--color-accent-green));
     animation: network-packet-flow 820ms linear infinite;
   }
 
@@ -591,6 +591,15 @@ const ringLinks = nodes.map((node, i) => ({
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .network-intro__stage,
+    .network-intro__node,
+    .network-intro__center,
+    .network-intro__node-circle,
+    .network-intro__center-ring,
+    .network-intro__skip {
+      animation: none;
+    }
+
     .network-intro__ring-link,
     .network-intro__edge-rail,
     .network-intro__edge-core {
@@ -600,6 +609,18 @@ const ringLinks = nodes.map((node, i) => ({
 
     .network-intro__edge-signal {
       display: none;
+      animation: none;
+    }
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .network-intro__node-circle,
+    .network-intro__center-ring {
+      animation: none;
+    }
+
+    .network-intro__edge-signal {
+      filter: none;
       animation: none;
     }
   }
@@ -904,6 +925,7 @@ const ringLinks = nodes.map((node, i) => ({
     let connectedNode: HTMLElement | null = null;
 
     const setConnectedNode = (node: HTMLElement | null) => {
+      if (connectedNode === node) return;
       connectedNode = node;
       const activeId = node?.dataset.networkNode;
       networkStage?.toggleAttribute('data-connection-active', Boolean(activeId));
@@ -977,6 +999,7 @@ const ringLinks = nodes.map((node, i) => ({
         overlay.hidden = true;
         overlay.classList.remove('is-leaving');
         document.body.style.overflow = '';
+        document.dispatchEvent(new CustomEvent('network-intro:closed'));
       }, 320);
     };
 

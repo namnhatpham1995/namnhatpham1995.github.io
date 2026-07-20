@@ -104,6 +104,25 @@ test('view full page actually hides the network overlay', async ({ page }) => {
   await expect(page.locator('#main')).toBeVisible();
 });
 
+test('typewriter waits until the network overlay closes', async ({ page }) => {
+  await page.goto('/');
+
+  const overlay = page.locator('#network-intro');
+  const typewriter = page.locator('[data-typewriter]');
+  const text = typewriter.locator('.typewriter__text');
+  const fullText = await typewriter.getAttribute('data-text');
+  expect(fullText).toBeTruthy();
+
+  await expect(overlay).toBeVisible();
+  await expect(text).toHaveText(fullText!);
+
+  await overlay.locator('[data-network-skip]').click();
+  await expect(overlay).toBeHidden({ timeout: 1_000 });
+  await expect
+    .poll(() => text.textContent().then((value) => value?.length ?? 0))
+    .toBeLessThan(fullText!.length);
+});
+
 test('view full page control stays centered without overlapping the network', async ({ page }) => {
   const viewports = [
     { width: 1280, height: 720 },
@@ -179,6 +198,10 @@ test('hover, focus, and touch connect the center to the selected node', async ({
   const skillsEdge = page.locator('[data-network-edge="skills"]');
   const signal = projectsEdge.locator('.network-intro__edge-signal');
 
+  await expect
+    .poll(() => signal.evaluate((element) => getComputedStyle(element).filter))
+    .toBe('none');
+
   await projectsNode.hover();
   await expect(stage).toHaveAttribute('data-connection-active', '');
   await expect(projectsNode).toHaveAttribute('data-connected', '');
@@ -214,9 +237,17 @@ test('reduced motion keeps a static highlighted connection', async ({ page }) =>
   const styles = await edge.evaluate((element) => ({
     coreOpacity: getComputedStyle(element.querySelector('.network-intro__edge-core')!).opacity,
     signalDisplay: getComputedStyle(element.querySelector('.network-intro__edge-signal')!).display,
+    nodeAnimation: getComputedStyle(
+      document.querySelector('.network-intro__node-circle')!,
+    ).animationName,
+    pulseAnimation: getComputedStyle(
+      document.querySelector('.network-intro__center-ring')!,
+    ).animationName,
   }));
   expect(styles.coreOpacity).toBe('1');
   expect(styles.signalDisplay).toBe('none');
+  expect(styles.nodeAnimation).toBe('none');
+  expect(styles.pulseAnimation).toBe('none');
 });
 
 for (const localeCase of localeCases) {
