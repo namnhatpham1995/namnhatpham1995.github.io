@@ -57,7 +57,7 @@ export const vi: CvContent = {
         dates: 'Th10 2022 – Th9 2026',
         bullets: [
           'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
-          'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng hiệu suất từ 1-2 lên tới 3 ticket mỗi tuần.',
+          'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
           'Tái cấu trúc microservice DTM để giảm độ phức tạp của các lớp và cải thiện khả năng bảo trì lâu dài.',
           'Dẫn dắt việc chuyển bộ kiểm thử tích hợp sang Cypress, cải thiện tốc độ chạy test và chu kỳ phản hồi CI.',
           'Chuyển đổi microservice OEE viết bằng Python sang microservice Java Spring Boot.',
@@ -75,7 +75,7 @@ export const vi: CvContent = {
           'Điều tra các lỗi cụm Kubernetes trong quá trình khởi tạo và vận hành, phân tích nguyên nhân gốc rễ và hỗ trợ khắc phục.',
           'Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa cụm Kubernetes dựa trên Helm để triển khai và vận hành các môi trường Cumulocity.',
           'Xác định các điểm nghẽn trong quá trình tạo cụm và đóng góp các bản sửa lỗi cùng cải tiến để việc cấp phát nhanh và ổn định hơn.',
-          'Tự động hóa việc cấp phát AWS bằng Bash và AWS CLI, giảm khoảng 10% thời gian thiết lập.',
+          'Tự động hóa việc cấp phát AWS bằng Bash và AWS CLI, giảm đáng kể thời gian thiết lập.',
         ],
       },
       {
