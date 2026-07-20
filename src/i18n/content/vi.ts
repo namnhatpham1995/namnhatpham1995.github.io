@@ -111,7 +111,7 @@ export const vi: CvContent = {
     entries: [
       {
         title: 'FinTrack — Ứng dụng Quản lý Tài chính Cá nhân',
-        dates: '2025 – hiện tại',
+        dates: 'Th6 2026 – hiện tại',
         description: [
           'Kiến trúc sư kiêm product owner, chỉ đạo Claude Code qua các bounded context (tài khoản, giao dịch, ngân sách, phân tích).',
           'Frontend Next.js 14 (TypeScript, Tailwind) với REST API Java 21/Spring Boot 3.',
@@ -126,7 +126,7 @@ export const vi: CvContent = {
       },
       {
         title: 'Storyboard — Bảng quản lý dự án OpenSpec',
-        dates: '2026 – hiện tại',
+        dates: 'Th7 2026 – hiện tại',
         description: [
           'Dự án tự khởi xướng để học Go, đồng thời dùng để quản lý công việc phát triển của chính hệ thống này qua các proposal và task của OpenSpec theo kiểu Jira.',
           'Backend Go (net/http, fsnotify) phân tích các file markdown OpenSpec trên đĩa thành các cột board Draft/In Progress/Complete/Archived, chỉnh sửa nguyên vẹn từng byte và mang tính atomic.',

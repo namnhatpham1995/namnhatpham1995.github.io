@@ -102,7 +102,7 @@ export const en: CvContent = {
     entries: [
       {
         title: 'FinTrack — Personal Finance Management App',
-        dates: '2025 – present',
+        dates: 'Jun 2026 – present',
         description: [
           'Architect and product owner directing Claude Code across bounded contexts (accounts, transactions, budgets, analytics).',
           'Next.js 14 (TypeScript, Tailwind) frontend with a Java 21 / Spring Boot 3 REST API.',
@@ -117,7 +117,7 @@ export const en: CvContent = {
       },
       {
         title: 'Storyboard — OpenSpec Project Board',
-        dates: '2026 – present',
+        dates: 'Jul 2026 – present',
         description: [
           'Self-initiated project to learn Go and to manage this system’s own development via OpenSpec proposals and tasks, Jira-style.',
           'Go backend (net/http, fsnotify) parsing OpenSpec markdown on disk into Draft/In Progress/Complete/Archived board columns with byte-preserving, atomic edits.',

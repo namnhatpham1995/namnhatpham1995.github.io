@@ -112,7 +112,7 @@ export const de: CvContent = {
     entries: [
       {
         title: 'FinTrack — Persönliches Finanzmanagement',
-        dates: '2025 – heute',
+        dates: 'Jun 2026 – heute',
         // TODO: native review
         description: [
           'Architekt und Product Owner, steuert Claude Code über Bounded Contexts (Konten, Transaktionen, Budgets, Analytics) hinweg.',
@@ -128,7 +128,7 @@ export const de: CvContent = {
       },
       {
         title: 'Storyboard — OpenSpec-Projektboard',
-        dates: '2026 – heute',
+        dates: 'Jul 2026 – heute',
         // TODO: native review
         description: [
           'Eigeninitiiertes Projekt, um Go zu lernen und die eigene Weiterentwicklung dieses Systems im Jira-Stil über OpenSpec-Proposals und -Tasks zu steuern.',
