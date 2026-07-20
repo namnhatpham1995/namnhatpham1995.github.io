@@ -428,7 +428,8 @@ const ringLinks = nodes.map((node, i) => ({
 
   .network-intro__skip {
     align-self: center;
-    margin: 0 0 var(--space-4);
+    max-width: calc(100vw - var(--space-5));
+    margin: 0 0 calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
@@ -436,9 +437,21 @@ const ringLinks = nodes.map((node, i) => ({
     color: var(--color-text-muted);
     font-family: inherit;
     font-size: 0.875rem;
+    text-align: center;
     cursor: pointer;
-    animation: network-node-in 500ms ease 900ms both;
+    animation: network-skip-in 500ms ease 900ms both;
     transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  @keyframes network-skip-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
   .network-intro__skip:hover,

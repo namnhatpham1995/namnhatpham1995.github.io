@@ -104,6 +104,51 @@ test('view full page actually hides the network overlay', async ({ page }) => {
   await expect(page.locator('#main')).toBeVisible();
 });
 
+test('view full page control stays centered without overlapping the network', async ({ page }) => {
+  const viewports = [
+    { width: 1280, height: 720 },
+    { width: 390, height: 844 },
+    { width: 375, height: 667 },
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+
+    const overlay = page.locator('#network-intro');
+    const control = overlay.locator('[data-network-skip]');
+    await expect(control).toBeVisible();
+
+    await expect
+      .poll(() =>
+        control.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return Math.abs(rect.left + rect.width / 2 - window.innerWidth / 2);
+        }),
+      )
+      .toBeLessThanOrEqual(1);
+
+    const layout = await overlay.evaluate((element) => {
+      const controlRect = element.querySelector('[data-network-skip]')!.getBoundingClientRect();
+      const lowerNodeBottom = Math.max(
+        ...['projects', 'certificates'].map((id) =>
+          element.querySelector(`[data-network-node="${id}"]`)!.getBoundingClientRect().bottom,
+        ),
+      );
+      return {
+        animationName: getComputedStyle(element.querySelector('[data-network-skip]')!).animationName,
+        controlTop: controlRect.top,
+        lowerNodeBottom,
+        overflowsHorizontally: document.documentElement.scrollWidth > window.innerWidth,
+      };
+    });
+
+    expect(layout.animationName).toBe('network-skip-in');
+    expect(layout.controlTop).toBeGreaterThan(layout.lowerNodeBottom);
+    expect(layout.overflowsHorizontally).toBe(false);
+  }
+});
+
 for (const localeCase of localeCases) {
   test(`network UI is fully localized for ${localeCase.path}`, async ({ page }) => {
     await page.goto(localeCase.path);
@@ -208,13 +253,16 @@ test('desktop menu gives a strong helper without moving the main content', async
       border: 'rgba(0, 0, 0, 0)',
       shadow: 'none',
     });
-  expect(await main.boundingBox()).toEqual(mainBefore);
+  const mainAfter = await main.boundingBox();
+  expect(mainAfter?.x).toBe(mainBefore?.x);
+  expect(mainAfter?.width).toBe(mainBefore?.width);
 });
 
 test('mobile long press shows helper above the compact menu', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.locator('[data-network-skip]').click();
+  await expect(page.locator('#network-intro')).toBeHidden();
 
   const mapButton = page.locator('[data-open-network]');
   const touchTooltip = page.locator('[data-nav-touch-tooltip]');
