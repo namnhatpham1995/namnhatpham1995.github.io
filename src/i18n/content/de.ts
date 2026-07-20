@@ -58,7 +58,7 @@ export const de: CvContent = {
         dates: 'Okt 2022 – Sep 2026',
         bullets: [
           'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
-          'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der Durchsatz von 1-2 auf bis zu 3 Tickets pro Woche gesteigert wurde.',
+          'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
           'Refactoring des DTM-Microservice zur Reduzierung der Klassenkomplexität und Verbesserung der langfristigen Wartbarkeit.',
           'Leitung der Migration der Integrationstest-Suite zu Cypress, wodurch sich Testausführung und CI-Feedback-Zyklen beschleunigten.',
           'Migration eines Python-basierten OEE-Microservice zu einem Java-Spring-Boot-Microservice.',
@@ -76,7 +76,7 @@ export const de: CvContent = {
           'Untersuchte Kubernetes-Clusterfehler während der Bereitstellung und im laufenden Betrieb, führte Ursachenanalysen durch und unterstützte deren Behebung.',
           'Pflegte und verbesserte Chef-Cookbooks sowie Helm-basierte Kubernetes-Cluster-Automatisierung für die Bereitstellung und den Betrieb von Cumulocity-Umgebungen.',
           'Identifizierte Engpässe bei der Cluster-Erstellung und trug mit Korrekturen und Verbesserungen zu einer schnelleren und zuverlässigeren Bereitstellung bei.',
-          'Automatisierung der AWS-Bereitstellung mit Bash und der AWS CLI, wodurch die Einrichtungszeit um rund 10 % reduziert wurde.',
+          'Automatisierung der AWS-Bereitstellung mit Bash und der AWS CLI, wodurch die Einrichtungszeit deutlich reduziert wurde.',
         ],
       },
       {

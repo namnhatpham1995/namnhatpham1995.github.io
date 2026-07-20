@@ -49,7 +49,7 @@ export const en: CvContent = {
         dates: 'Oct 2022 – Sep 2026',
         bullets: [
           'Delivered end-to-end Digital Twin Management (DTM) features on the Cumulocity IoT platform, serving millions of connected assets.',
-          'Adopted AI coding tools (GitHub Copilot, Claude Code) across the ticket lifecycle, raising throughput from 1-2 to up to 3 tickets per week.',
+          'Adopted AI coding tools (GitHub Copilot, Claude Code) across the ticket lifecycle, significantly raising weekly delivery throughput.',
           'Refactored the DTM microservice to reduce class complexity and improve long-term maintainability.',
           'Led migration of the integration test suite to Cypress, speeding up test execution and CI feedback cycles.',
           'Migrated a Python-based OEE microservice to a Java Spring Boot microservice.',
@@ -66,7 +66,7 @@ export const en: CvContent = {
           'Investigated and helped resolve Kubernetes cluster failures during provisioning and runtime, performing root-cause analysis across the Cumulocity core platform.',
           'Maintained and improved Chef cookbooks and Helm-based Kubernetes cluster automation used to provision and operate Cumulocity environments.',
           'Identified bottlenecks in cluster creation and contributed fixes and improvements to make provisioning faster and more reliable.',
-          'Automated AWS provisioning with Bash and the AWS CLI, cutting setup time by roughly 10%.',
+          'Automated AWS provisioning with Bash and the AWS CLI, significantly cutting setup time.',
         ],
       },
       {
