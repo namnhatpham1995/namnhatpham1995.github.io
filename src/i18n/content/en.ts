@@ -116,6 +116,18 @@ export const en: CvContent = {
         ],
       },
       {
+        title: 'Storyboard — OpenSpec Project Board',
+        dates: '2026 – present',
+        description: [
+          'Self-initiated project to learn Go and to manage this system’s own development via OpenSpec proposals and tasks, Jira-style.',
+          'Go backend (net/http, fsnotify) parsing OpenSpec markdown on disk into Draft/In Progress/Complete/Archived board columns with byte-preserving, atomic edits.',
+          'Optimistic-concurrency writes carrying file modification time + SHA-256 hash; rejects stale writes instead of silently overwriting newer work.',
+          'React/TypeScript/Vite/TanStack Query frontend embedded into the Go binary via go:embed for single-binary distribution across Windows/Mac/Linux.',
+        ],
+        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
+      },
+      {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
         dates: 'Feb – Aug 2021',
         description: [

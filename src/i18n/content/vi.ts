@@ -125,6 +125,18 @@ export const vi: CvContent = {
         ],
       },
       {
+        title: 'Storyboard — Bảng quản lý dự án OpenSpec',
+        dates: '2026 – hiện tại',
+        description: [
+          'Dự án tự khởi xướng để học Go, đồng thời dùng để quản lý công việc phát triển của chính hệ thống này qua các proposal và task của OpenSpec theo kiểu Jira.',
+          'Backend Go (net/http, fsnotify) phân tích các file markdown OpenSpec trên đĩa thành các cột board Draft/In Progress/Complete/Archived, chỉnh sửa nguyên vẹn từng byte và mang tính atomic.',
+          'Ghi dữ liệu theo cơ chế optimistic concurrency, mang theo thời gian sửa đổi file + hash SHA-256; từ chối ghi đè nếu dữ liệu đã cũ thay vì âm thầm ghi đè công việc mới hơn.',
+          'Frontend React/TypeScript/Vite/TanStack Query được nhúng vào file thực thi Go qua go:embed để phân phối dưới dạng một binary duy nhất trên Windows/Mac/Linux.',
+        ],
+        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
+      },
+      {
         title: 'Đồ án Thạc sĩ: Điều khiển Remote Desktop từ Ứng dụng SaaS',
         dates: 'Th2 – Th8 2021',
         // TODO: native review
