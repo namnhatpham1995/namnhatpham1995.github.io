@@ -94,16 +94,37 @@ const ringLinks = nodes.map((node, i) => ({
       }
       {
         nodes.map((node, i) => (
-          <line
-            class="network-intro__spoke"
-            x1={center.x}
-            y1={center.y}
-            x2={node.x}
-            y2={node.y}
-            pathLength="1"
+          <g
+            class="network-intro__edge"
+            data-network-edge={node.id}
             style={`--line-delay: ${150 + i * 80}ms`}
-            vector-effect="non-scaling-stroke"
-          />
+          >
+            <line
+              class="network-intro__edge-rail"
+              x1={center.x}
+              y1={center.y}
+              x2={node.x}
+              y2={node.y}
+              vector-effect="non-scaling-stroke"
+            />
+            <line
+              class="network-intro__edge-core"
+              x1={center.x}
+              y1={center.y}
+              x2={node.x}
+              y2={node.y}
+              vector-effect="non-scaling-stroke"
+            />
+            <line
+              class="network-intro__edge-signal"
+              x1={center.x}
+              y1={center.y}
+              x2={node.x}
+              y2={node.y}
+              pathLength="1"
+              vector-effect="non-scaling-stroke"
+            />
+          </g>
         ))
       }
     </svg>
@@ -244,22 +265,97 @@ const ringLinks = nodes.map((node, i) => ({
     height: 100%;
   }
 
-  .network-intro__spoke,
+  .network-intro__ring-link,
+  .network-intro__edge-rail,
+  .network-intro__edge-core {
+    --edge-opacity: 0.5;
+    stroke-linecap: round;
+    opacity: 0;
+    animation: network-link-in 520ms ease-out var(--line-delay) forwards;
+  }
+
   .network-intro__ring-link {
-    stroke: color-mix(in srgb, var(--color-accent-green) 45%, var(--color-border));
+    --edge-opacity: 0.28;
+    stroke: color-mix(in srgb, var(--color-border) 78%, var(--color-text-muted));
     stroke-width: 1;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: network-draw 700ms ease-out var(--line-delay) forwards;
   }
 
-  .network-intro__ring-link {
-    stroke: color-mix(in srgb, var(--color-border) 70%, transparent);
+  .network-intro__edge-rail {
+    --edge-opacity: 0.2;
+    stroke: color-mix(in srgb, var(--color-accent-green) 28%, var(--color-border));
+    stroke-width: 5;
   }
 
-  @keyframes network-draw {
+  .network-intro__edge-core {
+    --edge-opacity: 0.58;
+    stroke: color-mix(in srgb, var(--color-accent-green) 52%, var(--color-border));
+    stroke-width: 1;
+  }
+
+  @keyframes network-link-in {
     to {
-      stroke-dashoffset: 0;
+      opacity: var(--edge-opacity);
+    }
+  }
+
+  .network-intro__edge-rail,
+  .network-intro__edge-core,
+  .network-intro__ring-link {
+    transition:
+      opacity 180ms ease,
+      stroke 180ms ease,
+      stroke-width 180ms ease,
+      filter 180ms ease;
+  }
+
+  .network-intro__edge-signal {
+    stroke: var(--color-accent-green);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 0.07 0.93;
+    stroke-dashoffset: 0.07;
+    opacity: 0;
+    filter: drop-shadow(0 0 4px var(--color-accent-green));
+    pointer-events: none;
+  }
+
+  .network-intro__stage[data-connection-active] .network-intro__ring-link {
+    opacity: 0.12;
+  }
+
+  .network-intro__stage[data-connection-active]
+    .network-intro__edge:not([data-active])
+    .network-intro__edge-rail {
+    opacity: 0.08;
+  }
+
+  .network-intro__stage[data-connection-active]
+    .network-intro__edge:not([data-active])
+    .network-intro__edge-core {
+    opacity: 0.18;
+  }
+
+  .network-intro__edge[data-active] .network-intro__edge-rail {
+    stroke: color-mix(in srgb, var(--color-accent-green) 62%, transparent);
+    opacity: 0.52;
+    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-accent-green) 55%, transparent));
+  }
+
+  .network-intro__edge[data-active] .network-intro__edge-core {
+    stroke: var(--color-accent-green);
+    stroke-width: 2;
+    opacity: 1;
+    filter: drop-shadow(0 0 3px var(--color-accent-green));
+  }
+
+  .network-intro__edge[data-active] .network-intro__edge-signal {
+    opacity: 1;
+    animation: network-packet-flow 820ms linear infinite;
+  }
+
+  @keyframes network-packet-flow {
+    to {
+      stroke-dashoffset: -0.93;
     }
   }
 
@@ -342,7 +438,8 @@ const ringLinks = nodes.map((node, i) => ({
   }
 
   .network-intro__node:hover .network-intro__node-circle,
-  .network-intro__node:focus-visible .network-intro__node-circle {
+  .network-intro__node:focus-visible .network-intro__node-circle,
+  .network-intro__node[data-connected] .network-intro__node-circle {
     border-color: var(--color-accent-green);
     color: var(--color-accent-green);
     box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent-green) 35%, transparent);
@@ -360,7 +457,8 @@ const ringLinks = nodes.map((node, i) => ({
   }
 
   .network-intro__node:hover .network-intro__node-label,
-  .network-intro__node:focus-visible .network-intro__node-label {
+  .network-intro__node:focus-visible .network-intro__node-label,
+  .network-intro__node[data-connected] .network-intro__node-label {
     color: var(--color-text);
   }
 
@@ -405,6 +503,10 @@ const ringLinks = nodes.map((node, i) => ({
   .network-intro__center:focus-visible img {
     box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent-green) 45%, transparent);
     transform: scale(1.04);
+  }
+
+  .network-intro__stage[data-connection-active] .network-intro__center img {
+    box-shadow: 0 0 28px color-mix(in srgb, var(--color-accent-green) 55%, transparent);
   }
 
   .network-intro__center-label {
@@ -485,6 +587,20 @@ const ringLinks = nodes.map((node, i) => ({
 
     .network-intro__prompt {
       font-size: 0.8125rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .network-intro__ring-link,
+    .network-intro__edge-rail,
+    .network-intro__edge-core {
+      animation: none;
+      opacity: var(--edge-opacity);
+    }
+
+    .network-intro__edge-signal {
+      display: none;
+      animation: none;
     }
   }
 </style>
@@ -775,14 +891,82 @@ const ringLinks = nodes.map((node, i) => ({
   });
 
   if (overlay) {
+    const networkStage = overlay.querySelector<HTMLElement>('.network-intro__stage');
+    const connectionNodes = Array.from(
+      overlay.querySelectorAll<HTMLElement>('.network-intro__node[data-network-node]'),
+    );
+    const connectionEdges = new Map(
+      Array.from(overlay.querySelectorAll<SVGGElement>('[data-network-edge]')).map((edge) => [
+        edge.dataset.networkEdge ?? '',
+        edge,
+      ]),
+    );
+    let connectedNode: HTMLElement | null = null;
+
+    const setConnectedNode = (node: HTMLElement | null) => {
+      connectedNode = node;
+      const activeId = node?.dataset.networkNode;
+      networkStage?.toggleAttribute('data-connection-active', Boolean(activeId));
+      connectionNodes.forEach((item) =>
+        item.toggleAttribute('data-connected', item === node && Boolean(activeId)),
+      );
+      connectionEdges.forEach((edge, id) =>
+        edge.toggleAttribute('data-active', id === activeId && Boolean(activeId)),
+      );
+    };
+
+    const findConnectionNode = (target: EventTarget | null) =>
+      target instanceof Element
+        ? target.closest<HTMLElement>('.network-intro__node[data-network-node]')
+        : null;
+
+    overlay.addEventListener('pointerover', (event) => {
+      const node = findConnectionNode(event.target);
+      if (node) setConnectedNode(node);
+    });
+
+    overlay.addEventListener('pointerout', (event) => {
+      const node = findConnectionNode(event.target);
+      if (!node || node !== connectedNode) return;
+      if (event.relatedTarget instanceof Element && node.contains(event.relatedTarget)) return;
+      setConnectedNode(null);
+    });
+
+    overlay.addEventListener('focusin', (event) => {
+      const node = findConnectionNode(event.target);
+      if (node) setConnectedNode(node);
+    });
+
+    overlay.addEventListener('focusout', (event) => {
+      const node = findConnectionNode(event.target);
+      if (!node || node !== connectedNode) return;
+      if (event.relatedTarget instanceof Element && node.contains(event.relatedTarget)) return;
+      setConnectedNode(null);
+    });
+
+    overlay.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse') return;
+      const node = findConnectionNode(event.target);
+      if (node) setConnectedNode(node);
+    });
+
+    const clearTouchConnection = (event: PointerEvent) => {
+      if (event.pointerType !== 'mouse') setConnectedNode(null);
+    };
+
+    overlay.addEventListener('pointerup', clearTouchConnection);
+    overlay.addEventListener('pointercancel', clearTouchConnection);
+
     const openOverlay = () => {
       if (sectionDialog?.open) sectionDialog.close();
+      setConnectedNode(null);
       overlay.hidden = false;
       document.body.style.overflow = 'hidden';
       overlay.focus({ preventScroll: true });
     };
 
     const closeOverlay = () => {
+      setConnectedNode(null);
       try {
         sessionStorage.setItem(SEEN_KEY, '1');
       } catch {

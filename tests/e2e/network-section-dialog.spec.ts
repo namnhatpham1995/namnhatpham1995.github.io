@@ -149,6 +149,76 @@ test('view full page control stays centered without overlapping the network', as
   }
 });
 
+test('network uses solid layered links for every peripheral node', async ({ page }) => {
+  await page.goto('/');
+
+  const edges = page.locator('[data-network-edge]');
+  await expect(edges).toHaveCount(sectionIds.length - 1);
+  await expect(page.locator('.network-intro__ring-link')).toHaveCount(sectionIds.length - 1);
+
+  for (const sectionId of sectionIds.filter((id) => id !== 'intro')) {
+    const edge = page.locator(`[data-network-edge="${sectionId}"]`);
+    await expect(edge).toHaveCount(1);
+    await expect(edge.locator('.network-intro__edge-rail')).toHaveCount(1);
+    await expect(edge.locator('.network-intro__edge-core')).toHaveCount(1);
+    await expect(edge.locator('.network-intro__edge-signal')).toHaveCount(1);
+  }
+
+  const baseDash = await page
+    .locator('[data-network-edge="skills"] .network-intro__edge-core')
+    .evaluate((element) => getComputedStyle(element).strokeDasharray);
+  expect(baseDash).toBe('none');
+});
+
+test('hover, focus, and touch connect the center to the selected node', async ({ page }) => {
+  await page.goto('/');
+
+  const stage = page.locator('.network-intro__stage');
+  const projectsNode = page.locator('[data-network-node="projects"]');
+  const projectsEdge = page.locator('[data-network-edge="projects"]');
+  const skillsEdge = page.locator('[data-network-edge="skills"]');
+  const signal = projectsEdge.locator('.network-intro__edge-signal');
+
+  await projectsNode.hover();
+  await expect(stage).toHaveAttribute('data-connection-active', '');
+  await expect(projectsNode).toHaveAttribute('data-connected', '');
+  await expect(projectsEdge).toHaveAttribute('data-active', '');
+  await expect(skillsEdge).not.toHaveAttribute('data-active', '');
+  await expect
+    .poll(() => signal.evaluate((element) => getComputedStyle(element).animationName))
+    .toBe('network-packet-flow');
+
+  await page.mouse.move(1, 1);
+  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+
+  await projectsNode.focus();
+  await expect(projectsEdge).toHaveAttribute('data-active', '');
+  await page.locator('[data-network-skip]').focus();
+  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+
+  await projectsNode.dispatchEvent('pointerdown', { pointerType: 'touch' });
+  await expect(projectsEdge).toHaveAttribute('data-active', '');
+  await projectsNode.dispatchEvent('pointerup', { pointerType: 'touch' });
+  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+});
+
+test('reduced motion keeps a static highlighted connection', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+
+  const node = page.locator('[data-network-node="experience"]');
+  const edge = page.locator('[data-network-edge="experience"]');
+  await node.hover();
+  await expect(edge).toHaveAttribute('data-active', '');
+
+  const styles = await edge.evaluate((element) => ({
+    coreOpacity: getComputedStyle(element.querySelector('.network-intro__edge-core')!).opacity,
+    signalDisplay: getComputedStyle(element.querySelector('.network-intro__edge-signal')!).display,
+  }));
+  expect(styles.coreOpacity).toBe('1');
+  expect(styles.signalDisplay).toBe('none');
+});
+
 for (const localeCase of localeCases) {
   test(`network UI is fully localized for ${localeCase.path}`, async ({ page }) => {
     await page.goto(localeCase.path);
