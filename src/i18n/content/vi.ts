@@ -111,7 +111,7 @@ export const vi: CvContent = {
     entries: [
       {
         title: 'FinTrack — Ứng dụng Quản lý Tài chính Cá nhân',
-        dates: '2025 – hiện tại',
+        dates: 'Th6 2026 – hiện tại',
         description: [
           'Kiến trúc sư kiêm product owner, chỉ đạo Claude Code qua các bounded context (tài khoản, giao dịch, ngân sách, phân tích).',
           'Frontend Next.js 14 (TypeScript, Tailwind) với REST API Java 21/Spring Boot 3.',
@@ -123,6 +123,18 @@ export const vi: CvContent = {
           { label: 'Repository', url: 'https://github.com/namnhatpham1995/personal-financial-management' },
           { label: 'Demo trực tiếp', url: 'https://fintrack-three-wine.vercel.app/' },
         ],
+      },
+      {
+        title: 'Storyboard — Bảng quản lý dự án OpenSpec',
+        dates: 'Th7 2026 – hiện tại',
+        description: [
+          'Dự án tự khởi xướng để học Go, đồng thời dùng để quản lý công việc phát triển của chính hệ thống này qua các proposal và task của OpenSpec theo kiểu Jira.',
+          'Backend Go (net/http, fsnotify) phân tích các file markdown OpenSpec trên đĩa thành các cột board Draft/In Progress/Complete/Archived, chỉnh sửa nguyên vẹn từng byte và mang tính atomic.',
+          'Ghi dữ liệu theo cơ chế optimistic concurrency, mang theo thời gian sửa đổi file + hash SHA-256; từ chối ghi đè nếu dữ liệu đã cũ thay vì âm thầm ghi đè công việc mới hơn.',
+          'Frontend React/TypeScript/Vite/TanStack Query được nhúng vào file thực thi Go qua go:embed để phân phối dưới dạng một binary duy nhất trên Windows/Mac/Linux.',
+        ],
+        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
       },
       {
         title: 'Đồ án Thạc sĩ: Điều khiển Remote Desktop từ Ứng dụng SaaS',

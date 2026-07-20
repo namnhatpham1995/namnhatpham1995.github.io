@@ -102,7 +102,7 @@ export const en: CvContent = {
     entries: [
       {
         title: 'FinTrack — Personal Finance Management App',
-        dates: '2025 – present',
+        dates: 'Jun 2026 – present',
         description: [
           'Architect and product owner directing Claude Code across bounded contexts (accounts, transactions, budgets, analytics).',
           'Next.js 14 (TypeScript, Tailwind) frontend with a Java 21 / Spring Boot 3 REST API.',
@@ -114,6 +114,18 @@ export const en: CvContent = {
           { label: 'Repository', url: 'https://github.com/namnhatpham1995/personal-financial-management' },
           { label: 'Live demo', url: 'https://fintrack-three-wine.vercel.app/' },
         ],
+      },
+      {
+        title: 'Storyboard — OpenSpec Project Board',
+        dates: 'Jul 2026 – present',
+        description: [
+          'Self-initiated project to learn Go and to manage this system’s own development via OpenSpec proposals and tasks, Jira-style.',
+          'Go backend (net/http, fsnotify) parsing OpenSpec markdown on disk into Draft/In Progress/Complete/Archived board columns with byte-preserving, atomic edits.',
+          'Optimistic-concurrency writes carrying file modification time + SHA-256 hash; rejects stale writes instead of silently overwriting newer work.',
+          'React/TypeScript/Vite/TanStack Query frontend embedded into the Go binary via go:embed for single-binary distribution across Windows/Mac/Linux.',
+        ],
+        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
       },
       {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',

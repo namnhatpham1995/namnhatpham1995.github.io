@@ -112,7 +112,7 @@ export const de: CvContent = {
     entries: [
       {
         title: 'FinTrack — Persönliches Finanzmanagement',
-        dates: '2025 – heute',
+        dates: 'Jun 2026 – heute',
         // TODO: native review
         description: [
           'Architekt und Product Owner, steuert Claude Code über Bounded Contexts (Konten, Transaktionen, Budgets, Analytics) hinweg.',
@@ -125,6 +125,19 @@ export const de: CvContent = {
           { label: 'Repository', url: 'https://github.com/namnhatpham1995/personal-financial-management' },
           { label: 'Live-Demo', url: 'https://fintrack-three-wine.vercel.app/' },
         ],
+      },
+      {
+        title: 'Storyboard — OpenSpec-Projektboard',
+        dates: 'Jul 2026 – heute',
+        // TODO: native review
+        description: [
+          'Eigeninitiiertes Projekt, um Go zu lernen und die eigene Weiterentwicklung dieses Systems im Jira-Stil über OpenSpec-Proposals und -Tasks zu steuern.',
+          'Go-Backend (net/http, fsnotify), das OpenSpec-Markdown-Dateien in die Board-Spalten Draft/In Progress/Complete/Archived parst, mit byteerhaltenden, atomaren Edits.',
+          'Optimistic-Concurrency-Writes mit Dateiänderungszeit + SHA-256-Hash; verwirft veraltete Schreibvorgänge, statt neuere Arbeit stillschweigend zu überschreiben.',
+          'React/TypeScript/Vite/TanStack-Query-Frontend, per go:embed in die Go-Binary eingebettet für Single-Binary-Distribution unter Windows/Mac/Linux.',
+        ],
+        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
       },
       {
         title: 'M.Sc.-Thesis: Remote-Desktop-Steuerung aus einer SaaS-Anwendung',
