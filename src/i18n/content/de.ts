@@ -193,7 +193,8 @@ export const de: CvContent = {
     entries: [
       { name: 'Vietnamesisch', level: 'Muttersprache' },
       { name: 'Englisch', level: 'Fließend (C1)' },
-      { name: 'Deutsch', level: 'Berufliche Kenntnisse (B2)' },
+      // TODO: native review
+      { name: 'Deutsch', level: 'Mittelstufe (B1)' },
     ],
   },
   hobbies: {
