@@ -179,7 +179,7 @@ export const en: CvContent = {
     entries: [
       { name: 'Vietnamese', level: 'Native' },
       { name: 'English', level: 'Fluent (C1)' },
-      { name: 'German', level: 'Professional (B2)' },
+      { name: 'German', level: 'Intermediate (B1)' },
     ],
   },
   hobbies: {
