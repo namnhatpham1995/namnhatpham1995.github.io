@@ -7,7 +7,7 @@ export const vi: CvContent = {
   meta: {
     title: 'Nam Nhat Pham — Kỹ sư phần mềm',
     description:
-      'Kỹ sư phần mềm tại Stuttgart, Đức — hơn 5 năm kinh nghiệm xây dựng dịch vụ backend có khả năng mở rộng và ứng dụng cloud-native với Java, Spring Boot và Python.',
+      'Kỹ sư phần mềm với hơn 5 năm phát triển dịch vụ backend production, REST API và microservice trên nền tảng IoT doanh nghiệp kết nối hàng triệu tài sản và thiết bị.',
   },
   nav: {
     intro: 'giới thiệu',
@@ -26,9 +26,25 @@ export const vi: CvContent = {
     email: 'nam95.pn@gmail.com',
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
-    // Updated from "hơn 6 năm" (legacy site) to "hơn 5 năm" per 2026 CV
-    summary:
-      'Kỹ sư phần mềm với hơn 5 năm kinh nghiệm xây dựng dịch vụ backend có khả năng mở rộng và ứng dụng cloud-native trên các nền tảng production. Có kinh nghiệm với Python và TypeScript trong môi trường production, tự động hóa CI/CD, kiến trúc backend và phân rã microservice. Có chứng chỉ AWS.',
+    // Updated to match the 2026 general CV summary
+    summary: [
+      { text: 'Kỹ sư phần mềm với ' },
+      { text: 'hơn 5 năm', strong: true },
+      {
+        text: ' phát triển dịch vụ backend production, REST API và microservice trên nền tảng IoT doanh nghiệp kết nối hàng triệu tài sản và thiết bị. ',
+      },
+      {
+        text: 'Đưa microservice-deployer từ nhu cầu của một nhóm trở thành sản phẩm nội bộ được chính thức áp dụng',
+        strong: true,
+      },
+      {
+        text: ', hiện được nhiều nhóm trong công ty sử dụng để chuẩn hóa quy trình triển khai Cumulocity; đồng thời chuyển chức năng OEE từ Python sang microservice Java Spring Boot trong quá trình hiện đại hóa nền tảng. Thế mạnh về ',
+      },
+      { text: 'Java và Spring Boot', strong: true },
+      {
+        text: ', cùng kinh nghiệm production với Python và TypeScript, chứng chỉ AWS, và kinh nghiệm thực tế về Docker, Kubernetes, CI/CD và kiểm thử tích hợp.',
+      },
+    ],
   },
   skills: {
     heading: 'ls skills/',
@@ -37,7 +53,7 @@ export const vi: CvContent = {
       { title: 'Ngôn ngữ lập trình', items: ['Java', 'Python', 'TypeScript', 'Bash'] },
       {
         title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'Next.js', 'Flask'],
+        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
       // TODO: native review — bổ sung Helm theo CV đã cập nhật
       { title: 'Cloud, DevOps & Công cụ', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },

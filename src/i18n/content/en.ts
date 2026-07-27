@@ -4,7 +4,7 @@ export const en: CvContent = {
   meta: {
     title: 'Nam Nhat Pham — Software Engineer',
     description:
-      'Software Engineer in Stuttgart, Germany — 5+ years building scalable backend services and cloud-native applications with Java, Spring Boot, and Python.',
+      'Software Engineer with 5+ years delivering production backend services, REST APIs, and microservices on an enterprise IoT platform connecting millions of assets and devices.',
   },
   nav: {
     intro: 'whoami',
@@ -23,8 +23,24 @@ export const en: CvContent = {
     email: 'nam95.pn@gmail.com',
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
-    summary:
-      'Software Engineer with 5+ years building scalable backend services and cloud-native applications on production platforms. Experienced with Python and TypeScript in production, strong CI/CD automation, backend architecture, and microservices decomposition. AWS certified.',
+    summary: [
+      { text: 'Software Engineer with ' },
+      { text: '5+ years', strong: true },
+      {
+        text: ' delivering production backend services, REST APIs, and microservices on an enterprise IoT platform connecting millions of assets and devices. ',
+      },
+      {
+        text: 'Turned microservice-deployer from a team need into an officially adopted internal product',
+        strong: true,
+      },
+      {
+        text: ", now used across company teams to standardize Cumulocity deployments, and migrated Python OEE functionality into a Java Spring Boot microservice as part of the platform's modernization. Strong in ",
+      },
+      { text: 'Java and Spring Boot', strong: true },
+      {
+        text: ', with production Python and TypeScript, AWS certification, and hands-on Docker, Kubernetes, CI/CD, and integration testing.',
+      },
+    ],
   },
   skills: {
     heading: 'ls skills/',
@@ -32,7 +48,7 @@ export const en: CvContent = {
       { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'Bash'] },
       {
         title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'Next.js', 'Flask'],
+        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
       { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
       { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },

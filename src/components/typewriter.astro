@@ -1,13 +1,26 @@
 ---
+import type { SummarySegment } from '../i18n/content/types';
+
 interface Props {
-  text: string;
+  segments: SummarySegment[];
 }
 
-const { text } = Astro.props;
+const { segments } = Astro.props;
+const text = segments.map((segment) => segment.text).join('');
 ---
 
-<p class="typewriter" data-typewriter data-text={text}>
-  <span class="typewriter__text">{text}</span><span class="typewriter__cursor" aria-hidden="true">▌</span>
+<p class="typewriter" data-typewriter data-text={text} aria-label={text}>
+  <span class="typewriter__text" aria-hidden="true">
+    {
+      segments.map((segment) =>
+        segment.strong ? (
+          <strong class="typewriter__segment" data-segment={segment.text}>{segment.text}</strong>
+        ) : (
+          <span class="typewriter__segment" data-segment={segment.text}>{segment.text}</span>
+        ),
+      )
+    }
+  </span><span class="typewriter__cursor" aria-hidden="true">▌</span>
 </p>
 
 <style>
@@ -21,6 +34,11 @@ const { text } = Astro.props;
     display: inline-block;
     color: var(--color-accent-green);
     animation: blink 1s step-end infinite;
+  }
+
+  .typewriter__text strong {
+    color: var(--color-text);
+    font-weight: 700;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -42,21 +60,37 @@ const { text } = Astro.props;
   document.querySelectorAll<HTMLElement>('[data-typewriter]').forEach((el) => {
     if (reduceMotion) return;
 
-    const textEl = el.querySelector<HTMLElement>('.typewriter__text');
+    const segmentEls = Array.from(el.querySelectorAll<HTMLElement>('.typewriter__segment'));
     const fullText = el.dataset.text ?? '';
-    if (!textEl || !fullText) return;
+    if (!segmentEls.length || !fullText) return;
 
     let started = false;
     const start = () => {
       if (started) return;
       started = true;
-      textEl.textContent = '';
-      let i = 0;
+      const segmentTexts = segmentEls.map((segment) => segment.dataset.segment ?? '');
+      const delay = Math.max(8, Math.min(28, Math.floor(6_000 / fullText.length)));
+      segmentEls.forEach((segment) => {
+        segment.textContent = '';
+      });
+
+      let segmentIndex = 0;
+      let characterIndex = 0;
       const step = () => {
-        textEl.textContent = fullText.slice(0, i);
-        i += 1;
-        if (i <= fullText.length) {
-          window.setTimeout(step, 28);
+        const segment = segmentEls[segmentIndex];
+        const segmentText = segmentTexts[segmentIndex];
+        if (!segment || segmentText === undefined) return;
+
+        characterIndex += 1;
+        segment.textContent = segmentText.slice(0, characterIndex);
+
+        if (characterIndex >= segmentText.length) {
+          segmentIndex += 1;
+          characterIndex = 0;
+        }
+
+        if (segmentIndex < segmentEls.length) {
+          window.setTimeout(step, delay);
         }
       };
       step();

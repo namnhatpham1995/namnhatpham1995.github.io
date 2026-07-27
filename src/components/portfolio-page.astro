@@ -68,7 +68,7 @@ const navItems = [
         <div>
           <h1 class="hero__name">{content.hero.name}</h1>
           <p class="hero__role">{content.hero.role} · {content.hero.location}</p>
-          <Typewriter text={content.hero.summary} />
+          <Typewriter segments={content.hero.summary} />
           <p class="hero__links">
             <a href={`mailto:${content.hero.email}`}>{labels.emailLabel}</a>
             {' · '}
