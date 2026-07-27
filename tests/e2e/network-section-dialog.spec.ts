@@ -123,6 +123,43 @@ test('typewriter waits until the network overlay closes', async ({ page }) => {
     .toBeLessThan(fullText!.length);
 });
 
+test('summary emphasizes the strongest CV proof points in every language', async ({ page }) => {
+  const summaries = [
+    {
+      path: '/',
+      highlights: [
+        '5+ years',
+        'Turned microservice-deployer from a team need into an officially adopted internal product',
+        'Java and Spring Boot',
+      ],
+    },
+    {
+      path: '/de/',
+      highlights: [
+        'über 5 Jahren',
+        'Entwickelte microservice-deployer von einem Teambedarf zu einem offiziell eingeführten internen Produkt weiter',
+        'Java und Spring Boot',
+      ],
+    },
+    {
+      path: '/vi/',
+      highlights: [
+        'hơn 5 năm',
+        'Đưa microservice-deployer từ nhu cầu của một nhóm trở thành sản phẩm nội bộ được chính thức áp dụng',
+        'Java và Spring Boot',
+      ],
+    },
+  ];
+
+  for (const summary of summaries) {
+    await page.goto(summary.path);
+
+    const strongPoints = page.locator('[data-typewriter] strong');
+    await expect(strongPoints).toHaveCount(summary.highlights.length);
+    await expect(strongPoints).toHaveText(summary.highlights);
+  }
+});
+
 test('view full page control stays centered without overlapping the network', async ({ page }) => {
   const viewports = [
     { width: 1280, height: 720 },

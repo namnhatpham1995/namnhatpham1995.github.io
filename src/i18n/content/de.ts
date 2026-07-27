@@ -8,7 +8,7 @@ export const de: CvContent = {
     title: 'Nam Nhat Pham — Software-Ingenieur',
     // TODO: native review
     description:
-      'Software-Ingenieur in Stuttgart, Deutschland — über 5 Jahre Erfahrung im Aufbau skalierbarer Backend-Dienste und cloud-nativer Anwendungen mit Java, Spring Boot und Python.',
+      'Software-Ingenieur mit über 5 Jahren Erfahrung in der Entwicklung produktiver Backend-Dienste, REST-APIs und Microservices auf einer Enterprise-IoT-Plattform für Millionen von Assets und Geräten.',
   },
   nav: {
     intro: 'profil',
@@ -27,9 +27,25 @@ export const de: CvContent = {
     email: 'nam95.pn@gmail.com',
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
-    // TODO: native review — figure updated from "6+" (legacy site) to "5+" per 2026 CV
-    summary:
-      'Software-Ingenieur mit über 5 Jahren Erfahrung im Aufbau skalierbarer Backend-Dienste und cloud-nativer Anwendungen auf Produktionsplattformen. Erfahrung mit Python und TypeScript im Produktivbetrieb, fundierte CI/CD-Automatisierung, Backend-Architektur und Microservice-Zerlegung. AWS-zertifiziert.',
+    // TODO: native review — updated to match the 2026 general CV summary
+    summary: [
+      { text: 'Software-Ingenieur mit ' },
+      { text: 'über 5 Jahren', strong: true },
+      {
+        text: ' Erfahrung in der Entwicklung produktiver Backend-Dienste, REST-APIs und Microservices auf einer Enterprise-IoT-Plattform, die Millionen von Assets und Geräten verbindet. ',
+      },
+      {
+        text: 'Entwickelte microservice-deployer von einem Teambedarf zu einem offiziell eingeführten internen Produkt weiter',
+        strong: true,
+      },
+      {
+        text: ', das heute teamübergreifend Cumulocity-Deployments standardisiert, und migrierte Python-basierte OEE-Funktionalität im Rahmen der Plattformmodernisierung in einen Java-Spring-Boot-Microservice. Sehr gute Kenntnisse in ',
+      },
+      { text: 'Java und Spring Boot', strong: true },
+      {
+        text: ' sowie Produktionserfahrung mit Python und TypeScript, AWS-Zertifizierung und praktischer Erfahrung mit Docker, Kubernetes, CI/CD und Integrationstests.',
+      },
+    ],
   },
   skills: {
     heading: 'ls skills/',
@@ -38,7 +54,7 @@ export const de: CvContent = {
       { title: 'Sprachen', items: ['Java', 'Python', 'TypeScript', 'Bash'] },
       {
         title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Microservices', 'Next.js', 'Flask'],
+        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
       // TODO: native review — Helm added per updated CV
       { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },

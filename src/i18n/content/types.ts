@@ -53,6 +53,11 @@ export interface LanguageEntry {
   level: string;
 }
 
+export interface SummarySegment {
+  text: string;
+  strong?: boolean;
+}
+
 export interface CvContent {
   meta: {
     title: string;
@@ -66,7 +71,7 @@ export interface CvContent {
     email: string;
     linkedin: string;
     github: string;
-    summary: string;
+    summary: SummarySegment[];
   };
   skills: {
     heading: string;
