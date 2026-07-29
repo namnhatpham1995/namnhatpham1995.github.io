@@ -157,8 +157,8 @@ export const vi: CvContent = {
         dates: 'Th2 – Th8 2021',
         // TODO: native review
         description: [
-          'Phát triển giải pháp điều khiển remote desktop qua nền web, truy cập được từ các trình duyệt phổ biến.',
-          'Xây dựng RemotePy, một ứng dụng Python Flask được fork và mở rộng từ một dự án mã nguồn mở, bổ sung khả năng điều khiển chuột, bàn phím, cảm ứng qua trình duyệt cùng streaming màn hình trực tiếp, chạy trên nền Werkzeug/Gunicorn với CLI tùy chỉnh để cấu hình số worker và thread.',
+          'Hoàn thiện giải pháp điều khiển remote desktop qua nền web, truy cập được từ các trình duyệt phổ biến.',
+          'Nâng cấp RemotePy, một dự án mã nguồn mở sẵn có viết bằng Python Flask để điều khiển từ xa, bổ sung khả năng điều khiển chuột, bàn phím, cảm ứng qua trình duyệt cùng streaming màn hình trực tiếp, chạy trên nền Werkzeug/Gunicorn với CLI tùy chỉnh để cấu hình số worker và thread.',
           'Thiết kế giao diện frontend phía trình duyệt bằng HTML, CSS và JavaScript để xử lý tương tác điều khiển từ xa theo thời gian thực.',
           'Xác thực dựa trên MySQL; đóng gói container hóa môi trường server với Docker và Apache.',
         ],
