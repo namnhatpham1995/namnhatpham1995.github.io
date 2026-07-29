@@ -147,8 +147,8 @@ export const en: CvContent = {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
         dates: 'Feb – Aug 2021',
         description: [
-          'Developed a web-based remote desktop control solution accessible through common web browsers.',
-          'Built RemotePy, a Python Flask application forked and extended from an open-source remote-control base, adding browser-driven mouse, keyboard, and touch-screen control plus live screen streaming, served via a Werkzeug/Gunicorn backend with a custom CLI for worker and thread concurrency.',
+          'Delivered a web-based remote desktop control solution accessible through common web browsers.',
+          'Upgraded RemotePy, an existing open-source Python Flask remote-control project, adding browser-driven mouse, keyboard, and touch-screen control plus live screen streaming, served via a Werkzeug/Gunicorn backend with a custom CLI for worker and thread concurrency.',
           'Designed the browser-facing frontend with HTML, CSS, and JavaScript templates to drive real-time remote-control interactions.',
           'MySQL-backed authentication; containerized the server environment with Docker and Apache.',
         ],

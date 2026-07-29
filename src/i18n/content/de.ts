@@ -160,8 +160,8 @@ export const de: CvContent = {
         dates: 'Feb – Aug 2021',
         // TODO: native review
         description: [
-          'Entwicklung einer webbasierten Remote-Desktop-Steuerung, zugänglich über gängige Webbrowser.',
-          'Aufbau von RemotePy, einer von einer Open-Source-Basis geforkten und erweiterten Python-Flask-Anwendung, mit browsergesteuerter Maus-, Tastatur- und Touch-Steuerung sowie Live-Bildschirmstreaming, bereitgestellt über ein Werkzeug/Gunicorn-Backend mit eigener CLI zur Konfiguration von Worker- und Thread-Nebenläufigkeit.',
+          'Bereitstellung einer webbasierten Remote-Desktop-Steuerung, zugänglich über gängige Webbrowser.',
+          'Weiterentwicklung von RemotePy, einem bestehenden Open-Source-Projekt zur Fernsteuerung auf Basis von Python und Flask, um browsergesteuerte Maus-, Tastatur- und Touch-Steuerung sowie Live-Bildschirmstreaming, bereitgestellt über ein Werkzeug/Gunicorn-Backend mit eigener CLI zur Konfiguration von Worker- und Thread-Nebenläufigkeit.',
           'Entwurf des browserseitigen Frontends mit HTML-, CSS- und JavaScript-Templates für die Echtzeit-Interaktion der Fernsteuerung.',
           'MySQL-basierte Authentifizierung; Containerisierung der Serverumgebung mit Docker und Apache.',
         ],
