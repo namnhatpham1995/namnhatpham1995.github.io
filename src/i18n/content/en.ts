@@ -62,7 +62,7 @@ export const en: CvContent = {
       {
         role: 'Software Engineer in R&D',
         company: 'Cumulocity GmbH (formerly Software AG) — Digital Twin Management team',
-        dates: 'Oct 2022 – Sep 2026',
+        dates: 'Oct 2022 – Jul 2026',
         bullets: [
           'Delivered end-to-end Digital Twin Management (DTM) features on the Cumulocity IoT platform, serving millions of connected assets.',
           'Adopted AI coding tools (GitHub Copilot, Claude Code) across the ticket lifecycle, significantly raising weekly delivery throughput.',
@@ -86,12 +86,14 @@ export const en: CvContent = {
         ],
       },
       {
-        role: 'Software Developer',
+        role: 'Software Developer / Team Lead',
         company: 'VGU Forex Club',
         dates: 'Apr 2018 – Mar 2019',
         bullets: [
           'Converted manual trading strategies into rule-based Expert Advisors and custom indicators for MetaTrader 4/5.',
           'Backtested and optimized strategies against historical market data.',
+          "Mentored new team members on MetaTrader development and strategy-implementation practices, onboarding them into the team's automated trading workflow.",
+          'Took on a team-lead capacity, delegating development tasks across the team and overseeing progress to keep delivery on track.',
         ],
       },
     ],

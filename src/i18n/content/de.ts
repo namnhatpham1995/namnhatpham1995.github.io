@@ -65,13 +65,13 @@ export const de: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Sep 2026,
+    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Jul 2026,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Software-Ingenieur in F&E',
         company: 'Cumulocity GmbH (vormals Software AG) — Digital Twin Management Team',
-        dates: 'Okt 2022 – Sep 2026',
+        dates: 'Okt 2022 – Jul 2026',
         bullets: [
           'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
           'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
@@ -96,12 +96,15 @@ export const de: CvContent = {
         ],
       },
       {
-        role: 'Software-Entwickler',
+        role: 'Software-Entwickler / Teamleiter',
         company: 'VGU Forex Club',
         dates: 'Apr 2018 – Mär 2019',
         bullets: [
           'Umsetzung manueller Handelsstrategien in regelbasierte Expert Advisors und eigene Indikatoren für MetaTrader 4/5.',
           'Backtesting und Optimierung von Strategien anhand historischer Marktdaten.',
+          // TODO: native review — added to match the new mentoring/delegation bullets in cv.md
+          'Betreute neue Teammitglieder in der MetaTrader-Entwicklung und der Umsetzung von Handelsstrategien und führte sie in den automatisierten Handels-Workflow des Teams ein.',
+          'Übernahm eine Teamleiter-Rolle, delegierte Entwicklungsaufgaben im Team und überwachte den Fortschritt, um die Lieferung auf Kurs zu halten.',
         ],
       },
     ],
