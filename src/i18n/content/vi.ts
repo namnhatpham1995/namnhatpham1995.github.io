@@ -64,13 +64,13 @@ export const vi: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Sep 2026,
+    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Jul 2026,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Kỹ sư phần mềm tại bộ phận R&D',
         company: 'Cumulocity GmbH (trước đây là Software AG) — Đội Digital Twin Management',
-        dates: 'Th10 2022 – Th9 2026',
+        dates: 'Th10 2022 – Th7 2026',
         bullets: [
           'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
           'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
@@ -95,12 +95,15 @@ export const vi: CvContent = {
         ],
       },
       {
-        role: 'Lập trình viên phần mềm',
+        role: 'Lập trình viên phần mềm / Trưởng nhóm',
         company: 'Câu lạc bộ Forex Đại học Việt-Đức (VGU)',
         dates: 'Th4 2018 – Th3 2019',
         bullets: [
           'Chuyển các chiến lược giao dịch thủ công thành Expert Advisor theo quy tắc và các chỉ báo tùy chỉnh cho MetaTrader 4/5.',
           'Backtest và tối ưu hóa chiến lược dựa trên dữ liệu thị trường lịch sử.',
+          // TODO: native review — added to match the new mentoring/delegation bullets in cv.md
+          'Hướng dẫn (mentor) các thành viên mới về phát triển MetaTrader và triển khai chiến lược giao dịch, giúp họ làm quen với quy trình giao dịch tự động của nhóm.',
+          'Đảm nhận vai trò trưởng nhóm, phân công công việc phát triển cho các thành viên và giám sát tiến độ để đảm bảo tiến độ bàn giao.',
         ],
       },
     ],
