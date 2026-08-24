@@ -50,7 +50,7 @@ export const en: CvContent = {
         title: 'Backend & Frontend',
         items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
-      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
+      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
       { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
       { title: 'Databases', items: ['PostgreSQL', 'MySQL'] },
       { title: 'Practices', items: ['Agile/Scrum', 'CI/CD'] },
@@ -62,7 +62,7 @@ export const en: CvContent = {
       {
         role: 'Software Engineer in R&D',
         company: 'Cumulocity GmbH (formerly Software AG) — Digital Twin Management team',
-        dates: 'Oct 2022 – Jul 2026',
+        dates: 'Oct 2022 – Present',
         bullets: [
           'Delivered end-to-end Digital Twin Management (DTM) features on the Cumulocity IoT platform, serving millions of connected assets.',
           'Adopted AI coding tools (GitHub Copilot, Claude Code) across the ticket lifecycle, significantly raising weekly delivery throughput.',
@@ -80,7 +80,7 @@ export const en: CvContent = {
         dates: 'Oct 2021 – Oct 2022',
         bullets: [
           'Investigated and helped resolve Kubernetes cluster failures during provisioning and runtime, performing root-cause analysis across the Cumulocity core platform.',
-          'Maintained and improved Chef cookbooks and Helm-based Kubernetes cluster automation used to provision and operate Cumulocity environments.',
+          'Maintained and improved Chef cookbooks and Helm-based Kubernetes cluster automation used to provision and operate Linux-based Cumulocity environments.',
           'Identified bottlenecks in cluster creation and contributed fixes and improvements to make provisioning faster and more reliable.',
           'Automated AWS provisioning with Bash and the AWS CLI, significantly cutting setup time.',
         ],

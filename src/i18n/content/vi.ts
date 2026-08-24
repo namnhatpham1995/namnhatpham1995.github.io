@@ -55,8 +55,8 @@ export const vi: CvContent = {
         title: 'Backend & Frontend',
         items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
-      // TODO: native review — bổ sung Helm theo CV đã cập nhật
-      { title: 'Cloud, DevOps & Công cụ', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
+      // TODO: native review — bổ sung Linux theo CV đã cập nhật
+      { title: 'Cloud, DevOps & Công cụ', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
       { title: 'Kiểm thử', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
       { title: 'Cơ sở dữ liệu', items: ['PostgreSQL', 'MySQL'] },
       { title: 'Phương pháp làm việc', items: ['Agile/Scrum', 'CI/CD'] },
@@ -64,13 +64,13 @@ export const vi: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Jul 2026,
+    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–present,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Kỹ sư phần mềm tại bộ phận R&D',
         company: 'Cumulocity GmbH (trước đây là Software AG) — Đội Digital Twin Management',
-        dates: 'Th10 2022 – Th7 2026',
+        dates: 'Th10 2022 – hiện tại',
         bullets: [
           'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
           'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
@@ -89,7 +89,8 @@ export const vi: CvContent = {
         bullets: [
           // TODO: native review — cập nhật theo kinh nghiệm Cumulocity Platform Core đã mở rộng trong cv.md
           'Điều tra các lỗi cụm Kubernetes trong quá trình khởi tạo và vận hành, phân tích nguyên nhân gốc rễ và hỗ trợ khắc phục.',
-          'Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa cụm Kubernetes dựa trên Helm để triển khai và vận hành các môi trường Cumulocity.',
+          // TODO: native review — bổ sung chi tiết môi trường Linux theo CV đã cập nhật
+          'Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa cụm Kubernetes dựa trên Helm để triển khai và vận hành các môi trường Cumulocity dựa trên Linux.',
           'Xác định các điểm nghẽn trong quá trình tạo cụm và đóng góp các bản sửa lỗi cùng cải tiến để việc cấp phát nhanh và ổn định hơn.',
           'Tự động hóa việc cấp phát AWS bằng Bash và AWS CLI, giảm đáng kể thời gian thiết lập.',
         ],
