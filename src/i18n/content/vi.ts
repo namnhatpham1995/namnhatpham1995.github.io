@@ -73,6 +73,8 @@ export const vi: CvContent = {
         dates: 'Th10 2022 – hiện tại',
         bullets: [
           'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
+          // TODO: native review — bổ sung kinh nghiệm Angular theo cv.md
+          'Hỗ trợ điều chỉnh giao diện Angular theo các thay đổi của API backend, đồng thời gỡ lỗi và khắc phục các vấn đề tích hợp xuyên suốt frontend-backend để duy trì hành vi nhất quán.',
           'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
           'Tái cấu trúc microservice DTM để giảm độ phức tạp của các lớp và cải thiện khả năng bảo trì lâu dài.',
           'Dẫn dắt việc chuyển bộ kiểm thử tích hợp sang Cypress, cải thiện tốc độ chạy test và chu kỳ phản hồi CI.',

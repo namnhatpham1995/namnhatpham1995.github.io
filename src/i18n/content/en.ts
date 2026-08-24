@@ -65,6 +65,7 @@ export const en: CvContent = {
         dates: 'Oct 2022 – Present',
         bullets: [
           'Delivered end-to-end Digital Twin Management (DTM) features on the Cumulocity IoT platform, serving millions of connected assets.',
+          'Supported Angular frontend changes required by backend API updates, debugging and fixing cross-stack integration issues to keep frontend and backend behavior aligned.',
           'Adopted AI coding tools (GitHub Copilot, Claude Code) across the ticket lifecycle, significantly raising weekly delivery throughput.',
           'Refactored the DTM microservice to reduce class complexity and improve long-term maintainability.',
           'Led migration of the integration test suite to Cypress, speeding up test execution and CI feedback cycles.',

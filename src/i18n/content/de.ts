@@ -74,6 +74,8 @@ export const de: CvContent = {
         dates: 'Okt 2022 – heute',
         bullets: [
           'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
+          // TODO: native review — Angular frontend experience added to match cv.md
+          'Unterstützte die Anpassung des Angular-Frontends an Änderungen der Backend-APIs und behob Stack-übergreifende Integrationsfehler, um Frontend- und Backend-Verhalten konsistent zu halten.',
           'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
           'Refactoring des DTM-Microservice zur Reduzierung der Klassenkomplexität und Verbesserung der langfristigen Wartbarkeit.',
           'Leitung der Migration der Integrationstest-Suite zu Cypress, wodurch sich Testausführung und CI-Feedback-Zyklen beschleunigten.',
