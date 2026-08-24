@@ -56,8 +56,8 @@ export const de: CvContent = {
         title: 'Backend & Frontend',
         items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
       },
-      // TODO: native review — Helm added per updated CV
-      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Helm', 'Chef'] },
+      // TODO: native review — Linux added per updated CV
+      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
       { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
       { title: 'Datenbanken', items: ['PostgreSQL', 'MySQL'] },
       { title: 'Praktiken', items: ['Agile/Scrum', 'CI/CD'] },
@@ -65,13 +65,13 @@ export const de: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Jul 2026,
+    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–present,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Software-Ingenieur in F&E',
         company: 'Cumulocity GmbH (vormals Software AG) — Digital Twin Management Team',
-        dates: 'Okt 2022 – Jul 2026',
+        dates: 'Okt 2022 – heute',
         bullets: [
           'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
           'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
@@ -90,7 +90,8 @@ export const de: CvContent = {
         bullets: [
           // TODO: native review — updated to match the expanded Cumulocity Platform Core experience in cv.md
           'Untersuchte Kubernetes-Clusterfehler während der Bereitstellung und im laufenden Betrieb, führte Ursachenanalysen durch und unterstützte deren Behebung.',
-          'Pflegte und verbesserte Chef-Cookbooks sowie Helm-basierte Kubernetes-Cluster-Automatisierung für die Bereitstellung und den Betrieb von Cumulocity-Umgebungen.',
+          // TODO: native review — Linux environment detail added per updated CV
+          'Pflegte und verbesserte Chef-Cookbooks sowie Helm-basierte Kubernetes-Cluster-Automatisierung für die Bereitstellung und den Betrieb Linux-basierter Cumulocity-Umgebungen.',
           'Identifizierte Engpässe bei der Cluster-Erstellung und trug mit Korrekturen und Verbesserungen zu einer schnelleren und zuverlässigeren Bereitstellung bei.',
           'Automatisierung der AWS-Bereitstellung mit Bash und der AWS CLI, wodurch die Einrichtungszeit deutlich reduziert wurde.',
         ],
