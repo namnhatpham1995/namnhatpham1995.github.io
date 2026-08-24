@@ -74,6 +74,8 @@ export const de: CvContent = {
         dates: 'Okt 2022 – heute',
         bullets: [
           'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
+          // TODO: native review — Angular frontend experience added to match cv.md
+          'Unterstützte die Anpassung des Angular-Frontends an Änderungen der Backend-APIs und behob Stack-übergreifende Integrationsfehler, um Frontend- und Backend-Verhalten konsistent zu halten.',
           'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
           'Refactoring des DTM-Microservice zur Reduzierung der Klassenkomplexität und Verbesserung der langfristigen Wartbarkeit.',
           'Leitung der Migration der Integrationstest-Suite zu Cypress, wodurch sich Testausführung und CI-Feedback-Zyklen beschleunigten.',
@@ -103,9 +105,8 @@ export const de: CvContent = {
         bullets: [
           'Umsetzung manueller Handelsstrategien in regelbasierte Expert Advisors und eigene Indikatoren für MetaTrader 4/5.',
           'Backtesting und Optimierung von Strategien anhand historischer Marktdaten.',
-          // TODO: native review — added to match the new mentoring/delegation bullets in cv.md
-          'Betreute neue Teammitglieder in der MetaTrader-Entwicklung und der Umsetzung von Handelsstrategien und führte sie in den automatisierten Handels-Workflow des Teams ein.',
-          'Übernahm eine Teamleiter-Rolle, delegierte Entwicklungsaufgaben im Team und überwachte den Fortschritt, um die Lieferung auf Kurs zu halten.',
+          // TODO: native review — mentoring and team-lead details combined to match cv.md
+          'Betreute neue Teammitglieder in der MetaTrader-Entwicklung und der Umsetzung von Handelsstrategien, führte sie in den automatisierten Handels-Workflow ein, leitete das Team, delegierte Entwicklungsaufgaben und überwachte den Fortschritt.',
         ],
       },
     ],

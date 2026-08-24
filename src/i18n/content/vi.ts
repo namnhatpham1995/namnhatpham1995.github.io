@@ -73,6 +73,8 @@ export const vi: CvContent = {
         dates: 'Th10 2022 – hiện tại',
         bullets: [
           'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
+          // TODO: native review — bổ sung kinh nghiệm Angular theo cv.md
+          'Hỗ trợ điều chỉnh giao diện Angular theo các thay đổi của API backend, đồng thời gỡ lỗi và khắc phục các vấn đề tích hợp xuyên suốt frontend-backend để duy trì hành vi nhất quán.',
           'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
           'Tái cấu trúc microservice DTM để giảm độ phức tạp của các lớp và cải thiện khả năng bảo trì lâu dài.',
           'Dẫn dắt việc chuyển bộ kiểm thử tích hợp sang Cypress, cải thiện tốc độ chạy test và chu kỳ phản hồi CI.',
@@ -102,9 +104,8 @@ export const vi: CvContent = {
         bullets: [
           'Chuyển các chiến lược giao dịch thủ công thành Expert Advisor theo quy tắc và các chỉ báo tùy chỉnh cho MetaTrader 4/5.',
           'Backtest và tối ưu hóa chiến lược dựa trên dữ liệu thị trường lịch sử.',
-          // TODO: native review — added to match the new mentoring/delegation bullets in cv.md
-          'Hướng dẫn (mentor) các thành viên mới về phát triển MetaTrader và triển khai chiến lược giao dịch, giúp họ làm quen với quy trình giao dịch tự động của nhóm.',
-          'Đảm nhận vai trò trưởng nhóm, phân công công việc phát triển cho các thành viên và giám sát tiến độ để đảm bảo tiến độ bàn giao.',
+          // TODO: native review — gộp nội dung hướng dẫn và dẫn dắt nhóm theo cv.md
+          'Hướng dẫn (mentor) các thành viên mới về phát triển MetaTrader và triển khai chiến lược giao dịch, giúp họ làm quen với quy trình giao dịch tự động, đồng thời dẫn dắt nhóm bằng cách phân công công việc và giám sát tiến độ.',
         ],
       },
     ],
