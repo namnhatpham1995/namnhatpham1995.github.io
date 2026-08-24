@@ -92,8 +92,7 @@ export const en: CvContent = {
         bullets: [
           'Converted manual trading strategies into rule-based Expert Advisors and custom indicators for MetaTrader 4/5.',
           'Backtested and optimized strategies against historical market data.',
-          "Mentored new team members on MetaTrader development and strategy-implementation practices, onboarding them into the team's automated trading workflow.",
-          'Took on a team-lead capacity, delegating development tasks across the team and overseeing progress to keep delivery on track.',
+          "Mentored new team members on MetaTrader development and strategy-implementation practices, onboarding them into the team's automated trading workflow, and led the team by delegating development tasks and overseeing progress to keep delivery on track.",
         ],
       },
     ],
