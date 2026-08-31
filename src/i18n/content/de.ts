@@ -28,23 +28,17 @@ export const de: CvContent = {
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
     // TODO: native review — updated to match the 2026 general CV summary
+    // TODO: native review - CV summary refreshed on 2026-08-31
     summary: [
-      { text: 'Software-Ingenieur mit ' },
-      { text: 'über 5 Jahren', strong: true },
-      {
-        text: ' Erfahrung in der Entwicklung produktiver Backend-Dienste, REST-APIs und Microservices auf einer Enterprise-IoT-Plattform, die Millionen von Assets und Geräten verbindet. ',
-      },
-      {
-        text: 'Entwickelte microservice-deployer von einem Teambedarf zu einem offiziell eingeführten internen Produkt weiter',
-        strong: true,
-      },
-      {
-        text: ', das heute teamübergreifend Cumulocity-Deployments standardisiert, und migrierte Python-basierte OEE-Funktionalität im Rahmen der Plattformmodernisierung in einen Java-Spring-Boot-Microservice. Sehr gute Kenntnisse in ',
-      },
-      { text: 'Java und Spring Boot', strong: true },
-      {
-        text: ' sowie Produktionserfahrung mit Python und TypeScript, AWS-Zertifizierung und praktischer Erfahrung mit Docker, Kubernetes, CI/CD und Integrationstests.',
-      },
+      { text: "Software-Ingenieur mit " },
+      { text: "über 5 Jahren", strong: true },
+      { text: " Erfahrung und Schwerpunkt auf " },
+      { text: "Java/Spring-Boot", strong: true },
+      { text: "-Backend-Diensten, REST-APIs und Microservices für B2B-Kunden auf einer IoT-Plattform, die Millionen von Assets und Geräten verbindet. Entwickelte " },
+      { text: "microservice-deployer", strong: true },
+      { text: ", das als offizielles internes Produkt teamübergreifend eingesetzt wird, und wirkte an der OEE-Migration von Python zu Spring Boot mit. Erfahrung mit " },
+      { text: "CI/CD-Automatisierung", strong: true },
+      { text: ", Integrationstests, Docker und Kubernetes." },
     ],
   },
   skills: {
@@ -71,42 +65,39 @@ export const de: CvContent = {
       {
         role: 'Software-Ingenieur in F&E',
         company: 'Cumulocity GmbH (vormals Software AG) — Digital Twin Management Team',
-        dates: 'Okt 2022 – heute',
+        dates: "Oktober 2022 - heute",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          'Umsetzung von Digital-Twin-Management(DTM)-Features auf der Cumulocity-IoT-Plattform für Millionen verbundener Assets.',
-          // TODO: native review — Angular frontend experience added to match cv.md
-          'Unterstützte die Anpassung des Angular-Frontends an Änderungen der Backend-APIs und behob Stack-übergreifende Integrationsfehler, um Frontend- und Backend-Verhalten konsistent zu halten.',
-          'Einsatz von KI-Coding-Tools (GitHub Copilot, Claude Code) über den gesamten Ticket-Lebenszyklus, wodurch der wöchentliche Durchsatz deutlich gesteigert wurde.',
-          'Refactoring des DTM-Microservice zur Reduzierung der Klassenkomplexität und Verbesserung der langfristigen Wartbarkeit.',
-          'Leitung der Migration der Integrationstest-Suite zu Cypress, wodurch sich Testausführung und CI-Feedback-Zyklen beschleunigten.',
-          'Migration eines Python-basierten OEE-Microservice zu einem Java-Spring-Boot-Microservice.',
-          'Python-Simulationsskripte für Last- und Integrationstests.',
-          'Aufbau und Pflege von GitHub-Actions-CI/CD-Pipelines für Anwendungen und Microservices.',
-          'Entwurf eines Bash-Deployment-Helfers, der die teamübergreifende Debugging-Zeit reduzierte.',
+          "Entwickelte microservice-deployer, einen Bash-Wrapper für c8y-cli, um Uploads von Cumulocity-Microservices, Plugins und Anwendungen zu vereinheitlichen. Das Werkzeug wurde zu einem offiziellen internen Produkt, das teamübergreifend eingesetzt wird und doppelte Arbeit bei Deployments reduziert.",
+          "Migrierte fast die Hälfte der OEE-REST-API von Python zu Java/Spring Boot und trug damit zur abgeschlossenen Migration des Teams bei. Reduzierte doppelten Code mit Factory- und Builder-Patterns und zerlegte große Methoden in kleinere, testbare Einheiten, um die Wartbarkeit zu verbessern. Analysierte vorhandene Logik und verbesserte oder ergänzte sie bei Bedarf.",
+          "Erarbeite mit erfahrenen Teamkollegen B2B-Anforderungen und stimme Änderungen an Schemata, Modellen und REST-APIs sowie Fehlerbehebungen für den Digital-Twin-Management-Microservice ab.",
+          "Verantworte die Umsetzung bis zum Deployment in der Vorproduktionsumgebung: implementiere die vereinbarten Java/Spring-Boot-Änderungen, schreibe Unit- und Cypress-Integrationstests und verbessere GitHub-Actions-CI/CD-Pipelines für automatisierte Validierung und Regressionsprüfungen. Prüfe das Zusammenspiel zwischen Microservice und Cumulocity und stelle die Funktionalität für Demos mit Geschäftskunden bereit.",
+          "Unterstütze Anpassungen des Angular-Frontends nach Änderungen an Backend-APIs und behebe Integrationsfehler, damit Frontend und Backend konsistent zusammenarbeiten.",
+          "Automatisierte die API-Dokumentation über die Swagger/OpenAPI-Konfiguration bei jedem Microservice-Build, sodass die Spezifikation mit geringem manuellem Aufwand aktuell bleibt.",
+          "Entwickelte Python-Simulationsskripte für Stress- und Integrationstests der OEE-Anwendung.",
+          "Nutze GitHub Copilot und Claude Code im gesamten Ticketablauf, von der Anforderungsanalyse und Implementierung bis zur Fehlersuche und zum Testen.",
         ],
       },
       {
         role: 'Software-Ingenieur in F&E',
         company: 'Software AG — Cumulocity Platform Core Team',
-        dates: 'Okt 2021 – Okt 2022',
+        dates: "Oktober 2021 - Oktober 2022",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          // TODO: native review — updated to match the expanded Cumulocity Platform Core experience in cv.md
-          'Untersuchte Kubernetes-Clusterfehler während der Bereitstellung und im laufenden Betrieb, führte Ursachenanalysen durch und unterstützte deren Behebung.',
-          // TODO: native review — Linux environment detail added per updated CV
-          'Pflegte und verbesserte Chef-Cookbooks sowie Helm-basierte Kubernetes-Cluster-Automatisierung für die Bereitstellung und den Betrieb Linux-basierter Cumulocity-Umgebungen.',
-          'Identifizierte Engpässe bei der Cluster-Erstellung und trug mit Korrekturen und Verbesserungen zu einer schnelleren und zuverlässigeren Bereitstellung bei.',
-          'Automatisierung der AWS-Bereitstellung mit Bash und der AWS CLI, wodurch die Einrichtungszeit deutlich reduziert wurde.',
+          "Stellte die Erstellung von Kubernetes-Clustern wieder her, indem ich Logs analysierte und einen Konfigurationskonflikt nach Cumulocity-Core-Updates identifizierte. Meldete das Problem und aktualisierte die betroffenen Einstellungen.",
+          "Untersuchte Kubernetes-Clusterfehler während der Bereitstellung und im laufenden Betrieb, führte Ursachenanalysen auf der Cumulocity-Kernplattform durch und unterstützte deren Behebung.",
+          "Pflegte und verbesserte Chef-Cookbooks und Helm-basierte Kubernetes-Automatisierung für Linux-basierte Cumulocity-Umgebungen und trug zur Behebung von Engpässen bei der Bereitstellung bei.",
+          "Automatisierte die Bereitstellung von AWS-Clustern mit Bash und AWS-CLI-Skripten, verringerte manuelle Einrichtungsarbeit und verkürzte die Bereitstellungszeit.",
         ],
       },
       {
         role: 'Software-Entwickler / Teamleiter',
         company: 'VGU Forex Club',
-        dates: 'Apr 2018 – Mär 2019',
+        dates: "April 2018 - März 2019",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          'Umsetzung manueller Handelsstrategien in regelbasierte Expert Advisors und eigene Indikatoren für MetaTrader 4/5.',
-          'Backtesting und Optimierung von Strategien anhand historischer Marktdaten.',
-          // TODO: native review — mentoring and team-lead details combined to match cv.md
-          'Betreute neue Teammitglieder in der MetaTrader-Entwicklung und der Umsetzung von Handelsstrategien, führte sie in den automatisierten Handels-Workflow ein, leitete das Team, delegierte Entwicklungsaufgaben und überwachte den Fortschritt.',
+          "Überführte manuelle Handelsstrategien in Expert Advisors und benutzerdefinierte Indikatoren für MetaTrader 4 und 5 und führte anschließend Backtests mit historischen Marktdaten durch.",
+          "Leitete das Entwicklungsteam durch Aufgabenverteilung und Mentoring. Unterstützte Mitglieder dabei, Kundenbedürfnisse selbstständig zu analysieren, Anforderungen zu formulieren, die Entwicklung zu planen und MetaTrader-Handelswerkzeuge zu implementieren, zu testen und auszuliefern.",
         ],
       },
     ],

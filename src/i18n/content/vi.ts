@@ -27,23 +27,17 @@ export const vi: CvContent = {
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
     // Updated to match the 2026 general CV summary
+    // TODO: native review - CV summary refreshed on 2026-08-31
     summary: [
-      { text: 'Kỹ sư phần mềm với ' },
-      { text: 'hơn 5 năm', strong: true },
-      {
-        text: ' phát triển dịch vụ backend production, REST API và microservice trên nền tảng IoT doanh nghiệp kết nối hàng triệu tài sản và thiết bị. ',
-      },
-      {
-        text: 'Đưa microservice-deployer từ nhu cầu của một nhóm trở thành sản phẩm nội bộ được chính thức áp dụng',
-        strong: true,
-      },
-      {
-        text: ', hiện được nhiều nhóm trong công ty sử dụng để chuẩn hóa quy trình triển khai Cumulocity; đồng thời chuyển chức năng OEE từ Python sang microservice Java Spring Boot trong quá trình hiện đại hóa nền tảng. Thế mạnh về ',
-      },
-      { text: 'Java và Spring Boot', strong: true },
-      {
-        text: ', cùng kinh nghiệm production với Python và TypeScript, chứng chỉ AWS, và kinh nghiệm thực tế về Docker, Kubernetes, CI/CD và kiểm thử tích hợp.',
-      },
+      { text: "Kỹ sư phần mềm với " },
+      { text: "hơn 5 năm", strong: true },
+      { text: " kinh nghiệm, tập trung vào dịch vụ backend " },
+      { text: "Java/Spring Boot", strong: true },
+      { text: ", REST API và microservice cho khách hàng B2B trên nền tảng IoT kết nối hàng triệu tài sản và thiết bị. Xây dựng " },
+      { text: "microservice-deployer", strong: true },
+      { text: ", được các nhóm trong công ty sử dụng như một sản phẩm nội bộ chính thức, và tham gia chuyển đổi OEE từ Python sang Spring Boot. Có kinh nghiệm về " },
+      { text: "tự động hóa CI/CD", strong: true },
+      { text: ", kiểm thử tích hợp, Docker và Kubernetes." },
     ],
   },
   skills: {
@@ -70,42 +64,39 @@ export const vi: CvContent = {
       {
         role: 'Kỹ sư phần mềm tại bộ phận R&D',
         company: 'Cumulocity GmbH (trước đây là Software AG) — Đội Digital Twin Management',
-        dates: 'Th10 2022 – hiện tại',
+        dates: "Tháng 10 năm 2022 - hiện tại",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          'Triển khai các tính năng Digital Twin Management (DTM) trên nền tảng Cumulocity IoT phục vụ hàng triệu thiết bị kết nối.',
-          // TODO: native review — bổ sung kinh nghiệm Angular theo cv.md
-          'Hỗ trợ điều chỉnh giao diện Angular theo các thay đổi của API backend, đồng thời gỡ lỗi và khắc phục các vấn đề tích hợp xuyên suốt frontend-backend để duy trì hành vi nhất quán.',
-          'Sử dụng các công cụ lập trình AI (GitHub Copilot, Claude Code) trong suốt vòng đời ticket, giúp tăng đáng kể hiệu suất xử lý ticket hàng tuần.',
-          'Tái cấu trúc microservice DTM để giảm độ phức tạp của các lớp và cải thiện khả năng bảo trì lâu dài.',
-          'Dẫn dắt việc chuyển bộ kiểm thử tích hợp sang Cypress, cải thiện tốc độ chạy test và chu kỳ phản hồi CI.',
-          'Chuyển đổi microservice OEE viết bằng Python sang microservice Java Spring Boot.',
-          'Viết các kịch bản mô phỏng bằng Python để kiểm thử tải và kiểm thử tích hợp.',
-          'Xây dựng và bảo trì các pipeline CI/CD bằng GitHub Actions cho ứng dụng và microservice.',
-          'Thiết kế công cụ hỗ trợ triển khai bằng Bash, giúp giảm thời gian gỡ lỗi giữa các đội.',
+          "Xây dựng microservice-deployer, một công cụ Bash bọc c8y-cli, để chuẩn hóa việc tải microservice, plugin và ứng dụng lên Cumulocity. Công cụ trở thành sản phẩm nội bộ chính thức được nhiều nhóm trong công ty sử dụng, giảm công việc triển khai trùng lặp.",
+          "Chuyển gần một nửa REST API của OEE từ Python sang Java/Spring Boot, góp phần hoàn tất quá trình chuyển đổi của nhóm. Giảm mã trùng lặp bằng các mẫu thiết kế Factory và Builder, đồng thời tách các phương thức lớn thành những phần nhỏ hơn, dễ kiểm thử để cải thiện khả năng bảo trì. Phân tích logic hiện có và cải tiến hoặc bổ sung logic khi cần.",
+          "Cùng các đồng nghiệp có kinh nghiệm trong nhóm ghi nhận yêu cầu B2B và thống nhất thay đổi về schema, model, REST API cũng như các lỗi cần sửa trong microservice Digital Twin Management.",
+          "Chịu trách nhiệm từ triển khai mã đến đưa lên môi trường tiền sản xuất: phát triển các thay đổi Java/Spring Boot đã thống nhất, viết kiểm thử đơn vị và kiểm thử tích hợp bằng Cypress, đồng thời cải tiến CI/CD trên GitHub Actions để tự động kiểm tra thay đổi và phát hiện lỗi hồi quy. Kiểm tra tương tác giữa microservice và nền tảng Cumulocity, rồi triển khai chức năng cho các buổi demo với khách hàng doanh nghiệp.",
+          "Hỗ trợ cập nhật giao diện Angular sau các thay đổi API backend, gỡ lỗi và khắc phục vấn đề tích hợp để frontend và backend hoạt động nhất quán.",
+          "Tự động tạo tài liệu API qua cấu hình Swagger/OpenAPI trong mỗi lần build microservice, giúp đặc tả luôn được cập nhật với ít thao tác thủ công.",
+          "Phát triển các kịch bản mô phỏng bằng Python để kiểm thử áp lực và kiểm thử tích hợp cho ứng dụng OEE.",
+          "Sử dụng GitHub Copilot và Claude Code trong toàn bộ vòng đời ticket, từ phân tích yêu cầu và triển khai đến gỡ lỗi và kiểm thử.",
         ],
       },
       {
         role: 'Kỹ sư phần mềm tại bộ phận R&D',
         company: 'Software AG — Đội Cumulocity Platform Core',
-        dates: 'Th10 2021 – Th10 2022',
+        dates: "Tháng 10 năm 2021 - tháng 10 năm 2022",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          // TODO: native review — cập nhật theo kinh nghiệm Cumulocity Platform Core đã mở rộng trong cv.md
-          'Điều tra các lỗi cụm Kubernetes trong quá trình khởi tạo và vận hành, phân tích nguyên nhân gốc rễ và hỗ trợ khắc phục.',
-          // TODO: native review — bổ sung chi tiết môi trường Linux theo CV đã cập nhật
-          'Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa cụm Kubernetes dựa trên Helm để triển khai và vận hành các môi trường Cumulocity dựa trên Linux.',
-          'Xác định các điểm nghẽn trong quá trình tạo cụm và đóng góp các bản sửa lỗi cùng cải tiến để việc cấp phát nhanh và ổn định hơn.',
-          'Tự động hóa việc cấp phát AWS bằng Bash và AWS CLI, giảm đáng kể thời gian thiết lập.',
+          "Khôi phục khả năng tạo cụm Kubernetes bằng cách phân tích log và xác định xung đột cấu hình sau các bản cập nhật Cumulocity core. Báo cáo vấn đề và cập nhật các thiết lập liên quan.",
+          "Điều tra và hỗ trợ khắc phục lỗi cụm Kubernetes trong quá trình khởi tạo và vận hành, phân tích nguyên nhân trên nền tảng lõi Cumulocity.",
+          "Duy trì và cải tiến Chef cookbooks cùng quy trình tự động hóa Kubernetes dựa trên Helm cho các môi trường Cumulocity chạy Linux, đóng góp các bản sửa lỗi cho điểm nghẽn trong quá trình cấp phát.",
+          "Tự động hóa việc cấp phát cụm AWS bằng Bash và các script AWS CLI, giảm thao tác thiết lập thủ công và rút ngắn thời gian cấp phát.",
         ],
       },
       {
         role: 'Lập trình viên phần mềm / Trưởng nhóm',
         company: 'Câu lạc bộ Forex Đại học Việt-Đức (VGU)',
-        dates: 'Th4 2018 – Th3 2019',
+        dates: "Tháng 4 năm 2018 - tháng 3 năm 2019",
+        // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
-          'Chuyển các chiến lược giao dịch thủ công thành Expert Advisor theo quy tắc và các chỉ báo tùy chỉnh cho MetaTrader 4/5.',
-          'Backtest và tối ưu hóa chiến lược dựa trên dữ liệu thị trường lịch sử.',
-          // TODO: native review — gộp nội dung hướng dẫn và dẫn dắt nhóm theo cv.md
-          'Hướng dẫn (mentor) các thành viên mới về phát triển MetaTrader và triển khai chiến lược giao dịch, giúp họ làm quen với quy trình giao dịch tự động, đồng thời dẫn dắt nhóm bằng cách phân công công việc và giám sát tiến độ.',
+          "Chuyển các chiến lược giao dịch thủ công thành Expert Advisor và chỉ báo tùy chỉnh cho MetaTrader 4 và 5, sau đó kiểm thử trên dữ liệu thị trường lịch sử.",
+          "Dẫn dắt nhóm phát triển thông qua phân công nhiệm vụ và hướng dẫn thành viên. Giúp thành viên có thể tự phân tích nhu cầu khách hàng, xác định yêu cầu, lập kế hoạch phát triển, triển khai, kiểm thử và bàn giao công cụ giao dịch MetaTrader.",
         ],
       },
     ],
