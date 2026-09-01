@@ -1,0 +1,216 @@
+---
+// Sibling dialog opened by any element carrying `data-open-assistant` (see
+// `network-intro.astro`'s "ask my assistant" button). Currently shows a
+// coming-soon placeholder; will grow into the real chat/voice widget once
+// the portfolio-voice-agent backend is deployed (see openspec change
+// voice-portfolio-agent, tasks.md section 2).
+interface Props {
+  labels: {
+    dialogLabel: string;
+    close: string;
+    heading: string;
+    body: string;
+  };
+}
+
+const { labels } = Astro.props;
+---
+
+<dialog class="assistant-dialog" id="assistant-dialog" aria-label={labels.dialogLabel}>
+  <div class="assistant-dialog__window">
+    <div class="assistant-dialog__chrome">
+      <span class="assistant-dialog__dot assistant-dialog__dot--red" aria-hidden="true"></span>
+      <span class="assistant-dialog__dot assistant-dialog__dot--amber" aria-hidden="true"></span>
+      <span class="assistant-dialog__dot assistant-dialog__dot--green" aria-hidden="true"></span>
+      <span class="assistant-dialog__path" aria-hidden="true">$ ai-assistant --status</span>
+      <button
+        type="button"
+        class="assistant-dialog__close"
+        data-assistant-dialog-close
+        aria-label={labels.close}
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="assistant-dialog__body">
+      <p class="assistant-dialog__heading">{labels.heading}</p>
+      <p>{labels.body}</p>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .assistant-dialog {
+    width: min(480px, calc(100vw - 2rem));
+    max-width: none;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: inherit;
+    overflow: hidden;
+    box-shadow:
+      0 24px 80px rgb(0 0 0 / 65%),
+      0 0 32px color-mix(in srgb, var(--color-accent-green) 14%, transparent);
+  }
+
+  .assistant-dialog::backdrop {
+    background: rgb(13 17 23 / 58%);
+    backdrop-filter: blur(3px);
+  }
+
+  .assistant-dialog__window {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .assistant-dialog__chrome {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 46px;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__dot {
+    width: 12px;
+    height: 12px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+  }
+
+  .assistant-dialog__dot--red {
+    background: var(--color-accent-red);
+  }
+
+  .assistant-dialog__dot--amber {
+    background: var(--color-accent-amber);
+  }
+
+  .assistant-dialog__dot--green {
+    background: var(--color-accent-green);
+  }
+
+  .assistant-dialog__path {
+    min-width: 0;
+    flex: 1;
+    margin-left: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .assistant-dialog__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: none;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .assistant-dialog__close:hover,
+  .assistant-dialog__close:focus-visible {
+    color: var(--color-text);
+    border-color: var(--color-accent-red);
+    background: color-mix(in srgb, var(--color-accent-red) 10%, transparent);
+  }
+
+  .assistant-dialog__body {
+    padding: var(--space-4);
+  }
+
+  .assistant-dialog__heading {
+    margin: 0 0 var(--space-2);
+    color: var(--color-accent-green);
+    font-size: 1rem;
+  }
+
+  .assistant-dialog__body p:last-child {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 640px) {
+    .assistant-dialog {
+      width: calc(100vw - 1rem);
+    }
+
+    .assistant-dialog__body {
+      padding: var(--space-3);
+    }
+
+    .assistant-dialog__path {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#assistant-dialog');
+  let opener: HTMLElement | null = null;
+
+  const openAssistantDialog = (source: HTMLElement | null) => {
+    if (!dialog || dialog.open) return;
+    opener = source;
+    dialog.showModal();
+  };
+
+  const closeAssistantDialog = () => {
+    if (dialog?.open) dialog.close();
+  };
+
+  const isFocusable = (el: HTMLElement) => document.body.contains(el) && !el.closest('[hidden]');
+
+  dialog?.addEventListener('close', () => {
+    // The opener may live inside the network overlay, which is `hidden` by
+    // the time this dialog closes (it was opened via the overlay's "ask my
+    // assistant" button, which also closes the overlay) - fall back to the
+    // page's main content so focus doesn't silently drop to <body>.
+    const target = opener && isFocusable(opener) ? opener : document.getElementById('main');
+    opener = null;
+    // Deferred: the browser's own focus-restoration-to-previously-focused-
+    // element (which runs as part of native dialog close) would otherwise
+    // race this call and can win, leaving focus on the (now-hidden) opener.
+    setTimeout(() => target?.focus({ preventScroll: true }), 0);
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('[data-assistant-dialog-close]')) {
+      closeAssistantDialog();
+      return;
+    }
+
+    if (event.target !== dialog) return;
+    const rect = dialog.getBoundingClientRect();
+    const outside =
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom;
+    if (outside) closeAssistantDialog();
+  });
+
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as HTMLElement).closest<HTMLElement>('[data-open-assistant]');
+    if (trigger) openAssistantDialog(trigger);
+  });
+</script>

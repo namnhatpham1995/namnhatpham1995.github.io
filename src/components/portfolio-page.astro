@@ -11,6 +11,7 @@ import ProjectCard from './project-card.astro';
 import LanguageSwitcher from './language-switcher.astro';
 import Typewriter from './typewriter.astro';
 import NetworkIntro from './network-intro.astro';
+import AssistantDialog from './assistant-dialog.astro';
 
 interface Props {
   locale: Locale;
@@ -46,6 +47,16 @@ const navItems = [
     skip: labels.networkSkip,
     close: labels.networkSectionClose,
     languageSwitcher: labels.languageSwitcherLabel,
+    assistant: labels.assistantButton,
+  }}
+/>
+
+<AssistantDialog
+  labels={{
+    dialogLabel: labels.assistantDialogLabel,
+    close: labels.assistantClose,
+    heading: labels.assistantComingSoonHeading,
+    body: labels.assistantComingSoonBody,
   }}
 />
 
@@ -59,7 +70,7 @@ const navItems = [
   <LanguageSwitcher current={locale} label={labels.languageSwitcherLabel} />
 </div>
 
-<main id="main">
+<main id="main" tabindex="-1">
   <TerminalWindow promptUser={labels.promptUser}>
     <section id="intro" aria-labelledby="intro-heading">
       <SectionHeading id="intro-heading" command="$ whoami" label={content.nav.intro} />
