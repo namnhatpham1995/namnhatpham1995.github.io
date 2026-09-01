@@ -22,6 +22,7 @@ interface Props {
     skip: string;
     close: string;
     languageSwitcher: string;
+    assistant: string;
   };
 }
 
@@ -177,9 +178,14 @@ const ringLinks = nodes.map((node, i) => ({
     }
   </div>
 
-  <button type="button" class="network-intro__skip" data-network-skip>
-    <span aria-hidden="true">$&nbsp;</span>{labels.skip}
-  </button>
+  <div class="network-intro__actions">
+    <button type="button" class="network-intro__assistant" data-network-assistant data-open-assistant>
+      <span aria-hidden="true">$&nbsp;</span>{labels.assistant}
+    </button>
+    <button type="button" class="network-intro__skip" data-network-skip>
+      <span aria-hidden="true">$&nbsp;</span>{labels.skip}
+    </button>
+  </div>
 </div>
 
 <dialog class="network-section-dialog" id="network-section-dialog" aria-label={labels.dialogLabel}>
@@ -528,10 +534,18 @@ const ringLinks = nodes.map((node, i) => ({
 
   /* --- Skip -------------------------------------------------------------- */
 
-  .network-intro__skip {
+  .network-intro__actions {
     align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
     max-width: calc(100vw - var(--space-5));
     margin: 0 0 calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .network-intro__assistant,
+  .network-intro__skip {
     padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
@@ -545,6 +559,11 @@ const ringLinks = nodes.map((node, i) => ({
     transition: color 160ms ease, border-color 160ms ease;
   }
 
+  .network-intro__assistant {
+    border-color: color-mix(in srgb, var(--color-accent-green) 55%, var(--color-border));
+    color: var(--color-accent-green);
+  }
+
   @keyframes network-skip-in {
     from {
       opacity: 0;
@@ -556,6 +575,8 @@ const ringLinks = nodes.map((node, i) => ({
     }
   }
 
+  .network-intro__assistant:hover,
+  .network-intro__assistant:focus-visible,
   .network-intro__skip:hover,
   .network-intro__skip:focus-visible {
     color: var(--color-accent-green);
@@ -596,6 +617,7 @@ const ringLinks = nodes.map((node, i) => ({
     .network-intro__center,
     .network-intro__node-circle,
     .network-intro__center-ring,
+    .network-intro__assistant,
     .network-intro__skip {
       animation: none;
     }
@@ -1008,6 +1030,10 @@ const ringLinks = nodes.map((node, i) => ({
       const node = el.closest<HTMLElement>('[data-network-node]');
       if (node?.dataset.networkNode) {
         openSectionDialog(node.dataset.networkNode, node);
+        return;
+      }
+      if (el.closest('[data-network-assistant]')) {
+        closeOverlay();
         return;
       }
       if (el.closest('[data-network-skip]')) {
