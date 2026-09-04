@@ -6,7 +6,7 @@ async function mockChatResponse(page: Page, body: string) {
   });
 }
 
-test('ask my assistant closes the network overlay and opens the chat dialog', async ({ page }) => {
+test('ask my assistant opens the chat dialog on top of the still-open network overlay', async ({ page }) => {
   await page.goto('/');
 
   const overlay = page.locator('#network-intro');
@@ -15,13 +15,14 @@ test('ask my assistant closes the network overlay and opens the chat dialog', as
   await expect(overlay).toBeVisible();
 
   await trigger.click();
-  await expect(overlay).toBeHidden();
+  await expect(overlay).toBeVisible();
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Conversations are saved for quality review')).toBeVisible();
 
   await dialog.locator('[data-assistant-dialog-close]').click();
   await expect(dialog).toBeHidden();
-  await expect(page.locator('#main')).toBeFocused();
+  await expect(overlay).toBeVisible();
+  await expect(trigger).toBeFocused();
 });
 
 test('Escape closes the assistant dialog', async ({ page }) => {
