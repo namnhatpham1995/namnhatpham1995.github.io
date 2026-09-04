@@ -127,27 +127,15 @@ test('summary emphasizes the strongest CV proof points in every language', async
   const summaries = [
     {
       path: '/',
-      highlights: [
-        '5+ years',
-        'Turned microservice-deployer from a team need into an officially adopted internal product',
-        'Java and Spring Boot',
-      ],
+      highlights: ['5+ years', 'Java/Spring Boot', 'B2B', 'microservice-deployer', 'CI/CD automation'],
     },
     {
       path: '/de/',
-      highlights: [
-        'über 5 Jahren',
-        'Entwickelte microservice-deployer von einem Teambedarf zu einem offiziell eingeführten internen Produkt weiter',
-        'Java und Spring Boot',
-      ],
+      highlights: ['über 5 Jahren', 'Java/Spring-Boot', 'microservice-deployer', 'CI/CD-Automatisierung'],
     },
     {
       path: '/vi/',
-      highlights: [
-        'hơn 5 năm',
-        'Đưa microservice-deployer từ nhu cầu của một nhóm trở thành sản phẩm nội bộ được chính thức áp dụng',
-        'Java và Spring Boot',
-      ],
+      highlights: ['hơn 5 năm', 'Java/Spring Boot', 'microservice-deployer', 'tự động hóa CI/CD'],
     },
   ];
 
