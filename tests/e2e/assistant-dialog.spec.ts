@@ -1,6 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
-test('ask my assistant closes the network overlay and opens the coming-soon dialog', async ({ page }) => {
+async function mockChatResponse(page: Page, body: string) {
+  await page.route('**/chat', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'text/plain', body });
+  });
+}
+
+test('ask my assistant closes the network overlay and opens the chat dialog', async ({ page }) => {
   await page.goto('/');
 
   const overlay = page.locator('#network-intro');
@@ -11,7 +17,7 @@ test('ask my assistant closes the network overlay and opens the coming-soon dial
   await trigger.click();
   await expect(overlay).toBeHidden();
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByText('Coming soon')).toBeVisible();
+  await expect(dialog.getByText('Conversations are saved for quality review')).toBeVisible();
 
   await dialog.locator('[data-assistant-dialog-close]').click();
   await expect(dialog).toBeHidden();
@@ -42,10 +48,55 @@ test('outside click closes the assistant dialog', async ({ page }) => {
   await expect(dialog).toBeHidden();
 });
 
+test('typing a message sends it and renders the streamed reply', async ({ page }) => {
+  await mockChatResponse(page, 'Nam mostly works in Java and Spring Boot.');
+  await page.goto('/');
+
+  await page.locator('[data-network-assistant]').click();
+  const dialog = page.locator('#assistant-dialog');
+  await dialog.locator('[data-assistant-input]').fill('What frameworks does Nam use?');
+  await dialog.locator('[data-assistant-form]').getByRole('button', { name: 'Send' }).click();
+
+  await expect(dialog.locator('.assistant-dialog__message--user')).toHaveText('What frameworks does Nam use?');
+  await expect(dialog.locator('.assistant-dialog__message--assistant')).toHaveText(
+    'Nam mostly works in Java and Spring Boot.'
+  );
+  await expect(dialog.locator('[data-assistant-chips]')).toBeHidden();
+});
+
+test('selecting a suggested question sends it immediately', async ({ page }) => {
+  await mockChatResponse(page, 'Two weeks.');
+  await page.goto('/');
+
+  await page.locator('[data-network-assistant]').click();
+  const dialog = page.locator('#assistant-dialog');
+  const chip = dialog.locator('[data-assistant-chip]').first();
+  const questionText = await chip.textContent();
+  await chip.click();
+
+  await expect(dialog.locator('.assistant-dialog__message--user')).toHaveText(questionText ?? '');
+  await expect(dialog.locator('.assistant-dialog__message--assistant')).toHaveText('Two weeks.');
+});
+
+test('a failed request shows an inline error instead of breaking the widget', async ({ page }) => {
+  await page.route('**/chat', async (route) => {
+    await route.fulfill({ status: 500, contentType: 'text/plain', body: 'error' });
+  });
+  await page.goto('/');
+
+  await page.locator('[data-network-assistant]').click();
+  const dialog = page.locator('#assistant-dialog');
+  await dialog.locator('[data-assistant-input]').fill('hello');
+  await dialog.locator('[data-assistant-form]').getByRole('button', { name: 'Send' }).click();
+
+  await expect(dialog.locator('.assistant-dialog__message--error')).toBeVisible();
+  await expect(dialog.locator('[data-assistant-input]')).toBeEnabled();
+});
+
 const localeCases = [
-  { path: '/', button: 'ask --assistant', heading: 'Coming soon' },
-  { path: '/de/', button: 'ask --assistant // KI-Assistent', heading: 'Demnächst verfügbar' },
-  { path: '/vi/', button: 'ask --assistant // Trợ lý AI', heading: 'Sắp ra mắt' },
+  { path: '/', button: 'ask --assistant', placeholder: 'Type a message…' },
+  { path: '/de/', button: 'ask --assistant // KI-Assistent', placeholder: 'Nachricht eingeben…' },
+  { path: '/vi/', button: 'ask --assistant // Trợ lý AI', placeholder: 'Nhập tin nhắn…' },
 ];
 
 for (const localeCase of localeCases) {
@@ -56,6 +107,9 @@ for (const localeCase of localeCases) {
     await expect(trigger).toContainText(localeCase.button);
 
     await trigger.click();
-    await expect(page.locator('#assistant-dialog').getByText(localeCase.heading)).toBeVisible();
+    await expect(page.locator('#assistant-dialog [data-assistant-input]')).toHaveAttribute(
+      'placeholder',
+      localeCase.placeholder
+    );
   });
 }

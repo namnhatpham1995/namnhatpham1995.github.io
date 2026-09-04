@@ -17,8 +17,14 @@ export interface UiLabels {
   assistantButton: string;
   assistantDialogLabel: string;
   assistantClose: string;
-  assistantComingSoonHeading: string;
-  assistantComingSoonBody: string;
+  assistantDisclosure: string;
+  assistantPlaceholder: string;
+  assistantSend: string;
+  assistantSuggestedLabel: string;
+  assistantQuestions: string[];
+  assistantUnavailable: string;
+  assistantRateLimited: string;
+  assistantInputTooLong: string;
 }
 
 export const uiLabels: Record<Locale, UiLabels> = {
@@ -39,9 +45,25 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantButton: 'ask --assistant',
     assistantDialogLabel: 'AI assistant',
     assistantClose: 'Close assistant window',
-    assistantComingSoonHeading: 'Coming soon',
-    assistantComingSoonBody:
-      "An AI assistant grounded in this site's content is in the works — soon it will answer questions about my experience, skills, and background, by text or voice. More soon.",
+    assistantDisclosure:
+      "Conversations are saved for quality review and processed by Google's Gemini API.",
+    assistantPlaceholder: 'Type a message…',
+    assistantSend: 'Send',
+    assistantSuggestedLabel: 'Try asking:',
+    assistantQuestions: [
+      "What's your notice period?",
+      'Do you need visa sponsorship?',
+      'Are you open to relocation?',
+      'What are your salary expectations?',
+      'Why are you looking to leave your current role?',
+      "What's the project you're most proud of?",
+      'How much Java and Spring Boot experience do you have?',
+      'Are you open to remote work?',
+      'What do you currently work on at Cumulocity?',
+    ],
+    assistantUnavailable: 'Sorry, the assistant is temporarily unavailable. Please try again in a moment.',
+    assistantRateLimited: "You're sending messages too quickly — please wait a moment and try again.",
+    assistantInputTooLong: 'That message is too long — please shorten it and try again.',
   },
   de: {
     skipToContent: 'Zum Inhalt springen',
@@ -60,9 +82,25 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantButton: 'ask --assistant // KI-Assistent',
     assistantDialogLabel: 'KI-Assistent',
     assistantClose: 'Assistentenfenster schließen',
-    assistantComingSoonHeading: 'Demnächst verfügbar',
-    assistantComingSoonBody:
-      'Ein KI-Assistent auf Basis der Inhalte dieser Seite ist in Arbeit — er wird bald Fragen zu meiner Erfahrung, meinen Fähigkeiten und meinem Werdegang per Text oder Sprache beantworten. Mehr dazu in Kürze.',
+    assistantDisclosure:
+      'Unterhaltungen werden zur Qualitätsprüfung gespeichert und über die Gemini-API von Google verarbeitet.',
+    assistantPlaceholder: 'Nachricht eingeben…',
+    assistantSend: 'Senden',
+    assistantSuggestedLabel: 'Frag zum Beispiel:',
+    assistantQuestions: [
+      'Wie ist deine Kündigungsfrist?',
+      'Benötigst du ein Visum-Sponsoring?',
+      'Bist du offen für einen Umzug?',
+      'Was sind deine Gehaltsvorstellungen?',
+      'Warum möchtest du deine aktuelle Stelle wechseln?',
+      'Auf welches Projekt bist du am meisten stolz?',
+      'Wie viel Erfahrung hast du mit Java und Spring Boot?',
+      'Bist du offen für Remote-Arbeit?',
+      'Woran arbeitest du aktuell bei Cumulocity?',
+    ],
+    assistantUnavailable: 'Der Assistent ist momentan nicht verfügbar. Bitte versuche es gleich noch einmal.',
+    assistantRateLimited: 'Du sendest Nachrichten zu schnell — bitte warte einen Moment und versuche es erneut.',
+    assistantInputTooLong: 'Diese Nachricht ist zu lang — bitte kürze sie und versuche es erneut.',
   },
   vi: {
     skipToContent: 'Chuyển đến nội dung',
@@ -81,8 +119,24 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantButton: 'ask --assistant // Trợ lý AI',
     assistantDialogLabel: 'Trợ lý AI',
     assistantClose: 'Đóng cửa sổ trợ lý',
-    assistantComingSoonHeading: 'Sắp ra mắt',
-    assistantComingSoonBody:
-      'Một trợ lý AI dựa trên nội dung của trang này đang được xây dựng — trợ lý sẽ sớm trả lời các câu hỏi về kinh nghiệm, kỹ năng và quá trình làm việc bằng văn bản hoặc giọng nói. Cập nhật sẽ có sớm.',
+    assistantDisclosure:
+      'Cuộc trò chuyện được lưu lại để kiểm tra chất lượng và được xử lý qua Gemini API của Google.',
+    assistantPlaceholder: 'Nhập tin nhắn…',
+    assistantSend: 'Gửi',
+    assistantSuggestedLabel: 'Thử hỏi:',
+    assistantQuestions: [
+      'Thời gian báo trước nghỉ việc của bạn là bao lâu?',
+      'Bạn có cần bảo lãnh visa không?',
+      'Bạn có sẵn sàng chuyển chỗ ở không?',
+      'Mức lương mong muốn của bạn là bao nhiêu?',
+      'Vì sao bạn muốn rời công việc hiện tại?',
+      'Dự án nào bạn tự hào nhất?',
+      'Bạn có bao nhiêu kinh nghiệm với Java và Spring Boot?',
+      'Bạn có sẵn sàng làm việc từ xa không?',
+      'Hiện tại bạn đang làm gì ở Cumulocity?',
+    ],
+    assistantUnavailable: 'Trợ lý hiện tạm thời không khả dụng. Vui lòng thử lại sau ít phút.',
+    assistantRateLimited: 'Bạn đang gửi tin nhắn quá nhanh — vui lòng đợi một chút rồi thử lại.',
+    assistantInputTooLong: 'Tin nhắn này quá dài — vui lòng rút ngắn rồi thử lại.',
   },
 };
