@@ -48,6 +48,11 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install, build, and upload
         uses: withastro/action@v3
+        with:
+          # scripts/export-bio-data.ts runs via plain `node` and relies on
+          # Node's built-in TypeScript support, which this action's default
+          # runtime (Node 20) doesn't have; match the `test` job's version.
+          node-version: 22
         env:
           PUBLIC_ASSISTANT_API_URL: ${{ vars.PUBLIC_ASSISTANT_API_URL }}
 
