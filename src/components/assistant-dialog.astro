@@ -1,28 +1,43 @@
 ---
 // Sibling dialog opened by any element carrying `data-open-assistant` (see
-// `network-intro.astro`'s "ask my assistant" button). Currently shows a
-// coming-soon placeholder; will grow into the real chat/voice widget once
-// the portfolio-voice-agent backend is deployed (see openspec change
-// voice-portfolio-agent, tasks.md section 2).
+// `network-intro.astro`'s "ask my assistant" button). Talks to the
+// portfolio-voice-agent backend's /chat endpoint (see openspec change
+// voice-portfolio-agent, tasks.md section 2). Voice mode is a later addition
+// (tasks.md section 3), not built here.
 interface Props {
+  locale: 'en' | 'de' | 'vi';
   labels: {
     dialogLabel: string;
     close: string;
-    heading: string;
-    body: string;
+    disclosure: string;
+    placeholder: string;
+    send: string;
+    suggestedLabel: string;
+    questions: string[];
+    unavailable: string;
+    rateLimited: string;
+    inputTooLong: string;
   };
 }
 
-const { labels } = Astro.props;
+const { locale, labels } = Astro.props;
 ---
 
-<dialog class="assistant-dialog" id="assistant-dialog" aria-label={labels.dialogLabel}>
+<dialog
+  class="assistant-dialog"
+  id="assistant-dialog"
+  aria-label={labels.dialogLabel}
+  data-locale={locale}
+  data-unavailable={labels.unavailable}
+  data-rate-limited={labels.rateLimited}
+  data-input-too-long={labels.inputTooLong}
+>
   <div class="assistant-dialog__window">
     <div class="assistant-dialog__chrome">
       <span class="assistant-dialog__dot assistant-dialog__dot--red" aria-hidden="true"></span>
       <span class="assistant-dialog__dot assistant-dialog__dot--amber" aria-hidden="true"></span>
       <span class="assistant-dialog__dot assistant-dialog__dot--green" aria-hidden="true"></span>
-      <span class="assistant-dialog__path" aria-hidden="true">$ ai-assistant --status</span>
+      <span class="assistant-dialog__path" aria-hidden="true">$ ai-assistant --chat</span>
       <button
         type="button"
         class="assistant-dialog__close"
@@ -32,10 +47,34 @@ const { labels } = Astro.props;
         <span aria-hidden="true">×</span>
       </button>
     </div>
-    <div class="assistant-dialog__body">
-      <p class="assistant-dialog__heading">{labels.heading}</p>
-      <p>{labels.body}</p>
+    <p class="assistant-dialog__disclosure">{labels.disclosure}</p>
+    <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite"></div>
+    <div class="assistant-dialog__chips" data-assistant-chips>
+      <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
+      <div class="assistant-dialog__chips-list">
+        {
+          labels.questions.map((question) => (
+            <button type="button" class="assistant-dialog__chip" data-assistant-chip>
+              {question}
+            </button>
+          ))
+        }
+      </div>
     </div>
+    <form class="assistant-dialog__form" data-assistant-form>
+      <input
+        type="text"
+        class="assistant-dialog__input"
+        data-assistant-input
+        placeholder={labels.placeholder}
+        aria-label={labels.placeholder}
+        autocomplete="off"
+        maxlength="1000"
+      />
+      <button type="submit" class="assistant-dialog__submit" aria-label={labels.send}>
+        {labels.send}
+      </button>
+    </form>
   </div>
 </dialog>
 
@@ -63,6 +102,7 @@ const { labels } = Astro.props;
   .assistant-dialog__window {
     display: flex;
     flex-direction: column;
+    max-height: min(640px, calc(100vh - 4rem));
   }
 
   .assistant-dialog__chrome {
@@ -70,6 +110,7 @@ const { labels } = Astro.props;
     align-items: center;
     gap: var(--space-2);
     min-height: 46px;
+    flex: 0 0 auto;
     padding: var(--space-2) var(--space-3);
     background: var(--color-surface);
     border-bottom: 1px solid var(--color-border);
@@ -131,30 +172,151 @@ const { labels } = Astro.props;
     background: color-mix(in srgb, var(--color-accent-red) 10%, transparent);
   }
 
-  .assistant-dialog__body {
-    padding: var(--space-4);
-  }
-
-  .assistant-dialog__heading {
-    margin: 0 0 var(--space-2);
-    color: var(--color-accent-green);
-    font-size: 1rem;
-  }
-
-  .assistant-dialog__body p:last-child {
+  .assistant-dialog__disclosure {
+    flex: 0 0 auto;
     margin: 0;
+    padding: var(--space-2) var(--space-3);
     color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__messages {
+    flex: 1 1 auto;
+    min-height: 160px;
+    max-height: 360px;
+    overflow-y: auto;
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .assistant-dialog__message {
+    margin: 0;
+    max-width: 88%;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
     font-size: 0.9375rem;
     line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .assistant-dialog__message--user {
+    align-self: flex-end;
+    background: color-mix(in srgb, var(--color-accent-green) 16%, transparent);
+    color: var(--color-text);
+  }
+
+  .assistant-dialog__message--assistant {
+    align-self: flex-start;
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .assistant-dialog__message--error {
+    align-self: flex-start;
+    background: color-mix(in srgb, var(--color-accent-red) 14%, transparent);
+    color: var(--color-text);
+  }
+
+  .assistant-dialog__chips {
+    flex: 0 0 auto;
+    padding: 0 var(--space-3) var(--space-2);
+  }
+
+  .assistant-dialog__chips[hidden] {
+    display: none;
+  }
+
+  .assistant-dialog__chips-label {
+    margin: 0 0 var(--space-1);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .assistant-dialog__chips-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .assistant-dialog__chip {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: none;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .assistant-dialog__chip:hover,
+  .assistant-dialog__chip:focus-visible {
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+
+  .assistant-dialog__form {
+    flex: 0 0 auto;
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .assistant-dialog__input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.9375rem;
+  }
+
+  .assistant-dialog__input:focus-visible {
+    outline: none;
+    border-color: var(--color-accent-green);
+  }
+
+  .assistant-dialog__input:disabled {
+    opacity: 0.6;
+  }
+
+  .assistant-dialog__submit {
+    flex: 0 0 auto;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-accent-green);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent-green) 12%, transparent);
+    color: var(--color-accent-green);
+    font: inherit;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+
+  .assistant-dialog__submit:hover:not(:disabled),
+  .assistant-dialog__submit:focus-visible {
+    background: color-mix(in srgb, var(--color-accent-green) 22%, transparent);
+  }
+
+  .assistant-dialog__submit:disabled {
+    opacity: 0.6;
+    cursor: default;
   }
 
   @media (max-width: 640px) {
     .assistant-dialog {
       width: calc(100vw - 1rem);
-    }
-
-    .assistant-dialog__body {
-      padding: var(--space-3);
     }
 
     .assistant-dialog__path {
@@ -164,13 +326,114 @@ const { labels } = Astro.props;
 </style>
 
 <script>
+  // Set via the PUBLIC_ASSISTANT_API_URL repository variable in GitHub Actions
+  // (see .github/workflows/deploy.yml) - not committed to source.
+  const API_URL: string | undefined = import.meta.env.PUBLIC_ASSISTANT_API_URL;
+  const SESSION_STORAGE_KEY = 'assistant-session-id';
+
+  type MessageRole = 'user' | 'assistant' | 'error';
+
   const dialog = document.querySelector<HTMLDialogElement>('#assistant-dialog');
+  const messagesEl = dialog?.querySelector<HTMLDivElement>('[data-assistant-messages]');
+  const chipsEl = dialog?.querySelector<HTMLDivElement>('[data-assistant-chips]');
+  const form = dialog?.querySelector<HTMLFormElement>('[data-assistant-form]');
+  const input = dialog?.querySelector<HTMLInputElement>('[data-assistant-input]');
+  const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+  const locale = dialog?.dataset.locale ?? 'en';
+  const unavailableMessage = dialog?.dataset.unavailable ?? '';
+  const rateLimitedMessage = dialog?.dataset.rateLimited ?? '';
+  const inputTooLongMessage = dialog?.dataset.inputTooLong ?? '';
+
   let opener: HTMLElement | null = null;
+  let sending = false;
+
+  function getSessionId(): string {
+    let id = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      sessionStorage.setItem(SESSION_STORAGE_KEY, id);
+    }
+    return id;
+  }
+
+  function appendMessage(role: MessageRole, text: string): HTMLParagraphElement {
+    const bubble = document.createElement('p');
+    bubble.className = `assistant-dialog__message assistant-dialog__message--${role}`;
+    bubble.textContent = text;
+    messagesEl?.appendChild(bubble);
+    if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
+    return bubble;
+  }
+
+  function setSending(value: boolean) {
+    sending = value;
+    if (input) input.disabled = value;
+    if (submitButton) submitButton.disabled = value;
+  }
+
+  if (!API_URL) {
+    chipsEl?.setAttribute('hidden', '');
+    if (input) input.disabled = true;
+    if (submitButton) submitButton.disabled = true;
+    appendMessage('error', unavailableMessage);
+  }
+
+  async function sendMessage(text: string) {
+    if (!API_URL || !text.trim() || sending) return;
+    chipsEl?.setAttribute('hidden', '');
+    appendMessage('user', text);
+    setSending(true);
+
+    const bubble = appendMessage('assistant', '');
+    try {
+      const response = await fetch(`${API_URL}/chat`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: text, locale, session_id: getSessionId() }),
+      });
+
+      if (!response.ok || !response.body) {
+        bubble.remove();
+        if (response.status === 429) appendMessage('error', rateLimitedMessage);
+        else if (response.status === 400) appendMessage('error', inputTooLongMessage);
+        else appendMessage('error', unavailableMessage);
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bubble.textContent = (bubble.textContent ?? '') + decoder.decode(value, { stream: true });
+        if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
+      }
+    } catch {
+      bubble.remove();
+      appendMessage('error', unavailableMessage);
+    } finally {
+      setSending(false);
+    }
+  }
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const text = input?.value ?? '';
+    if (input) input.value = '';
+    void sendMessage(text);
+  });
+
+  chipsEl?.addEventListener('click', (event) => {
+    const chip = event.target instanceof HTMLElement ? event.target.closest('[data-assistant-chip]') : null;
+    if (chip?.textContent) void sendMessage(chip.textContent);
+  });
 
   const openAssistantDialog = (source: HTMLElement | null) => {
     if (!dialog || dialog.open) return;
     opener = source;
     dialog.showModal();
+    input?.focus();
   };
 
   const closeAssistantDialog = () => {

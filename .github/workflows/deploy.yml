@@ -31,6 +31,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Build
         run: npm run build
+        env:
+          # Deterministic placeholder for e2e - the assistant tests mock the
+          # /chat endpoint, so this never needs to resolve to a real backend.
+          PUBLIC_ASSISTANT_API_URL: https://example.invalid
       - name: Test network interactions
         run: npm run test:e2e
 
@@ -44,6 +48,8 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install, build, and upload
         uses: withastro/action@v3
+        env:
+          PUBLIC_ASSISTANT_API_URL: ${{ vars.PUBLIC_ASSISTANT_API_URL }}
 
   deploy:
     needs: build
