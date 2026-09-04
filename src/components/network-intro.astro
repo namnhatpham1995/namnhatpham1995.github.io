@@ -1033,7 +1033,9 @@ const ringLinks = nodes.map((node, i) => ({
         return;
       }
       if (el.closest('[data-network-assistant]')) {
-        closeOverlay();
+        // Deliberately does not call closeOverlay(): the assistant dialog
+        // opens as a sibling top-layer dialog, and the overlay should stay
+        // exactly as the visitor left it once the dialog is closed.
         return;
       }
       if (el.closest('[data-network-skip]')) {

@@ -80,7 +80,7 @@ const { locale, labels } = Astro.props;
 
 <style>
   .assistant-dialog {
-    width: min(480px, calc(100vw - 2rem));
+    width: min(75vw, 1100px, calc(100vw - 2rem));
     max-width: none;
     padding: 0;
     border: 1px solid var(--color-border);
@@ -102,7 +102,7 @@ const { locale, labels } = Astro.props;
   .assistant-dialog__window {
     display: flex;
     flex-direction: column;
-    max-height: min(640px, calc(100vh - 4rem));
+    height: min(80vh, 860px, calc(100vh - 4rem));
   }
 
   .assistant-dialog__chrome {
@@ -185,7 +185,6 @@ const { locale, labels } = Astro.props;
   .assistant-dialog__messages {
     flex: 1 1 auto;
     min-height: 160px;
-    max-height: 360px;
     overflow-y: auto;
     padding: var(--space-3);
     display: flex;
@@ -443,10 +442,9 @@ const { locale, labels } = Astro.props;
   const isFocusable = (el: HTMLElement) => document.body.contains(el) && !el.closest('[hidden]');
 
   dialog?.addEventListener('close', () => {
-    // The opener may live inside the network overlay, which is `hidden` by
-    // the time this dialog closes (it was opened via the overlay's "ask my
-    // assistant" button, which also closes the overlay) - fall back to the
-    // page's main content so focus doesn't silently drop to <body>.
+    // The opener is usually the overlay's still-visible "ask my assistant"
+    // button, but fall back to the page's main content so focus doesn't
+    // silently drop to <body> if the opener is ever gone or hidden.
     const target = opener && isFocusable(opener) ? opener : document.getElementById('main');
     opener = null;
     // Deferred: the browser's own focus-restoration-to-previously-focused-
