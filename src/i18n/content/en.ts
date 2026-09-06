@@ -19,7 +19,7 @@ export const en: CvContent = {
   hero: {
     name: 'Nam Nhat Pham',
     role: 'Software Engineer',
-    location: 'Stuttgart, Germany',
+    location: 'Sindelfingen, Germany',
     email: 'nam95.pn@gmail.com',
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
@@ -40,15 +40,16 @@ export const en: CvContent = {
   skills: {
     heading: 'ls skills/',
     groups: [
-      { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'Bash'] },
+      { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'JavaScript', 'Go', 'Bash'] },
       {
         title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
+        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'OpenAPI/Swagger', 'Next.js', 'React', 'Angular', 'Tailwind CSS', 'TanStack Query', 'Flask'],
       },
       { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
-      { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
-      { title: 'Databases', items: ['PostgreSQL', 'MySQL'] },
-      { title: 'Practices', items: ['Agile/Scrum', 'CI/CD'] },
+      { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress', 'Python testing'] },
+      { title: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Flyway'] },
+      { title: 'Data & Machine Learning', items: ['pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'PCA', 'K-Means'] },
+      { title: 'Practices', items: ['Agile/Scrum', 'CI/CD', 'Domain-Driven Design (DDD)', 'Spec-Driven Development (SDD)'] },
     ],
   },
   experience: {
@@ -137,6 +138,18 @@ export const en: CvContent = {
         ],
         tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
         links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
+      },
+      {
+        title: 'Hootden — Collaborative Personal Workspace',
+        dates: 'Aug 2026 – present',
+        description: [
+          'A cozy personal workspace: keep your own den for solo notes and planning, or open a shared nest to collaborate with others — self-initiated to learn Go in a production-shaped project.',
+          'Go 1.26 backend organized package-by-domain (auth, workspace, httpapi, migrations) with a Next.js/TypeScript frontend and PostgreSQL via pgx.',
+          'Email/password and Google OAuth sign-in with opaque, HttpOnly session tokens, including a COOKIE_DOMAIN-based cookie shared across the apex and API subdomain for the managed Railway + Vercel deployment.',
+          'Shipped every feature as an OpenSpec spec-driven proposal executed with AI coding agents, verified by a Go test suite and a GitHub Actions end-to-end pipeline.',
+        ],
+        tech: ['Go', 'PostgreSQL', 'pgx', 'goose', 'OAuth2', 'Next.js', 'TypeScript', 'Docker', 'GitHub Actions'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
       },
       {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
