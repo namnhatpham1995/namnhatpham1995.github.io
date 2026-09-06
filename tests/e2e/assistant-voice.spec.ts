@@ -125,6 +125,63 @@ test('a 4408 close from the backend shows the session-ended message', async ({ p
   await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
 
+// ADK streams a transcription as N partial fragments and then one event whose
+// text is the WHOLE accumulated utterance, both on the same field. These tests
+// replay that real shape; a widget that appends every event renders each
+// utterance twice.
+const FRAGMENTS = ['Nam has', ' a Master', ' of Science'];
+const UTTERANCE = FRAGMENTS.join('');
+
+test('a completed assistant transcription replaces its fragments instead of repeating them', async ({ page }) => {
+  const { registered, route } = mockVoiceSocket(page);
+  await registered;
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+  const ws = await route;
+
+  for (const text of FRAGMENTS) ws.send(JSON.stringify({ outputTranscription: { text, finished: false } }));
+  ws.send(JSON.stringify({ outputTranscription: { text: UTTERANCE, finished: true } }));
+  ws.send(JSON.stringify({ turnComplete: true }));
+
+  const lines = dialog.locator('.assistant-call__line--assistant .assistant-call__line-body');
+  await expect(lines).toHaveCount(1);
+  await expect(lines.first()).toHaveText(UTTERANCE);
+});
+
+test("a completed visitor transcription is not duplicated either", async ({ page }) => {
+  const { registered, route } = mockVoiceSocket(page);
+  await registered;
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+  const ws = await route;
+
+  for (const text of ['Where did', ' he study?'])
+    ws.send(JSON.stringify({ inputTranscription: { text, finished: false } }));
+  ws.send(JSON.stringify({ inputTranscription: { text: 'Where did he study?', finished: true } }));
+
+  const lines = dialog.locator('.assistant-call__line--user .assistant-call__line-body');
+  await expect(lines).toHaveCount(1);
+  await expect(lines.first()).toHaveText('Where did he study?');
+});
+
+test('the completed transcription repairs a line whose fragments were partly lost', async ({ page }) => {
+  const { registered, route } = mockVoiceSocket(page);
+  await registered;
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+  const ws = await route;
+
+  // Only the first fragment arrives -- the rest are dropped in transit. The
+  // completion event is the sole authoritative copy, so the line must end up
+  // whole rather than gapped.
+  ws.send(JSON.stringify({ outputTranscription: { text: FRAGMENTS[0], finished: false } }));
+  ws.send(JSON.stringify({ outputTranscription: { text: UTTERANCE, finished: true } }));
+
+  const lines = dialog.locator('.assistant-call__line--assistant .assistant-call__line-body');
+  await expect(lines).toHaveCount(1);
+  await expect(lines.first()).toHaveText(UTTERANCE);
+});
+
 test('a turn that completes with no transcription-finished flag does not merge into the next turn', async ({ page }) => {
   const { registered, route } = mockVoiceSocket(page);
   await registered;
@@ -132,20 +189,18 @@ test('a turn that completes with no transcription-finished flag does not merge i
   await expect(dialog.locator('[data-call-live]')).toBeVisible();
   const ws = await route;
 
-  // Simulates the backend's greeting retry (voice_greeting.py): a turn whose
-  // transcript arrives but which completes without ever setting
-  // outputTranscription.finished, followed by a retried turn with the same
-  // text. Before this fix, the missing `finished` left the transcript line
-  // open so the retry's text appended onto it instead of starting a new line.
+  // Backstop for a lost completion event: ADK normally always sends one, but
+  // if it goes missing, turnComplete must still close the line so the next
+  // turn starts a new one instead of appending onto it.
   ws.send(JSON.stringify({ outputTranscription: { text: 'Hi there', finished: false } }));
   ws.send(JSON.stringify({ turnComplete: true }));
-  ws.send(JSON.stringify({ outputTranscription: { text: 'Hi there', finished: true } }));
+  ws.send(JSON.stringify({ outputTranscription: { text: 'Ask me anything', finished: false } }));
   ws.send(JSON.stringify({ turnComplete: true }));
 
   const lines = dialog.locator('.assistant-call__line--assistant .assistant-call__line-body');
   await expect(lines).toHaveCount(2);
   await expect(lines.nth(0)).toHaveText('Hi there');
-  await expect(lines.nth(1)).toHaveText('Hi there');
+  await expect(lines.nth(1)).toHaveText('Ask me anything');
 });
 
 test('denying microphone access shows the mic-denied message', async ({ page }) => {
