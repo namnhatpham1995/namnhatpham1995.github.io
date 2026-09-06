@@ -951,6 +951,21 @@ const callLabels = {
     return id;
   }
 
+  const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;' };
+
+  // Renders the narrow markdown subset the model actually produces
+  // (**bold** and `*`/`-` bullet lines) into safe HTML. Called with the
+  // whole accumulated answer on every streamed chunk, not just the new
+  // fragment -- a marker split across two chunks (e.g. "**Java" / "boot**")
+  // only resolves once the full pair is in the buffer, which a per-chunk
+  // append could never detect. Bullets become a plain "• " prefix rather
+  // than a real <ul><li>, since the bubble relies on white-space: pre-wrap
+  // for line breaks and a real list would need that reworked.
+  function renderMarkdown(raw: string): string {
+    const escaped = raw.replace(/[&<>]/g, (ch) => HTML_ESCAPES[ch]);
+    return escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/^(\s*)[*-] /gm, '$1• ');
+  }
+
   function appendMessage(role: MessageRole, text: string): HTMLParagraphElement {
     const bubble = document.createElement('p');
     bubble.className = `assistant-dialog__message assistant-dialog__message--${role}`;
@@ -1030,10 +1045,12 @@ const callLabels = {
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
+      let raw = '';
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
-        bubble.textContent = (bubble.textContent ?? '') + decoder.decode(value, { stream: true });
+        raw += decoder.decode(value, { stream: true });
+        bubble.innerHTML = renderMarkdown(raw);
         if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
       }
     } catch {
