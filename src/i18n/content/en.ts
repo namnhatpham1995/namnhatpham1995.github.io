@@ -113,6 +113,18 @@ export const en: CvContent = {
     heading: 'ls projects/',
     entries: [
       {
+        title: 'Portfolio AI Assistant — Grounded Voice & Text Chat Backend',
+        dates: 'Sep 2026 – present',
+        description: [
+          "Powers the AI assistant on this very site: a FastAPI backend serving both a streamed text-chat endpoint and a live, real-time voice call over WebSocket, grounded strictly in this portfolio's own bio data so it never fabricates.",
+          'Voice mode uses Google\'s Agent Development Kit (ADK) against the Gemini Live API for bidirectional audio streaming, with a scripted spoken greeting on connect, session resumption with automatic reconnect on a dropped connection, and a 10-minute session cap with a daily call quota.',
+          'Sensitive questions (salary, notice period, etc.) are intercepted via tool-calling and answered with pre-approved scripted text verbatim in both text and voice mode instead of letting the model improvise; near-duplicate questions hit an embedding-based answer cache instead of a fresh model call.',
+          'Automatic fallback between two Gemini API keys on quota exhaustion, PII redaction and a 90-day auto-purge on stored conversation logs, and origin/rate-limit guards; deployed on Railway with the full backend driven by a pytest suite.',
+        ],
+        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
+      },
+      {
         title: 'FinTrack — Personal Finance Management App',
         dates: 'Jun 2026 – present',
         description: [
@@ -150,18 +162,6 @@ export const en: CvContent = {
         ],
         tech: ['Go', 'PostgreSQL', 'pgx', 'goose', 'OAuth2', 'Next.js', 'TypeScript', 'Docker', 'GitHub Actions'],
         links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
-      },
-      {
-        title: 'Portfolio AI Assistant — Grounded Voice & Text Chat Backend',
-        dates: 'Sep 2026 – present',
-        description: [
-          "Powers the AI assistant on this very site: a FastAPI backend serving both a streamed text-chat endpoint and a live, real-time voice call over WebSocket, grounded strictly in this portfolio's own bio data so it never fabricates.",
-          'Voice mode uses Google\'s Agent Development Kit (ADK) against the Gemini Live API for bidirectional audio streaming, with a scripted spoken greeting on connect, session resumption with automatic reconnect on a dropped connection, and a 10-minute session cap with a daily call quota.',
-          'Sensitive questions (salary, notice period, etc.) are intercepted via tool-calling and answered with pre-approved scripted text verbatim in both text and voice mode instead of letting the model improvise; near-duplicate questions hit an embedding-based answer cache instead of a fresh model call.',
-          'Automatic fallback between two Gemini API keys on quota exhaustion, PII redaction and a 90-day auto-purge on stored conversation logs, and origin/rate-limit guards; deployed on Railway with the full backend driven by a pytest suite.',
-        ],
-        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
       },
       {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
