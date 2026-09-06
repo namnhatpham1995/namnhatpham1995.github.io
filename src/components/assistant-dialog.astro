@@ -103,17 +103,18 @@ const voiceStatusLabels = {
         {voiceNoteInitialText}
       </p>
     </div>
-    <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite"></div>
-    <div class="assistant-dialog__chips" data-assistant-chips>
-      <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
-      <div class="assistant-dialog__chips-list">
-        {
-          labels.questions.map((question) => (
-            <button type="button" class="assistant-dialog__chip" data-assistant-chip>
-              {question}
-            </button>
-          ))
-        }
+    <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite">
+      <div class="assistant-dialog__chips" data-assistant-chips>
+        <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
+        <div class="assistant-dialog__chips-list">
+          {
+            labels.questions.map((question) => (
+              <button type="button" class="assistant-dialog__chip" data-assistant-chip>
+                {question}
+              </button>
+            ))
+          }
+        </div>
       </div>
     </div>
     <form class="assistant-dialog__form" data-assistant-form>
@@ -157,7 +158,12 @@ const voiceStatusLabels = {
   .assistant-dialog__window {
     display: flex;
     flex-direction: column;
+    /* dvh tracks the *actual* visible viewport; on mobile, vh is the height
+       with the browser's address bar hidden, which overstates what's on
+       screen and pushed the top of the dialog (chrome bar, voice button)
+       above the fold since the native <dialog> centers on the real one. */
     height: min(80vh, 860px, calc(100vh - 4rem));
+    height: min(80dvh, 860px, calc(100dvh - 4rem));
   }
 
   .assistant-dialog__chrome {
@@ -416,6 +422,11 @@ const voiceStatusLabels = {
 
     .assistant-dialog__path {
       display: none;
+    }
+
+    .assistant-dialog__window {
+      height: min(85vh, calc(100vh - 1.5rem));
+      height: min(85dvh, calc(100dvh - 1.5rem));
     }
   }
 </style>
