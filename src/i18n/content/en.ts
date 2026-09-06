@@ -42,7 +42,14 @@ export const en: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote work: yes, from anywhere.',
+      rule: 'Remote work: yes, from anywhere, including Vietnam. Working from any city in Vietnam is possible, but it must be discussed further with Nam and is not automatic.',
+      vietnam: {
+        possible: true,
+        automatic: false,
+        requiresFurtherDiscussion: true,
+        examples: ['Hanoi', 'Ho Chi Minh City'],
+        rule: 'Remote work from any city in Vietnam is possible, including Hanoi and Ho Chi Minh City, but requires further discussion with Nam and is not automatically agreed.',
+      },
     },
     hybrid: {
       available: true,
@@ -55,7 +62,7 @@ export const en: CvContent = {
       rule: 'On-site work: yes, within a maximum of 30 km from Sindelfingen, Germany.',
     },
     guidance:
-      'For a specific location, compare its distance with the applicable radius from Sindelfingen. If the exact distance is unknown, explain the rule and say it needs to be checked rather than guessing.',
+      'For a specific hybrid or on-site location, compare its distance with the applicable radius from Sindelfingen. If the exact distance is unknown, explain the rule and say it needs to be checked rather than guessing. For remote work from Vietnam, answer that it is possible from any Vietnamese city but requires further discussion with Nam and is not automatic.',
   },
   skills: {
     heading: 'ls skills/',

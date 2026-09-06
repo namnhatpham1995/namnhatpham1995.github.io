@@ -46,7 +46,14 @@ export const de: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote-Arbeit: ja, von überall.',
+      rule: 'Remote-Arbeit: ja, von überall, auch aus Vietnam. Arbeiten aus jeder vietnamesischen Stadt ist möglich, muss aber mit Nam weiter besprochen werden und ist nicht automatisch zugesagt.',
+      vietnam: {
+        possible: true,
+        automatic: false,
+        requiresFurtherDiscussion: true,
+        examples: ['Hanoi', 'Ho-Chi-Minh-Stadt'],
+        rule: 'Remote-Arbeit aus jeder Stadt in Vietnam ist möglich, einschließlich Hanoi und Ho-Chi-Minh-Stadt, erfordert aber eine weitere Abstimmung mit Nam und ist nicht automatisch vereinbart.',
+      },
     },
     hybrid: {
       available: true,
@@ -59,7 +66,7 @@ export const de: CvContent = {
       rule: 'Arbeiten vor Ort: ja, bis maximal 30 km von Sindelfingen, Deutschland entfernt.',
     },
     guidance:
-      'Bei einem konkreten Ort muss die Entfernung zum jeweils geltenden Radius um Sindelfingen geprüft werden. Wenn die genaue Entfernung nicht bekannt ist, soll die Regel erklärt und nicht geraten werden.',
+      'Bei einem konkreten Ort für Hybrid- oder Vor-Ort-Arbeit muss die Entfernung zum jeweils geltenden Radius um Sindelfingen geprüft werden. Wenn die genaue Entfernung nicht bekannt ist, soll die Regel erklärt und nicht geraten werden. Bei Remote-Arbeit aus Vietnam soll erklärt werden, dass sie aus jeder vietnamesischen Stadt möglich ist, aber mit Nam weiter besprochen werden muss und nicht automatisch zugesagt ist.',
   },
   skills: {
     heading: 'ls skills/',
