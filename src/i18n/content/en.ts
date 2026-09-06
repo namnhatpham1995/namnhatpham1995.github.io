@@ -19,7 +19,7 @@ export const en: CvContent = {
   hero: {
     name: 'Nam Nhat Pham',
     role: 'Software Engineer',
-    location: 'Stuttgart, Germany',
+    location: 'Sindelfingen, Germany',
     email: 'nam95.pn@gmail.com',
     linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
     github: 'https://github.com/namnhatpham1995',
@@ -40,15 +40,16 @@ export const en: CvContent = {
   skills: {
     heading: 'ls skills/',
     groups: [
-      { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'Bash'] },
+      { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'JavaScript', 'Go', 'Bash'] },
       {
         title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'Next.js', 'Flask'],
+        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'OpenAPI/Swagger', 'Next.js', 'React', 'Angular', 'Tailwind CSS', 'TanStack Query', 'Flask'],
       },
       { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
-      { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress'] },
-      { title: 'Databases', items: ['PostgreSQL', 'MySQL'] },
-      { title: 'Practices', items: ['Agile/Scrum', 'CI/CD'] },
+      { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress', 'Python testing'] },
+      { title: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Flyway'] },
+      { title: 'Data & Machine Learning', items: ['pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'PCA', 'K-Means'] },
+      { title: 'Practices', items: ['Agile/Scrum', 'CI/CD', 'Domain-Driven Design (DDD)', 'Spec-Driven Development (SDD)'] },
     ],
   },
   experience: {
@@ -137,6 +138,30 @@ export const en: CvContent = {
         ],
         tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
         links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
+      },
+      {
+        title: 'Hootden — Collaborative Personal Workspace',
+        dates: 'Aug 2026 – present',
+        description: [
+          'A cozy personal workspace: keep your own den for solo notes and planning, or open a shared nest to collaborate with others — self-initiated to learn Go in a production-shaped project.',
+          'Go 1.26 backend organized package-by-domain (auth, workspace, httpapi, migrations) with a Next.js/TypeScript frontend and PostgreSQL via pgx.',
+          'Email/password and Google OAuth sign-in with opaque, HttpOnly session tokens, including a COOKIE_DOMAIN-based cookie shared across the apex and API subdomain for the managed Railway + Vercel deployment.',
+          'Shipped every feature as an OpenSpec spec-driven proposal executed with AI coding agents, verified by a Go test suite and a GitHub Actions end-to-end pipeline.',
+        ],
+        tech: ['Go', 'PostgreSQL', 'pgx', 'goose', 'OAuth2', 'Next.js', 'TypeScript', 'Docker', 'GitHub Actions'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
+      },
+      {
+        title: 'Portfolio AI Assistant — Grounded Voice & Text Chat Backend',
+        dates: 'Sep 2026 – present',
+        description: [
+          "Powers the AI assistant on this very site: a FastAPI backend serving both a streamed text-chat endpoint and a live, real-time voice call over WebSocket, grounded strictly in this portfolio's own bio data so it never fabricates.",
+          'Voice mode uses Google\'s Agent Development Kit (ADK) against the Gemini Live API for bidirectional audio streaming, with a scripted spoken greeting on connect, session resumption with automatic reconnect on a dropped connection, and a 10-minute session cap with a daily call quota.',
+          'Sensitive questions (salary, notice period, etc.) are intercepted via tool-calling and answered with pre-approved scripted text verbatim in both text and voice mode instead of letting the model improvise; near-duplicate questions hit an embedding-based answer cache instead of a fresh model call.',
+          'Automatic fallback between two Gemini API keys on quota exhaustion, PII redaction and a 90-day auto-purge on stored conversation logs, and origin/rate-limit guards; deployed on Railway with the full backend driven by a pytest suite.',
+        ],
+        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
       },
       {
         title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
