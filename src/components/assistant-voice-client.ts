@@ -35,9 +35,12 @@ export interface VoiceClientOptions {
    * own samples and the assistant side from an analyser on the playback
    * graph, so both are real signal rather than an inferred "is talking". */
   onLevels?: (userLevel: number, assistantLevel: number) => void;
-  /** Incremental transcript chunks from the backend's JSON frames. `text`
-   * is a delta to append, not the full utterance; `finished` marks the end
-   * of one side's turn. */
+  /** Transcript chunks from the backend's JSON frames. `text` means two
+   * different things depending on `finished`: while false it is a fragment
+   * to append, but the `finished: true` event carries the whole accumulated
+   * utterance and is the authoritative final text of that turn. ADK emits
+   * both shapes on the same field, so appending indiscriminately renders
+   * every utterance twice. */
   onTranscript?: (speaker: 'user' | 'assistant', text: string, finished: boolean) => void;
 }
 
@@ -216,10 +219,10 @@ export class VoiceClient {
     if (output?.text || output?.finished) {
       this.onTranscript?.('assistant', output.text ?? '', output.finished ?? false);
     }
-    // outputTranscription.finished doesn't always fire (e.g. the backend's
-    // greeting retry: a turn that produced a transcript but no audio at
-    // all) -- turnComplete is the backend's own authoritative end-of-turn
-    // signal, so treat it as an equally valid close for the assistant line.
+    // Defensive backstop only. ADK flushes any accumulated transcript as a
+    // finished event on turn completion, so a turn with text always closes
+    // its own line -- this just guarantees the line still closes if that
+    // event is ever lost, rather than letting the next turn append onto it.
     if (payload.turnComplete) {
       this.onTranscript?.('assistant', '', true);
     }
