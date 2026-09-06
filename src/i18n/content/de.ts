@@ -165,6 +165,19 @@ export const de: CvContent = {
         links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
       },
       {
+        title: 'Portfolio-KI-Assistent — Sprach- und Text-Chat-Backend mit Faktentreue',
+        dates: 'Sep 2026 – heute',
+        // TODO: native review
+        description: [
+          'Betreibt den KI-Assistenten auf genau dieser Seite: ein FastAPI-Backend, das sowohl einen gestreamten Text-Chat-Endpunkt als auch einen echten Live-Sprachanruf über WebSocket bereitstellt, strikt auf Basis der eigenen Bio-Daten dieses Portfolios, damit nichts erfunden wird.',
+          'Der Sprachmodus nutzt Googles Agent Development Kit (ADK) gegen die Gemini-Live-API für bidirektionales Audio-Streaming, mit einer gesprochenen Begrüßung beim Verbindungsaufbau, Session-Resumption mit automatischem Reconnect bei einem Verbindungsabbruch sowie einer 10-Minuten-Sitzungsgrenze und einem täglichen Anruf-Kontingent.',
+          'Sensible Fragen (Gehalt, Kündigungsfrist usw.) werden per Tool-Calling abgefangen und sowohl im Text- als auch im Sprachmodus wortgetreu mit vorab freigegebenem Text beantwortet, statt das Modell frei antworten zu lassen; nahezu identische Fragen greifen auf einen embedding-basierten Antwort-Cache zurück statt auf einen neuen Modellaufruf.',
+          'Automatischer Wechsel zwischen zwei Gemini-API-Schlüsseln bei Kontingent-Erschöpfung, PII-Redaktion und automatische Löschung gespeicherter Gesprächsprotokolle nach 90 Tagen sowie Origin- und Rate-Limit-Schutz; auf Railway deployed, das gesamte Backend mit einer pytest-Suite abgesichert.',
+        ],
+        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
+      },
+      {
         title: 'M.Sc.-Thesis: Remote-Desktop-Steuerung aus einer SaaS-Anwendung',
         dates: 'Feb – Aug 2021',
         // TODO: native review

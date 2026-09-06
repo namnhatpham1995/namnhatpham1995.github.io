@@ -162,6 +162,19 @@ export const vi: CvContent = {
         links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
       },
       {
+        title: 'Trợ lý AI của Portfolio — Backend Chat Văn bản & Giọng nói Bám sát Dữ liệu Thật',
+        dates: 'Th9 2026 – hiện tại',
+        // TODO: native review
+        description: [
+          'Vận hành trợ lý AI ngay trên trang này: backend FastAPI phục vụ cả endpoint chat văn bản dạng streaming lẫn cuộc gọi thoại trực tiếp qua WebSocket, bám sát tuyệt đối dữ liệu tiểu sử của chính portfolio này để không bịa thông tin.',
+          'Chế độ giọng nói dùng Agent Development Kit (ADK) của Google kết hợp Gemini Live API để truyền âm thanh hai chiều theo thời gian thực, có lời chào bằng giọng nói khi kết nối, cơ chế resumption và tự động kết nối lại khi rớt kết nối, cùng giới hạn 10 phút/phiên và hạn mức cuộc gọi mỗi ngày.',
+          'Các câu hỏi nhạy cảm (lương, thời gian báo trước nghỉ việc,...) được chặn lại qua cơ chế tool-calling và trả lời đúng nguyên văn bằng nội dung đã được duyệt trước, ở cả chế độ văn bản lẫn giọng nói, thay vì để mô hình tự ứng biến; các câu hỏi gần giống nhau được trả lời từ bộ nhớ đệm dựa trên embedding thay vì gọi mô hình lại từ đầu.',
+          'Tự động chuyển sang API key Gemini dự phòng khi key chính hết hạn mức, ẩn danh hóa thông tin cá nhân (PII) và tự động xóa nhật ký hội thoại sau 90 ngày, cùng cơ chế giới hạn theo origin/rate limit; triển khai trên Railway, có bộ test đầy đủ bằng pytest.',
+        ],
+        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
+        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
+      },
+      {
         title: 'Đồ án Thạc sĩ: Điều khiển Remote Desktop từ Ứng dụng SaaS',
         dates: 'Th2 – Th8 2021',
         // TODO: native review
