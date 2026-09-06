@@ -33,8 +33,10 @@ jobs:
         run: npm run build
         env:
           # Deterministic placeholder for e2e - the assistant tests mock the
-          # /chat endpoint, so this never needs to resolve to a real backend.
+          # /chat endpoint and the /ws/voice socket, so neither needs to
+          # resolve to a real backend.
           PUBLIC_ASSISTANT_API_URL: https://example.invalid
+          PUBLIC_ASSISTANT_VOICE_URL: wss://example.invalid/ws/voice
       - name: Test network interactions
         run: npm run test:e2e
 
@@ -55,6 +57,7 @@ jobs:
           node-version: 22
         env:
           PUBLIC_ASSISTANT_API_URL: ${{ vars.PUBLIC_ASSISTANT_API_URL }}
+          PUBLIC_ASSISTANT_VOICE_URL: ${{ vars.PUBLIC_ASSISTANT_VOICE_URL }}
 
   deploy:
     needs: build
