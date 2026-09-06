@@ -59,7 +59,9 @@ test('typing a message sends it and renders the streamed reply', async ({ page }
   await dialog.locator('[data-assistant-form]').getByRole('button', { name: 'Send' }).click();
 
   await expect(dialog.locator('.assistant-dialog__message--user')).toHaveText('What frameworks does Nam use?');
-  await expect(dialog.locator('.assistant-dialog__message--assistant')).toHaveText(
+  // The dialog opens with a greeting bubble, so the reply is the *last*
+  // assistant message rather than the only one.
+  await expect(dialog.locator('.assistant-dialog__message--assistant').last()).toHaveText(
     'Nam mostly works in Java and Spring Boot.'
   );
   await expect(dialog.locator('[data-assistant-chips]')).toBeHidden();
@@ -76,7 +78,7 @@ test('selecting a suggested question sends it immediately', async ({ page }) => 
   await chip.click();
 
   await expect(dialog.locator('.assistant-dialog__message--user')).toHaveText(questionText ?? '');
-  await expect(dialog.locator('.assistant-dialog__message--assistant')).toHaveText('Two weeks.');
+  await expect(dialog.locator('.assistant-dialog__message--assistant').last()).toHaveText('Two weeks.');
 });
 
 test('a failed request shows an inline error instead of breaking the widget', async ({ page }) => {
@@ -127,3 +129,16 @@ for (const localeCase of localeCases) {
     );
   });
 }
+
+test('the assistant greets the visitor as soon as the dialog opens', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('[data-network-assistant]').click();
+
+  const dialog = page.locator('#assistant-dialog');
+  const greeting = dialog.locator('.assistant-dialog__message--assistant').first();
+
+  await expect(greeting).toBeVisible();
+  await expect(greeting).toHaveText(
+    "Hi — I'm Nam's assistant. Ask me about his work, experience, or availability and I'll share what I know."
+  );
+});

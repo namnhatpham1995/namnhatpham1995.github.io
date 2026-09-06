@@ -14,7 +14,7 @@ import { expect, test, type Page, type WebSocketRoute } from '@playwright/test';
 // inside the other) deliberately: an async function that returns a promise
 // has its own returned promise adopt that promise's state, so awaiting a
 // single combined promise here would block on a connection that may never
-// happen (e.g. a test that never starts voice mode).
+// happen (e.g. a test that never starts a call).
 function mockVoiceSocket(page: Page): { registered: Promise<void>; route: Promise<WebSocketRoute> } {
   let resolveRoute!: (ws: WebSocketRoute) => void;
   const route = new Promise<WebSocketRoute>((resolve) => {
@@ -24,77 +24,105 @@ function mockVoiceSocket(page: Page): { registered: Promise<void>; route: Promis
   return { registered, route };
 }
 
-async function openDialogAndStartVoice(page: Page) {
+async function openCallScreen(page: Page) {
   await page.goto('/');
   await page.locator('[data-network-assistant]').click();
   const dialog = page.locator('#assistant-dialog');
-  const voiceToggle = dialog.locator('[data-assistant-voice-toggle]');
-  await voiceToggle.click();
-  return { dialog, voiceToggle };
+  await dialog.locator('[data-assistant-voice-toggle]').click();
+  return dialog;
 }
 
-test('the pre-start disclosure names the session limit and shared quota', async ({ page }) => {
+async function startCall(page: Page) {
+  const dialog = await openCallScreen(page);
+  await dialog.locator('[data-call-start]').click();
+  return dialog;
+}
+
+test('the call-to-action names the session limit before the call screen is opened', async ({ page }) => {
   await mockVoiceSocket(page).registered;
   await page.goto('/');
 
   await page.locator('[data-network-assistant]').click();
   const dialog = page.locator('#assistant-dialog');
-  const voiceToggle = dialog.locator('[data-assistant-voice-toggle]');
 
-  await expect(voiceToggle).toBeEnabled();
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText(
-    'Voice sessions are limited to 10 minutes and share a daily cap across all visitors.'
-  );
+  await expect(dialog.locator('[data-assistant-voice-toggle]')).toBeEnabled();
+  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText('Call the assistant');
+  await expect(dialog.getByText('10 min limit · shared daily cap')).toBeVisible();
 });
 
-test('starting voice mode connects, captures the mic, and disables text chat', async ({ page }) => {
+test('the call screen discloses the limits and the AI before touching the microphone', async ({ page }) => {
   await mockVoiceSocket(page).registered;
-  const { dialog, voiceToggle } = await openDialogAndStartVoice(page);
+  const dialog = await openCallScreen(page);
 
-  await expect(voiceToggle).toHaveText('stop --live');
-  await expect(voiceToggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText('Listening — speak now.');
-  await expect(dialog.locator('[data-assistant-input]')).toBeDisabled();
+  // Still on the pre-call screen: nothing is live until "start call".
+  await expect(dialog.locator('[data-call-pre]')).toBeVisible();
+  await expect(dialog.locator('[data-call-live]')).toBeHidden();
+  await expect(dialog.getByText("You'll be talking to an AI assistant, not to Nam.")).toBeVisible();
+  await expect(
+    dialog.getByText('Voice sessions are limited to 10 minutes and share a daily cap across all visitors.')
+  ).toBeVisible();
+  await expect(dialog.locator('[data-call-start]')).toBeVisible();
 });
 
-test('stopping a voice session releases the mic and re-enables text chat', async ({ page }) => {
+test('starting a call connects and shows the live meters and countdown', async ({ page }) => {
   await mockVoiceSocket(page).registered;
-  const { dialog, voiceToggle } = await openDialogAndStartVoice(page);
-  await expect(voiceToggle).toHaveText('stop --live');
+  const dialog = await startCall(page);
 
-  await voiceToggle.click();
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+  await expect(dialog.locator('[data-call-pre]')).toBeHidden();
+  await expect(dialog.locator('[data-call-timer]')).toBeVisible();
+  await expect(dialog.locator('[data-call-status]')).toHaveText('Listening — speak now.');
+  await expect(dialog.locator('[data-call-meter="user"]')).not.toBeEmpty();
+});
 
-  await expect(voiceToggle).toHaveText('voice --live');
-  await expect(voiceToggle).toHaveAttribute('aria-pressed', 'false');
-  await expect(dialog.locator('[data-assistant-input]')).toBeEnabled();
+test('ending a call returns to the pre-call screen', async ({ page }) => {
+  await mockVoiceSocket(page).registered;
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+
+  await dialog.locator('[data-call-end]').click();
+
+  await expect(dialog.locator('[data-call-pre]')).toBeVisible();
+  await expect(dialog.locator('[data-call-timer]')).toBeHidden();
+});
+
+test('back to chat leaves call mode without starting a session', async ({ page }) => {
+  await mockVoiceSocket(page).registered;
+  const dialog = await openCallScreen(page);
+
+  await dialog.locator('[data-call-back]').click();
+
+  await expect(dialog.locator('[data-assistant-chat]')).toBeVisible();
+  await expect(dialog.locator('[data-assistant-call]')).toBeHidden();
+  await expect(dialog.locator('[data-assistant-cta]')).toBeVisible();
 });
 
 test('a 4429 close from the backend shows the quota-reached message', async ({ page }) => {
   const { registered, route } = mockVoiceSocket(page);
   await registered;
-  const { dialog, voiceToggle } = await openDialogAndStartVoice(page);
-  await expect(voiceToggle).toHaveText('stop --live');
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
 
   await (await route).close({ code: 4429 });
 
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText(
+  await expect(dialog.locator('[data-call-message]')).toHaveText(
     'Voice quota reached for today — try again tomorrow, or keep chatting here.'
   );
-  await expect(voiceToggle).toHaveText('voice --live');
+  await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
 
 test('a 4408 close from the backend shows the session-ended message', async ({ page }) => {
   const { registered, route } = mockVoiceSocket(page);
   await registered;
-  const { dialog, voiceToggle } = await openDialogAndStartVoice(page);
-  await expect(voiceToggle).toHaveText('stop --live');
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
 
   await (await route).close({ code: 4408 });
 
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText(
+  await expect(dialog.locator('[data-call-message]')).toHaveText(
     'Voice session ended. Start a new one anytime.'
   );
-  await expect(voiceToggle).toHaveText('voice --live');
+  await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
 
 test('denying microphone access shows the mic-denied message', async ({ page }) => {
@@ -103,10 +131,10 @@ test('denying microphone access shows the mic-denied message', async ({ page }) 
       Promise.reject(new DOMException('Permission denied', 'NotAllowedError'));
   });
   await mockVoiceSocket(page).registered;
-  const { dialog, voiceToggle } = await openDialogAndStartVoice(page);
+  const dialog = await startCall(page);
 
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText(
+  await expect(dialog.locator('[data-call-message]')).toHaveText(
     'Microphone access was denied — allow access in your browser settings to use voice mode.'
   );
-  await expect(voiceToggle).toHaveText('voice --live');
+  await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
