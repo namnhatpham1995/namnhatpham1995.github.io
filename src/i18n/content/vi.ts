@@ -45,7 +45,14 @@ export const vi: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Làm việc từ xa: có, ở bất kỳ đâu.',
+      rule: 'Làm việc từ xa: có, ở bất kỳ đâu, bao gồm cả Việt Nam. Làm việc từ bất kỳ thành phố nào ở Việt Nam là khả thi nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
+      vietnam: {
+        possible: true,
+        automatic: false,
+        requiresFurtherDiscussion: true,
+        examples: ['Hà Nội', 'Thành phố Hồ Chí Minh'],
+        rule: 'Làm việc từ xa tại bất kỳ thành phố nào ở Việt Nam, bao gồm Hà Nội và Thành phố Hồ Chí Minh, là khả thi nhưng cần trao đổi thêm với Nam và không được tự động chấp thuận.',
+      },
     },
     hybrid: {
       available: true,
@@ -58,7 +65,7 @@ export const vi: CvContent = {
       rule: 'Làm việc tại văn phòng: có, trong phạm vi tối đa 30 km quanh Sindelfingen, Đức.',
     },
     guidance:
-      'Với một địa điểm cụ thể, cần so sánh khoảng cách với bán kính tương ứng tính từ Sindelfingen. Nếu chưa biết chính xác khoảng cách, hãy giải thích quy tắc và nói rằng cần kiểm tra thay vì đoán.',
+      'Với một địa điểm cụ thể cho hình thức hybrid hoặc làm việc tại văn phòng, cần so sánh khoảng cách với bán kính tương ứng tính từ Sindelfingen. Nếu chưa biết chính xác khoảng cách, hãy giải thích quy tắc và nói rằng cần kiểm tra thay vì đoán. Với việc làm từ xa tại Việt Nam, hãy trả lời rằng có thể làm việc từ bất kỳ thành phố nào nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
   },
   skills: {
     heading: 'ls skills/',

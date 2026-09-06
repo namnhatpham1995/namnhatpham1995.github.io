@@ -64,6 +64,13 @@ export interface WorkLocationPolicy {
     available: boolean;
     maximumDistanceKm: number | null;
     rule: string;
+    vietnam: {
+      possible: boolean;
+      automatic: boolean;
+      requiresFurtherDiscussion: boolean;
+      examples: string[];
+      rule: string;
+    };
   };
   hybrid: {
     available: boolean;
