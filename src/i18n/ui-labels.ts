@@ -26,8 +26,17 @@ export interface UiLabels {
   assistantRateLimited: string;
   assistantInputTooLong: string;
   assistantVoiceButton: string;
+  assistantVoiceStop: string;
   assistantVoiceUnavailable: string;
   assistantVoiceUnavailableLocale: string;
+  assistantVoiceDisclosure: string;
+  assistantVoiceConnecting: string;
+  assistantVoiceListening: string;
+  assistantVoiceReconnecting: string;
+  assistantVoiceEnded: string;
+  assistantVoiceQuotaReached: string;
+  assistantVoiceMicDenied: string;
+  assistantVoiceError: string;
 }
 
 export const uiLabels: Record<Locale, UiLabels> = {
@@ -68,9 +77,19 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantRateLimited: "You're sending messages too quickly — please wait a moment and try again.",
     assistantInputTooLong: 'That message is too long — please shorten it and try again.',
     assistantVoiceButton: 'voice --live',
+    assistantVoiceStop: 'stop --live',
     assistantVoiceUnavailable: 'Live voice isn’t available yet — keep chatting here instead.',
     assistantVoiceUnavailableLocale:
       'Live voice is available in English and German only — keep chatting here in the meantime.',
+    assistantVoiceDisclosure: 'Voice sessions are limited to 10 minutes and share a daily cap across all visitors.',
+    assistantVoiceConnecting: 'Connecting…',
+    assistantVoiceListening: 'Listening — speak now.',
+    assistantVoiceReconnecting: 'Connection dropped — reconnecting…',
+    assistantVoiceEnded: 'Voice session ended. Start a new one anytime.',
+    assistantVoiceQuotaReached: 'Voice quota reached for today — try again tomorrow, or keep chatting here.',
+    assistantVoiceMicDenied:
+      'Microphone access was denied — allow access in your browser settings to use voice mode.',
+    assistantVoiceError: 'Voice connection failed — please try again.',
   },
   de: {
     skipToContent: 'Zum Inhalt springen',
@@ -109,9 +128,20 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantRateLimited: 'Du sendest Nachrichten zu schnell — bitte warte einen Moment und versuche es erneut.',
     assistantInputTooLong: 'Diese Nachricht ist zu lang — bitte kürze sie und versuche es erneut.',
     assistantVoiceButton: 'voice --live',
+    assistantVoiceStop: 'stop --live',
     assistantVoiceUnavailable: 'Live-Sprachfunktion ist noch nicht verfügbar — schreib in der Zwischenzeit hier weiter.',
     assistantVoiceUnavailableLocale:
       'Live-Sprachfunktion gibt es nur auf Englisch und Deutsch — schreib in der Zwischenzeit hier weiter.',
+    assistantVoiceDisclosure:
+      'Sprachsitzungen sind auf 10 Minuten begrenzt und teilen sich ein tägliches Kontingent unter allen Besuchern.',
+    assistantVoiceConnecting: 'Verbindung wird aufgebaut…',
+    assistantVoiceListening: 'Zuhören — jetzt sprechen.',
+    assistantVoiceReconnecting: 'Verbindung unterbrochen — Wiederverbindung läuft…',
+    assistantVoiceEnded: 'Sprachsitzung beendet. Du kannst jederzeit eine neue starten.',
+    assistantVoiceQuotaReached: 'Das tägliche Sprachkontingent ist erreicht — versuch es morgen erneut oder schreib hier weiter.',
+    assistantVoiceMicDenied:
+      'Mikrofonzugriff wurde verweigert — erlaube den Zugriff in deinen Browsereinstellungen, um die Sprachfunktion zu nutzen.',
+    assistantVoiceError: 'Sprachverbindung fehlgeschlagen — bitte versuch es erneut.',
   },
   vi: {
     skipToContent: 'Chuyển đến nội dung',
@@ -150,8 +180,20 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantRateLimited: 'Bạn đang gửi tin nhắn quá nhanh — vui lòng đợi một chút rồi thử lại.',
     assistantInputTooLong: 'Tin nhắn này quá dài — vui lòng rút ngắn rồi thử lại.',
     assistantVoiceButton: 'voice --live',
+    assistantVoiceStop: 'stop --live',
     assistantVoiceUnavailable: 'Trợ lý giọng nói trực tiếp chưa khả dụng — hãy tiếp tục trò chuyện bằng văn bản.',
     assistantVoiceUnavailableLocale:
       'Trợ lý giọng nói trực tiếp chỉ hỗ trợ tiếng Anh và tiếng Đức — hãy tiếp tục trò chuyện bằng văn bản ở đây.',
+    assistantVoiceDisclosure:
+      'Phiên trò chuyện giọng nói giới hạn 10 phút và dùng chung hạn mức hàng ngày cho tất cả khách truy cập.',
+    assistantVoiceConnecting: 'Đang kết nối…',
+    assistantVoiceListening: 'Đang lắng nghe — hãy nói.',
+    assistantVoiceReconnecting: 'Mất kết nối — đang kết nối lại…',
+    assistantVoiceEnded: 'Phiên trò chuyện giọng nói đã kết thúc. Bạn có thể bắt đầu phiên mới bất cứ lúc nào.',
+    assistantVoiceQuotaReached:
+      'Đã đạt hạn mức giọng nói hôm nay — vui lòng thử lại vào ngày mai hoặc tiếp tục trò chuyện bằng văn bản.',
+    assistantVoiceMicDenied:
+      'Quyền truy cập micro đã bị từ chối — vui lòng cho phép trong cài đặt trình duyệt để dùng chế độ giọng nói.',
+    assistantVoiceError: 'Kết nối giọng nói thất bại — vui lòng thử lại.',
   },
 };

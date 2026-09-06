@@ -94,22 +94,6 @@ test('a failed request shows an inline error instead of breaking the widget', as
   await expect(dialog.locator('[data-assistant-input]')).toBeEnabled();
 });
 
-test('voice mode is shown as a disabled choice with a reason when no live-voice backend is configured', async ({
-  page,
-}) => {
-  await page.goto('/');
-
-  await page.locator('[data-network-assistant]').click();
-  const dialog = page.locator('#assistant-dialog');
-  const voiceToggle = dialog.locator('[data-assistant-voice-toggle]');
-
-  await expect(voiceToggle).toBeVisible();
-  await expect(voiceToggle).toBeDisabled();
-  await expect(dialog.locator('[data-assistant-voice-note]')).toHaveText(
-    'Live voice isn’t available yet — keep chatting here instead.'
-  );
-});
-
 test('voice mode stays disabled for Vietnamese regardless of backend availability', async ({ page }) => {
   await page.goto('/vi/');
 

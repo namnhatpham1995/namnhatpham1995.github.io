@@ -4,14 +4,12 @@
 // portfolio-voice-agent backend's /chat endpoint (see openspec change
 // voice-portfolio-agent, tasks.md section 2).
 //
-// Voice mode (tasks.md section 3) is feature-detected here but not
-// implemented: the backend has no live-voice WebSocket endpoint yet, so the
-// control below is always rendered disabled with a reason (per design.md's
-// "disabled-with-reason, not hidden" decision) rather than faking a working
-// toggle. Once portfolio-voice-agent's P3 (live voice) ships and sets
-// PUBLIC_ASSISTANT_VOICE_URL, this becomes reachable — actually opening a
-// voice session (capture/playback, reconnection) is tasks.md 3.2+, still to
-// be built at that point.
+// Voice mode (tasks.md section 3) is feature-detected via
+// PUBLIC_ASSISTANT_VOICE_URL: unset, the control renders disabled with a
+// reason (per design.md's "disabled-with-reason, not hidden" decision)
+// rather than faking a working toggle. When set, assistant-voice-client.ts
+// drives the actual live session (mic capture, playback, reconnection)
+// against the backend's /ws/voice protocol.
 interface Props {
   locale: 'en' | 'de' | 'vi';
   labels: {
@@ -26,8 +24,17 @@ interface Props {
     rateLimited: string;
     inputTooLong: string;
     voiceButton: string;
+    voiceStop: string;
     voiceUnavailable: string;
     voiceUnavailableLocale: string;
+    voiceDisclosure: string;
+    voiceConnecting: string;
+    voiceListening: string;
+    voiceReconnecting: string;
+    voiceEnded: string;
+    voiceQuotaReached: string;
+    voiceMicDenied: string;
+    voiceError: string;
   };
 }
 
@@ -38,6 +45,19 @@ const { locale, labels } = Astro.props;
 const voiceUrl = import.meta.env.PUBLIC_ASSISTANT_VOICE_URL;
 const voiceUnavailableReason =
   locale === 'vi' ? labels.voiceUnavailableLocale : !voiceUrl ? labels.voiceUnavailable : null;
+const voiceNoteInitialText = voiceUnavailableReason ?? labels.voiceDisclosure;
+const voiceStatusLabels = {
+  button: labels.voiceButton,
+  stop: labels.voiceStop,
+  idle: voiceNoteInitialText,
+  connecting: labels.voiceConnecting,
+  listening: labels.voiceListening,
+  reconnecting: labels.voiceReconnecting,
+  ended: labels.voiceEnded,
+  'quota-reached': labels.voiceQuotaReached,
+  'mic-denied': labels.voiceMicDenied,
+  error: labels.voiceError,
+};
 ---
 
 <dialog
@@ -48,6 +68,8 @@ const voiceUnavailableReason =
   data-unavailable={labels.unavailable}
   data-rate-limited={labels.rateLimited}
   data-input-too-long={labels.inputTooLong}
+  data-voice-url={voiceUrl ?? ''}
+  data-voice-labels={JSON.stringify(voiceStatusLabels)}
 >
   <div class="assistant-dialog__window">
     <div class="assistant-dialog__chrome">
@@ -71,18 +93,15 @@ const voiceUnavailableReason =
         class="assistant-dialog__voice"
         data-assistant-voice-toggle
         aria-label={labels.voiceButton}
+        aria-pressed="false"
         disabled={voiceUnavailableReason !== null}
         title={voiceUnavailableReason ?? undefined}
       >
         {labels.voiceButton}
       </button>
-      {
-        voiceUnavailableReason && (
-          <p class="assistant-dialog__voice-note" data-assistant-voice-note>
-            {voiceUnavailableReason}
-          </p>
-        )
-      }
+      <p class="assistant-dialog__voice-note" data-assistant-voice-note>
+        {voiceNoteInitialText}
+      </p>
     </div>
     <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite"></div>
     <div class="assistant-dialog__chips" data-assistant-chips>
@@ -402,6 +421,8 @@ const voiceUnavailableReason =
 </style>
 
 <script>
+  import { VoiceClient, type VoiceStatus } from './assistant-voice-client';
+
   // Set via the PUBLIC_ASSISTANT_API_URL repository variable in GitHub Actions
   // (see .github/workflows/deploy.yml) - not committed to source.
   const API_URL: string | undefined = import.meta.env.PUBLIC_ASSISTANT_API_URL;
@@ -415,14 +436,22 @@ const voiceUnavailableReason =
   const form = dialog?.querySelector<HTMLFormElement>('[data-assistant-form]');
   const input = dialog?.querySelector<HTMLInputElement>('[data-assistant-input]');
   const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const voiceToggle = dialog?.querySelector<HTMLButtonElement>('[data-assistant-voice-toggle]');
+  const voiceNote = dialog?.querySelector<HTMLParagraphElement>('[data-assistant-voice-note]');
 
   const locale = dialog?.dataset.locale ?? 'en';
   const unavailableMessage = dialog?.dataset.unavailable ?? '';
   const rateLimitedMessage = dialog?.dataset.rateLimited ?? '';
   const inputTooLongMessage = dialog?.dataset.inputTooLong ?? '';
+  const voiceUrl = dialog?.dataset.voiceUrl || undefined;
+  const voiceLabels: Record<VoiceStatus | 'button' | 'stop', string> | null = dialog?.dataset.voiceLabels
+    ? JSON.parse(dialog.dataset.voiceLabels)
+    : null;
 
   let opener: HTMLElement | null = null;
   let sending = false;
+  let voiceClient: VoiceClient | null = null;
+  let voiceActive = false;
 
   function getSessionId(): string {
     let id = sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -444,9 +473,36 @@ const voiceUnavailableReason =
 
   function setSending(value: boolean) {
     sending = value;
-    if (input) input.disabled = value;
-    if (submitButton) submitButton.disabled = value;
+    if (input) input.disabled = value || voiceActive;
+    if (submitButton) submitButton.disabled = value || voiceActive;
   }
+
+  function applyVoiceStatus(status: VoiceStatus) {
+    if (!voiceLabels) return;
+    voiceActive = status === 'connecting' || status === 'listening' || status === 'reconnecting';
+    if (voiceNote) voiceNote.textContent = voiceLabels[status];
+    if (voiceToggle) {
+      const label = voiceActive ? voiceLabels.stop : voiceLabels.button;
+      voiceToggle.textContent = label;
+      voiceToggle.setAttribute('aria-label', label);
+      voiceToggle.setAttribute('aria-pressed', String(voiceActive));
+    }
+    if (input) input.disabled = sending || voiceActive;
+    if (submitButton) submitButton.disabled = sending || voiceActive;
+    if (voiceActive) chipsEl?.setAttribute('hidden', '');
+  }
+
+  voiceToggle?.addEventListener('click', () => {
+    if (!voiceUrl) return;
+    if (voiceActive) {
+      voiceClient?.stop();
+      return;
+    }
+    if (!voiceClient) {
+      voiceClient = new VoiceClient({ wsUrl: voiceUrl, locale, onStatusChange: applyVoiceStatus });
+    }
+    void voiceClient.start();
+  });
 
   if (!API_URL) {
     chipsEl?.setAttribute('hidden', '');
@@ -456,7 +512,7 @@ const voiceUnavailableReason =
   }
 
   async function sendMessage(text: string) {
-    if (!API_URL || !text.trim() || sending) return;
+    if (!API_URL || !text.trim() || sending || voiceActive) return;
     chipsEl?.setAttribute('hidden', '');
     appendMessage('user', text);
     setSending(true);
@@ -519,6 +575,7 @@ const voiceUnavailableReason =
   const isFocusable = (el: HTMLElement) => document.body.contains(el) && !el.closest('[hidden]');
 
   dialog?.addEventListener('close', () => {
+    voiceClient?.stop();
     // The opener is usually the overlay's still-visible "ask my assistant"
     // button, but fall back to the page's main content so focus doesn't
     // silently drop to <body> if the opener is ever gone or hidden.
