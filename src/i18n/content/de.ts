@@ -41,6 +41,26 @@ export const de: CvContent = {
       { text: ", Integrationstests, Docker und Kubernetes." },
     ],
   },
+  workLocation: {
+    base: 'Sindelfingen, Deutschland',
+    remote: {
+      available: true,
+      maximumDistanceKm: null,
+      rule: 'Remote-Arbeit: ja, von überall.',
+    },
+    hybrid: {
+      available: true,
+      maximumDistanceKm: 50,
+      rule: 'Hybridarbeit: ja, bis maximal 50 km von Sindelfingen, Deutschland entfernt.',
+    },
+    onSite: {
+      available: true,
+      maximumDistanceKm: 30,
+      rule: 'Arbeiten vor Ort: ja, bis maximal 30 km von Sindelfingen, Deutschland entfernt.',
+    },
+    guidance:
+      'Bei einem konkreten Ort muss die Entfernung zum jeweils geltenden Radius um Sindelfingen geprüft werden. Wenn die genaue Entfernung nicht bekannt ist, soll die Regel erklärt und nicht geraten werden.',
+  },
   skills: {
     heading: 'ls skills/',
     // TODO: native review — expanded from 6 to 7 groups per the 2026-09 CV refresh

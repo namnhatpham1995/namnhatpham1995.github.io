@@ -37,6 +37,26 @@ export const en: CvContent = {
       { text: ", integration testing, Docker, and Kubernetes." },
     ],
   },
+  workLocation: {
+    base: 'Sindelfingen, Germany',
+    remote: {
+      available: true,
+      maximumDistanceKm: null,
+      rule: 'Remote work: yes, from anywhere.',
+    },
+    hybrid: {
+      available: true,
+      maximumDistanceKm: 50,
+      rule: 'Hybrid work: yes, within a maximum of 50 km from Sindelfingen, Germany.',
+    },
+    onSite: {
+      available: true,
+      maximumDistanceKm: 30,
+      rule: 'On-site work: yes, within a maximum of 30 km from Sindelfingen, Germany.',
+    },
+    guidance:
+      'For a specific location, compare its distance with the applicable radius from Sindelfingen. If the exact distance is unknown, explain the rule and say it needs to be checked rather than guessing.',
+  },
   skills: {
     heading: 'ls skills/',
     groups: [

@@ -40,6 +40,26 @@ export const vi: CvContent = {
       { text: ", kiểm thử tích hợp, Docker và Kubernetes." },
     ],
   },
+  workLocation: {
+    base: 'Sindelfingen, Đức',
+    remote: {
+      available: true,
+      maximumDistanceKm: null,
+      rule: 'Làm việc từ xa: có, ở bất kỳ đâu.',
+    },
+    hybrid: {
+      available: true,
+      maximumDistanceKm: 50,
+      rule: 'Làm việc hybrid: có, trong phạm vi tối đa 50 km quanh Sindelfingen, Đức.',
+    },
+    onSite: {
+      available: true,
+      maximumDistanceKm: 30,
+      rule: 'Làm việc tại văn phòng: có, trong phạm vi tối đa 30 km quanh Sindelfingen, Đức.',
+    },
+    guidance:
+      'Với một địa điểm cụ thể, cần so sánh khoảng cách với bán kính tương ứng tính từ Sindelfingen. Nếu chưa biết chính xác khoảng cách, hãy giải thích quy tắc và nói rằng cần kiểm tra thay vì đoán.',
+  },
   skills: {
     heading: 'ls skills/',
     // Expanded from 6 to 7 groups per the 2026-09 CV refresh

@@ -58,6 +58,26 @@ export interface SummarySegment {
   strong?: boolean;
 }
 
+export interface WorkLocationPolicy {
+  base: string;
+  remote: {
+    available: boolean;
+    maximumDistanceKm: number | null;
+    rule: string;
+  };
+  hybrid: {
+    available: boolean;
+    maximumDistanceKm: number;
+    rule: string;
+  };
+  onSite: {
+    available: boolean;
+    maximumDistanceKm: number;
+    rule: string;
+  };
+  guidance: string;
+}
+
 export interface CvContent {
   meta: {
     title: string;
@@ -73,6 +93,7 @@ export interface CvContent {
     github: string;
     summary: SummarySegment[];
   };
+  workLocation: WorkLocationPolicy;
   skills: {
     heading: string;
     groups: SkillGroup[];
