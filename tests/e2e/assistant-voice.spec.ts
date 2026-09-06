@@ -125,6 +125,29 @@ test('a 4408 close from the backend shows the session-ended message', async ({ p
   await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
 
+test('a turn that completes with no transcription-finished flag does not merge into the next turn', async ({ page }) => {
+  const { registered, route } = mockVoiceSocket(page);
+  await registered;
+  const dialog = await startCall(page);
+  await expect(dialog.locator('[data-call-live]')).toBeVisible();
+  const ws = await route;
+
+  // Simulates the backend's greeting retry (voice_greeting.py): a turn whose
+  // transcript arrives but which completes without ever setting
+  // outputTranscription.finished, followed by a retried turn with the same
+  // text. Before this fix, the missing `finished` left the transcript line
+  // open so the retry's text appended onto it instead of starting a new line.
+  ws.send(JSON.stringify({ outputTranscription: { text: 'Hi there', finished: false } }));
+  ws.send(JSON.stringify({ turnComplete: true }));
+  ws.send(JSON.stringify({ outputTranscription: { text: 'Hi there', finished: true } }));
+  ws.send(JSON.stringify({ turnComplete: true }));
+
+  const lines = dialog.locator('.assistant-call__line--assistant .assistant-call__line-body');
+  await expect(lines).toHaveCount(2);
+  await expect(lines.nth(0)).toHaveText('Hi there');
+  await expect(lines.nth(1)).toHaveText('Hi there');
+});
+
 test('denying microphone access shows the mic-denied message', async ({ page }) => {
   await page.addInitScript(() => {
     navigator.mediaDevices.getUserMedia = () =>

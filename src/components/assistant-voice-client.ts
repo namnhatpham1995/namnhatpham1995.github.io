@@ -196,6 +196,7 @@ export class VoiceClient {
   private handleServerEvent(raw: string): void {
     let payload: {
       interrupted?: boolean;
+      turnComplete?: boolean;
       inputTranscription?: { text?: string; finished?: boolean };
       outputTranscription?: { text?: string; finished?: boolean };
     };
@@ -214,6 +215,13 @@ export class VoiceClient {
     const output = payload.outputTranscription;
     if (output?.text || output?.finished) {
       this.onTranscript?.('assistant', output.text ?? '', output.finished ?? false);
+    }
+    // outputTranscription.finished doesn't always fire (e.g. the backend's
+    // greeting retry: a turn that produced a transcript but no audio at
+    // all) -- turnComplete is the backend's own authoritative end-of-turn
+    // signal, so treat it as an equally valid close for the assistant line.
+    if (payload.turnComplete) {
+      this.onTranscript?.('assistant', '', true);
     }
   }
 
