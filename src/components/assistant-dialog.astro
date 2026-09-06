@@ -4,18 +4,26 @@
 // portfolio-voice-agent backend's /chat endpoint (see openspec change
 // voice-portfolio-agent, tasks.md section 2).
 //
+// The <dialog> is a transparent full-viewport flex container, not the
+// window itself: that is what lets the call-to-action sit beside the
+// terminal window on desktop and below it on mobile. Anything outside the
+// dialog's own subtree would be inert while showModal() is active, so
+// floating chrome has to live in here.
+//
 // Voice mode (tasks.md section 3) is feature-detected via
 // PUBLIC_ASSISTANT_VOICE_URL: unset, the control renders disabled with a
 // reason (per design.md's "disabled-with-reason, not hidden" decision)
-// rather than faking a working toggle. When set, assistant-voice-client.ts
-// drives the actual live session (mic capture, playback, reconnection)
-// against the backend's /ws/voice protocol.
+// rather than faking a working toggle. Choosing voice swaps this same
+// dialog into call mode, which opens on a pre-call screen -- the session
+// limit and shared quota are disclosed there *before* the microphone is
+// touched or a backend session is claimed.
 interface Props {
   locale: 'en' | 'de' | 'vi';
   labels: {
     dialogLabel: string;
     close: string;
     disclosure: string;
+    greeting: string;
     placeholder: string;
     send: string;
     suggestedLabel: string;
@@ -35,6 +43,18 @@ interface Props {
     voiceQuotaReached: string;
     voiceMicDenied: string;
     voiceError: string;
+    voiceCallHint: string;
+    voiceCallLimit: string;
+    callAiNotice: string;
+    callStart: string;
+    callEnd: string;
+    callBack: string;
+    callYou: string;
+    callAssistant: string;
+    callYourTurn: string;
+    callSpeaking: string;
+    callSilenceEnded: string;
+    callTimeLeft: string;
   };
 }
 
@@ -45,18 +65,19 @@ const { locale, labels } = Astro.props;
 const voiceUrl = import.meta.env.PUBLIC_ASSISTANT_VOICE_URL;
 const voiceUnavailableReason =
   locale === 'vi' ? labels.voiceUnavailableLocale : !voiceUrl ? labels.voiceUnavailable : null;
-const voiceNoteInitialText = voiceUnavailableReason ?? labels.voiceDisclosure;
-const voiceStatusLabels = {
-  button: labels.voiceButton,
-  stop: labels.voiceStop,
-  idle: voiceNoteInitialText,
+const callLabels = {
   connecting: labels.voiceConnecting,
   listening: labels.voiceListening,
   reconnecting: labels.voiceReconnecting,
   ended: labels.voiceEnded,
-  'quota-reached': labels.voiceQuotaReached,
-  'mic-denied': labels.voiceMicDenied,
+  quotaReached: labels.voiceQuotaReached,
+  micDenied: labels.voiceMicDenied,
   error: labels.voiceError,
+  you: labels.callYou,
+  assistant: labels.callAssistant,
+  yourTurn: labels.callYourTurn,
+  speaking: labels.callSpeaking,
+  silenceEnded: labels.callSilenceEnded,
 };
 ---
 
@@ -64,19 +85,21 @@ const voiceStatusLabels = {
   class="assistant-dialog"
   id="assistant-dialog"
   aria-label={labels.dialogLabel}
+  data-mode="chat"
   data-locale={locale}
   data-unavailable={labels.unavailable}
   data-rate-limited={labels.rateLimited}
   data-input-too-long={labels.inputTooLong}
   data-voice-url={voiceUrl ?? ''}
-  data-voice-labels={JSON.stringify(voiceStatusLabels)}
+  data-call-labels={JSON.stringify(callLabels)}
 >
   <div class="assistant-dialog__window">
     <div class="assistant-dialog__chrome">
       <span class="assistant-dialog__dot assistant-dialog__dot--red" aria-hidden="true"></span>
       <span class="assistant-dialog__dot assistant-dialog__dot--amber" aria-hidden="true"></span>
       <span class="assistant-dialog__dot assistant-dialog__dot--green" aria-hidden="true"></span>
-      <span class="assistant-dialog__path" aria-hidden="true">$ ai-assistant --chat</span>
+      <span class="assistant-dialog__path" data-assistant-path aria-hidden="true">$ ai-assistant --chat</span>
+      <span class="assistant-dialog__timer" data-call-timer aria-label={labels.callTimeLeft} hidden>10:00</span>
       <button
         type="button"
         class="assistant-dialog__close"
@@ -86,68 +109,137 @@ const voiceStatusLabels = {
         <span aria-hidden="true">×</span>
       </button>
     </div>
-    <p class="assistant-dialog__disclosure">{labels.disclosure}</p>
-    <div class="assistant-dialog__voice-row">
-      <button
-        type="button"
-        class="assistant-dialog__voice"
-        data-assistant-voice-toggle
-        aria-label={labels.voiceButton}
-        aria-pressed="false"
-        disabled={voiceUnavailableReason !== null}
-        title={voiceUnavailableReason ?? undefined}
-      >
-        {labels.voiceButton}
-      </button>
-      <p class="assistant-dialog__voice-note" data-assistant-voice-note>
-        {voiceNoteInitialText}
-      </p>
+
+    <div class="assistant-dialog__panel" data-assistant-chat>
+      <p class="assistant-dialog__disclosure">{labels.disclosure}</p>
+      <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite">
+        <p class="assistant-dialog__message assistant-dialog__message--assistant">{labels.greeting}</p>
+        <div class="assistant-dialog__chips" data-assistant-chips>
+          <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
+          <div class="assistant-dialog__chips-list">
+            {
+              labels.questions.map((question) => (
+                <button type="button" class="assistant-dialog__chip" data-assistant-chip>
+                  {question}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+      <form class="assistant-dialog__form" data-assistant-form>
+        <input
+          type="text"
+          class="assistant-dialog__input"
+          data-assistant-input
+          placeholder={labels.placeholder}
+          aria-label={labels.placeholder}
+          autocomplete="off"
+          maxlength="1000"
+        />
+        <button type="submit" class="assistant-dialog__submit" aria-label={labels.send}>
+          {labels.send}
+        </button>
+      </form>
     </div>
-    <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite">
-      <div class="assistant-dialog__chips" data-assistant-chips>
-        <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
-        <div class="assistant-dialog__chips-list">
-          {
-            labels.questions.map((question) => (
-              <button type="button" class="assistant-dialog__chip" data-assistant-chip>
-                {question}
-              </button>
-            ))
-          }
+
+    <div class="assistant-dialog__panel assistant-call" data-assistant-call hidden>
+      <div class="assistant-call__meters">
+        <p class="assistant-call__meter">
+          <span class="assistant-call__meter-label">{labels.callYou}</span>
+          <span class="assistant-call__meter-bars assistant-call__meter-bars--user" data-call-meter="user"></span>
+        </p>
+        <p class="assistant-call__meter">
+          <span class="assistant-call__meter-label">{labels.callAssistant}</span>
+          <span
+            class="assistant-call__meter-bars assistant-call__meter-bars--assistant"
+            data-call-meter="assistant"></span>
+        </p>
+      </div>
+
+      <div class="assistant-call__pre" data-call-pre>
+        <p class="assistant-call__message" data-call-message hidden></p>
+        <p class="assistant-call__notice">{labels.callAiNotice}</p>
+        <p class="assistant-call__disclosure">{labels.voiceDisclosure}</p>
+        <div class="assistant-call__actions">
+          <button type="button" class="assistant-call__action assistant-call__action--start" data-call-start>
+            {labels.callStart}
+          </button>
+          <button type="button" class="assistant-call__action" data-call-back>{labels.callBack}</button>
+        </div>
+      </div>
+
+      <div class="assistant-call__live" data-call-live hidden>
+        <p class="assistant-call__status" data-call-status></p>
+        <div class="assistant-call__transcript" data-call-transcript role="log" aria-live="polite"></div>
+        <div class="assistant-call__actions">
+          <button type="button" class="assistant-call__action assistant-call__action--end" data-call-end>
+            {labels.callEnd}
+          </button>
         </div>
       </div>
     </div>
-    <form class="assistant-dialog__form" data-assistant-form>
-      <input
-        type="text"
-        class="assistant-dialog__input"
-        data-assistant-input
-        placeholder={labels.placeholder}
-        aria-label={labels.placeholder}
-        autocomplete="off"
-        maxlength="1000"
-      />
-      <button type="submit" class="assistant-dialog__submit" aria-label={labels.send}>
-        {labels.send}
-      </button>
-    </form>
   </div>
+
+  <aside class="assistant-dialog__cta" data-assistant-cta>
+    <button
+      type="button"
+      class="assistant-dialog__call-button"
+      data-assistant-voice-toggle
+      aria-label={labels.voiceCallHint}
+      disabled={voiceUnavailableReason !== null}
+      title={voiceUnavailableReason ?? undefined}
+    >
+      <span class="assistant-dialog__ping" data-assistant-ping aria-hidden="true"></span>
+      <svg class="assistant-dialog__mic" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linejoin="round"></path>
+        <path
+          d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"></path>
+      </svg>
+    </button>
+    <p class="assistant-dialog__cta-cmd">{labels.voiceButton}</p>
+    <p class="assistant-dialog__cta-hint" data-assistant-voice-note>
+      {voiceUnavailableReason ?? labels.voiceCallHint}
+    </p>
+    <p class="assistant-dialog__cta-limit">{labels.voiceCallLimit}</p>
+  </aside>
 </dialog>
 
 <style>
+  /* The dialog is the layout surface; the window inside it is what reads as
+     a terminal. Setting display on a <dialog> overrides the UA's
+     display:none for the closed state, so that has to be restored. */
   .assistant-dialog {
-    width: min(75vw, 1100px, calc(100vw - 2rem));
-    max-width: none;
-    padding: 0;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    background: var(--color-bg);
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: var(--space-4);
+    border: 0;
+    background: none;
     color: var(--color-text);
     font-family: inherit;
-    overflow: hidden;
-    box-shadow:
-      0 24px 80px rgb(0 0 0 / 65%),
-      0 0 32px color-mix(in srgb, var(--color-accent-green) 14%, transparent);
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-5);
+  }
+
+  .assistant-dialog:not([open]) {
+    display: none;
   }
 
   .assistant-dialog::backdrop {
@@ -158,12 +250,33 @@ const voiceStatusLabels = {
   .assistant-dialog__window {
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    width: min(75vw, 1100px);
     /* dvh tracks the *actual* visible viewport; on mobile, vh is the height
        with the browser's address bar hidden, which overstates what's on
-       screen and pushed the top of the dialog (chrome bar, voice button)
-       above the fold since the native <dialog> centers on the real one. */
-    height: min(80vh, 860px, calc(100vh - 4rem));
-    height: min(80dvh, 860px, calc(100dvh - 4rem));
+       screen and pushed the top of the dialog above the fold. */
+    height: min(80vh, 860px);
+    height: min(80dvh, 860px);
+    max-height: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    overflow: hidden;
+    box-shadow:
+      0 24px 80px rgb(0 0 0 / 65%),
+      0 0 32px color-mix(in srgb, var(--color-accent-green) 14%, transparent);
+  }
+
+  .assistant-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  .assistant-dialog__panel[hidden] {
+    display: none;
   }
 
   .assistant-dialog__chrome {
@@ -207,6 +320,24 @@ const voiceStatusLabels = {
     white-space: nowrap;
   }
 
+  /* Tabular figures: proportional digits make the seconds column jitter on
+     every tick, which reads as a glitch rather than a clock. */
+  .assistant-dialog__timer {
+    flex: 0 0 auto;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+  }
+
+  .assistant-dialog__timer[data-level='warn'] {
+    color: var(--color-accent-amber);
+  }
+
+  .assistant-dialog__timer[data-level='critical'] {
+    color: var(--color-accent-red);
+  }
+
   .assistant-dialog__close {
     display: flex;
     align-items: center;
@@ -243,50 +374,9 @@ const voiceStatusLabels = {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .assistant-dialog__voice-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    flex: 0 0 auto;
-    padding: var(--space-2) var(--space-3);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .assistant-dialog__voice {
-    flex: 0 0 auto;
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    background: none;
-    color: var(--color-text-muted);
-    font: inherit;
-    font-size: 0.8125rem;
-    cursor: pointer;
-    transition: color 160ms ease, border-color 160ms ease;
-  }
-
-  .assistant-dialog__voice:not(:disabled):hover,
-  .assistant-dialog__voice:not(:disabled):focus-visible {
-    color: var(--color-accent-green);
-    border-color: var(--color-accent-green);
-  }
-
-  .assistant-dialog__voice:disabled {
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  .assistant-dialog__voice-note {
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: 0.75rem;
-    line-height: 1.4;
-  }
-
   .assistant-dialog__messages {
     flex: 1 1 auto;
-    min-height: 160px;
+    min-height: 120px;
     overflow-y: auto;
     padding: var(--space-3);
     display: flex;
@@ -294,7 +384,10 @@ const voiceStatusLabels = {
     gap: var(--space-2);
   }
 
-  .assistant-dialog__message {
+  /* Message bubbles and transcript lines are built in script, so they never
+     carry Astro's scoping attribute and a scoped rule cannot match them --
+     these have to opt out of scoping to style anything but the greeting. */
+  :global(.assistant-dialog__message) {
     margin: 0;
     max-width: 88%;
     padding: var(--space-2) var(--space-3);
@@ -305,19 +398,19 @@ const voiceStatusLabels = {
     overflow-wrap: anywhere;
   }
 
-  .assistant-dialog__message--user {
+  :global(.assistant-dialog__message--user) {
     align-self: flex-end;
     background: color-mix(in srgb, var(--color-accent-green) 16%, transparent);
     color: var(--color-text);
   }
 
-  .assistant-dialog__message--assistant {
+  :global(.assistant-dialog__message--assistant) {
     align-self: flex-start;
     background: var(--color-surface);
     color: var(--color-text);
   }
 
-  .assistant-dialog__message--error {
+  :global(.assistant-dialog__message--error) {
     align-self: flex-start;
     background: color-mix(in srgb, var(--color-accent-red) 14%, transparent);
     color: var(--color-text);
@@ -325,7 +418,7 @@ const voiceStatusLabels = {
 
   .assistant-dialog__chips {
     flex: 0 0 auto;
-    padding: 0 var(--space-3) var(--space-2);
+    padding-top: var(--space-1);
   }
 
   .assistant-dialog__chips[hidden] {
@@ -415,24 +508,407 @@ const voiceStatusLabels = {
     cursor: default;
   }
 
-  @media (max-width: 640px) {
+  /* ---- call-to-action -------------------------------------------------- */
+
+  .assistant-dialog__cta {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    width: 15rem;
+  }
+
+  .assistant-dialog__cta[hidden] {
+    display: none;
+  }
+
+  .assistant-dialog__call-button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    margin-bottom: var(--space-2);
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--color-accent-cyan) 55%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-accent-cyan) 14%, transparent);
+    color: var(--color-accent-cyan);
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+
+  .assistant-dialog__call-button:not(:disabled):hover,
+  .assistant-dialog__call-button:not(:disabled):focus-visible {
+    background: color-mix(in srgb, var(--color-accent-cyan) 24%, transparent);
+    border-color: var(--color-accent-cyan);
+    transform: translateY(-1px);
+  }
+
+  .assistant-dialog__call-button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .assistant-dialog__mic {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Three pings on open, then silence: enough to pull the eye without
+     leaving something permanently flashing on the page. */
+  .assistant-dialog__ping {
+    position: absolute;
+    inset: -7px;
+    border: 1px solid var(--color-accent-cyan);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .assistant-dialog__cta[data-ping] .assistant-dialog__ping {
+    animation: assistant-ping 2200ms ease-out 3;
+  }
+
+  @keyframes assistant-ping {
+    0% {
+      transform: scale(0.94);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+  .assistant-dialog__cta-cmd {
+    margin: 0;
+    color: var(--color-accent-cyan);
+    font-size: 0.875rem;
+  }
+
+  /* The one blinking thing in the interface, and it is a terminal cursor --
+     the glyph that already means "waiting for your input". */
+  .assistant-dialog__cta-cmd::after {
+    content: '▋';
+    margin-left: 0.15em;
+    animation: assistant-cursor 1060ms steps(1) infinite;
+  }
+
+  @keyframes assistant-cursor {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .assistant-dialog__cta-hint {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .assistant-dialog__cta-limit {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+
+  .assistant-dialog__call-button:disabled ~ .assistant-dialog__cta-cmd,
+  .assistant-dialog__call-button:disabled ~ .assistant-dialog__cta-limit {
+    display: none;
+  }
+
+  /* ---- call mode ------------------------------------------------------- */
+
+  .assistant-call {
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .assistant-call__meters {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .assistant-call__meter {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .assistant-call__meter-label {
+    flex: 0 0 5.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .assistant-call__meter-bars {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .assistant-call__meter-bars--user {
+    color: var(--color-accent-green);
+  }
+
+  .assistant-call__meter-bars--assistant {
+    color: var(--color-accent-cyan);
+  }
+
+  .assistant-call__pre,
+  .assistant-call__live {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-height: 0;
+  }
+
+  /* Pre-call has little content, so centring it reads as a deliberate
+     "ready to call" screen instead of text stranded under the meters. */
+  .assistant-call__pre {
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 46rem;
+  }
+
+  .assistant-call__pre[hidden],
+  .assistant-call__live[hidden] {
+    display: none;
+  }
+
+  .assistant-call__message {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent-amber) 14%, transparent);
+    color: var(--color-text);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .assistant-call__message[hidden] {
+    display: none;
+  }
+
+  .assistant-call__notice {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .assistant-call__disclosure {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .assistant-call__status {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.8125rem;
+  }
+
+  .assistant-call__status[data-waiting]::after {
+    content: ' ▋';
+    animation: assistant-cursor 1060ms steps(1) infinite;
+  }
+
+  .assistant-call__transcript {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  :global(.assistant-call__line) {
+    display: flex;
+    gap: var(--space-3);
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  :global(.assistant-call__line-speaker) {
+    flex: 0 0 5.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-top: 0.28em;
+  }
+
+  :global(.assistant-call__line--user .assistant-call__line-speaker) {
+    color: var(--color-accent-green);
+  }
+
+  :global(.assistant-call__line--assistant .assistant-call__line-speaker) {
+    color: var(--color-accent-cyan);
+  }
+
+  :global(.assistant-call__line-body) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .assistant-call__actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .assistant-call__action {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: none;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .assistant-call__action:hover,
+  .assistant-call__action:focus-visible {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
+
+  .assistant-call__action--start {
+    border-color: color-mix(in srgb, var(--color-accent-cyan) 55%, transparent);
+    background: color-mix(in srgb, var(--color-accent-cyan) 14%, transparent);
+    color: var(--color-accent-cyan);
+  }
+
+  .assistant-call__action--start::after {
+    content: '▋';
+    margin-left: 0.35em;
+    animation: assistant-cursor 1060ms steps(1) infinite;
+  }
+
+  .assistant-call__action--start:hover,
+  .assistant-call__action--start:focus-visible {
+    border-color: var(--color-accent-cyan);
+    background: color-mix(in srgb, var(--color-accent-cyan) 24%, transparent);
+    color: var(--color-accent-cyan);
+  }
+
+  .assistant-call__action--end {
+    border-color: color-mix(in srgb, var(--color-accent-red) 55%, transparent);
+    color: var(--color-accent-red);
+  }
+
+  .assistant-call__action--end:hover,
+  .assistant-call__action--end:focus-visible {
+    border-color: var(--color-accent-red);
+    background: color-mix(in srgb, var(--color-accent-red) 12%, transparent);
+    color: var(--color-accent-red);
+  }
+
+  /* Below this width there is no room for a column beside the window, so
+     the call-to-action becomes a row underneath it and the window shrinks
+     to make space rather than pushing it off screen. */
+  @media (max-width: 900px) {
     .assistant-dialog {
-      width: calc(100vw - 1rem);
+      flex-direction: column;
+      gap: var(--space-3);
+      padding: var(--space-3);
     }
 
+    .assistant-dialog__window {
+      width: 100%;
+      height: auto;
+      flex: 1 1 auto;
+    }
+
+    .assistant-dialog__cta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: var(--space-3);
+      width: 100%;
+    }
+
+    .assistant-dialog__call-button {
+      grid-row: 1 / span 2;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0;
+    }
+
+    .assistant-dialog__mic {
+      width: 26px;
+      height: 26px;
+    }
+
+    .assistant-dialog__cta-cmd {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
     .assistant-dialog__path {
       display: none;
     }
 
-    .assistant-dialog__window {
-      height: min(85vh, calc(100vh - 1.5rem));
-      height: min(85dvh, calc(100dvh - 1.5rem));
+    .assistant-call {
+      padding: var(--space-3) var(--space-2);
+    }
+
+    .assistant-call__meter-label,
+    .assistant-call__line-speaker {
+      flex-basis: 4rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assistant-dialog__cta[data-ping] .assistant-dialog__ping {
+      animation: none;
+    }
+
+    .assistant-dialog__cta-cmd::after,
+    .assistant-call__action--start::after,
+    .assistant-call__status[data-waiting]::after {
+      animation: none;
+      opacity: 1;
+    }
+
+    .assistant-dialog__call-button {
+      transition: none;
     }
   }
 </style>
 
 <script>
-  import { VoiceClient, type VoiceStatus } from './assistant-voice-client';
+  import { CallMode, type CallModeLabels } from './assistant-call-mode';
 
   // Set via the PUBLIC_ASSISTANT_API_URL repository variable in GitHub Actions
   // (see .github/workflows/deploy.yml) - not committed to source.
@@ -447,22 +923,24 @@ const voiceStatusLabels = {
   const form = dialog?.querySelector<HTMLFormElement>('[data-assistant-form]');
   const input = dialog?.querySelector<HTMLInputElement>('[data-assistant-input]');
   const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const chatPanel = dialog?.querySelector<HTMLDivElement>('[data-assistant-chat]');
+  const callPanel = dialog?.querySelector<HTMLDivElement>('[data-assistant-call]');
+  const ctaEl = dialog?.querySelector<HTMLElement>('[data-assistant-cta]');
   const voiceToggle = dialog?.querySelector<HTMLButtonElement>('[data-assistant-voice-toggle]');
-  const voiceNote = dialog?.querySelector<HTMLParagraphElement>('[data-assistant-voice-note]');
+  const pathEl = dialog?.querySelector<HTMLSpanElement>('[data-assistant-path]');
 
   const locale = dialog?.dataset.locale ?? 'en';
   const unavailableMessage = dialog?.dataset.unavailable ?? '';
   const rateLimitedMessage = dialog?.dataset.rateLimited ?? '';
   const inputTooLongMessage = dialog?.dataset.inputTooLong ?? '';
   const voiceUrl = dialog?.dataset.voiceUrl || undefined;
-  const voiceLabels: Record<VoiceStatus | 'button' | 'stop', string> | null = dialog?.dataset.voiceLabels
-    ? JSON.parse(dialog.dataset.voiceLabels)
+  const callLabels: CallModeLabels | null = dialog?.dataset.callLabels
+    ? JSON.parse(dialog.dataset.callLabels)
     : null;
 
   let opener: HTMLElement | null = null;
   let sending = false;
-  let voiceClient: VoiceClient | null = null;
-  let voiceActive = false;
+  let callMode: CallMode | null = null;
 
   function getSessionId(): string {
     let id = sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -484,35 +962,41 @@ const voiceStatusLabels = {
 
   function setSending(value: boolean) {
     sending = value;
-    if (input) input.disabled = value || voiceActive;
-    if (submitButton) submitButton.disabled = value || voiceActive;
+    if (input) input.disabled = value;
+    if (submitButton) submitButton.disabled = value;
   }
 
-  function applyVoiceStatus(status: VoiceStatus) {
-    if (!voiceLabels) return;
-    voiceActive = status === 'connecting' || status === 'listening' || status === 'reconnecting';
-    if (voiceNote) voiceNote.textContent = voiceLabels[status];
-    if (voiceToggle) {
-      const label = voiceActive ? voiceLabels.stop : voiceLabels.button;
-      voiceToggle.textContent = label;
-      voiceToggle.setAttribute('aria-label', label);
-      voiceToggle.setAttribute('aria-pressed', String(voiceActive));
-    }
-    if (input) input.disabled = sending || voiceActive;
-    if (submitButton) submitButton.disabled = sending || voiceActive;
-    if (voiceActive) chipsEl?.setAttribute('hidden', '');
+  function enterCallMode() {
+    if (!dialog || !callMode) return;
+    dialog.dataset.mode = 'call';
+    chatPanel?.setAttribute('hidden', '');
+    callPanel?.removeAttribute('hidden');
+    ctaEl?.setAttribute('hidden', '');
+    if (pathEl) pathEl.textContent = '$ ai-assistant --live';
+    callMode.showPreCall();
+  }
+
+  function exitCallMode() {
+    if (!dialog) return;
+    dialog.dataset.mode = 'chat';
+    callPanel?.setAttribute('hidden', '');
+    chatPanel?.removeAttribute('hidden');
+    ctaEl?.removeAttribute('hidden');
+    if (pathEl) pathEl.textContent = '$ ai-assistant --chat';
+  }
+
+  if (voiceUrl && callLabels && callPanel && dialog) {
+    callMode = new CallMode(dialog, {
+      labels: callLabels,
+      voiceUrl,
+      locale,
+      onExit: exitCallMode,
+    });
   }
 
   voiceToggle?.addEventListener('click', () => {
-    if (!voiceUrl) return;
-    if (voiceActive) {
-      voiceClient?.stop();
-      return;
-    }
-    if (!voiceClient) {
-      voiceClient = new VoiceClient({ wsUrl: voiceUrl, locale, onStatusChange: applyVoiceStatus });
-    }
-    void voiceClient.start();
+    if (!callMode) return;
+    enterCallMode();
   });
 
   if (!API_URL) {
@@ -523,7 +1007,7 @@ const voiceStatusLabels = {
   }
 
   async function sendMessage(text: string) {
-    if (!API_URL || !text.trim() || sending || voiceActive) return;
+    if (!API_URL || !text.trim() || sending) return;
     chipsEl?.setAttribute('hidden', '');
     appendMessage('user', text);
     setSending(true);
@@ -577,6 +1061,11 @@ const voiceStatusLabels = {
     opener = source;
     dialog.showModal();
     input?.focus();
+    // Re-trigger the attention pings on each open: a CSS animation with a
+    // finite iteration count only replays if the class is removed first.
+    ctaEl?.removeAttribute('data-ping');
+    void ctaEl?.offsetWidth;
+    ctaEl?.setAttribute('data-ping', '');
   };
 
   const closeAssistantDialog = () => {
@@ -586,7 +1075,8 @@ const voiceStatusLabels = {
   const isFocusable = (el: HTMLElement) => document.body.contains(el) && !el.closest('[hidden]');
 
   dialog?.addEventListener('close', () => {
-    voiceClient?.stop();
+    callMode?.stop();
+    exitCallMode();
     // The opener is usually the overlay's still-visible "ask my assistant"
     // button, but fall back to the page's main content so focus doesn't
     // silently drop to <body> if the opener is ever gone or hidden.
@@ -604,15 +1094,9 @@ const voiceStatusLabels = {
       closeAssistantDialog();
       return;
     }
-
-    if (event.target !== dialog) return;
-    const rect = dialog.getBoundingClientRect();
-    const outside =
-      event.clientX < rect.left ||
-      event.clientX > rect.right ||
-      event.clientY < rect.top ||
-      event.clientY > rect.bottom;
-    if (outside) closeAssistantDialog();
+    // The dialog now fills the viewport, so a click landing on the dialog
+    // itself (rather than the window or the CTA) is a click on empty space.
+    if (event.target === dialog) closeAssistantDialog();
   });
 
   document.addEventListener('click', (event) => {
