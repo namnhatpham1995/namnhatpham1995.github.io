@@ -25,6 +25,9 @@ export interface UiLabels {
   assistantUnavailable: string;
   assistantRateLimited: string;
   assistantInputTooLong: string;
+  assistantVoiceButton: string;
+  assistantVoiceUnavailable: string;
+  assistantVoiceUnavailableLocale: string;
 }
 
 export const uiLabels: Record<Locale, UiLabels> = {
@@ -51,19 +54,23 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantSend: 'Send',
     assistantSuggestedLabel: 'Try asking:',
     assistantQuestions: [
-      "What's your notice period?",
-      'Do you need visa sponsorship?',
-      'Are you open to relocation?',
-      'What are your salary expectations?',
-      'Why are you looking to leave your current role?',
-      "What's the project you're most proud of?",
-      'How much Java and Spring Boot experience do you have?',
-      'Are you open to remote work?',
-      'What do you currently work on at Cumulocity?',
+      "What's Nam's notice period?",
+      'Does Nam need visa sponsorship?',
+      'Is Nam open to relocation?',
+      "What are Nam's salary expectations?",
+      'Why is Nam looking for a new role?',
+      'What project is Nam most proud of?',
+      'How much Java and Spring Boot experience does Nam have?',
+      'Is Nam open to remote work?',
+      'What does Nam currently work on at Cumulocity?',
     ],
     assistantUnavailable: 'Sorry, the assistant is temporarily unavailable. Please try again in a moment.',
     assistantRateLimited: "You're sending messages too quickly — please wait a moment and try again.",
     assistantInputTooLong: 'That message is too long — please shorten it and try again.',
+    assistantVoiceButton: 'voice --live',
+    assistantVoiceUnavailable: 'Live voice isn’t available yet — keep chatting here instead.',
+    assistantVoiceUnavailableLocale:
+      'Live voice is available in English and German only — keep chatting here in the meantime.',
   },
   de: {
     skipToContent: 'Zum Inhalt springen',
@@ -88,19 +95,23 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantSend: 'Senden',
     assistantSuggestedLabel: 'Frag zum Beispiel:',
     assistantQuestions: [
-      'Wie ist deine Kündigungsfrist?',
-      'Benötigst du ein Visum-Sponsoring?',
-      'Bist du offen für einen Umzug?',
-      'Was sind deine Gehaltsvorstellungen?',
-      'Warum möchtest du deine aktuelle Stelle wechseln?',
-      'Auf welches Projekt bist du am meisten stolz?',
-      'Wie viel Erfahrung hast du mit Java und Spring Boot?',
-      'Bist du offen für Remote-Arbeit?',
-      'Woran arbeitest du aktuell bei Cumulocity?',
+      'Wie lang ist Nams Kündigungsfrist?',
+      'Benötigt Nam ein Visum-Sponsoring?',
+      'Ist Nam offen für einen Umzug?',
+      'Was sind Nams Gehaltsvorstellungen?',
+      'Warum möchte Nam die Stelle wechseln?',
+      'Auf welches Projekt ist Nam am meisten stolz?',
+      'Wie viel Erfahrung hat Nam mit Java und Spring Boot?',
+      'Ist Nam offen für Remote-Arbeit?',
+      'Woran arbeitet Nam aktuell bei Cumulocity?',
     ],
     assistantUnavailable: 'Der Assistent ist momentan nicht verfügbar. Bitte versuche es gleich noch einmal.',
     assistantRateLimited: 'Du sendest Nachrichten zu schnell — bitte warte einen Moment und versuche es erneut.',
     assistantInputTooLong: 'Diese Nachricht ist zu lang — bitte kürze sie und versuche es erneut.',
+    assistantVoiceButton: 'voice --live',
+    assistantVoiceUnavailable: 'Live-Sprachfunktion ist noch nicht verfügbar — schreib in der Zwischenzeit hier weiter.',
+    assistantVoiceUnavailableLocale:
+      'Live-Sprachfunktion gibt es nur auf Englisch und Deutsch — schreib in der Zwischenzeit hier weiter.',
   },
   vi: {
     skipToContent: 'Chuyển đến nội dung',
@@ -125,18 +136,22 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantSend: 'Gửi',
     assistantSuggestedLabel: 'Thử hỏi:',
     assistantQuestions: [
-      'Thời gian báo trước nghỉ việc của bạn là bao lâu?',
-      'Bạn có cần bảo lãnh visa không?',
-      'Bạn có sẵn sàng chuyển chỗ ở không?',
-      'Mức lương mong muốn của bạn là bao nhiêu?',
-      'Vì sao bạn muốn rời công việc hiện tại?',
-      'Dự án nào bạn tự hào nhất?',
-      'Bạn có bao nhiêu kinh nghiệm với Java và Spring Boot?',
-      'Bạn có sẵn sàng làm việc từ xa không?',
-      'Hiện tại bạn đang làm gì ở Cumulocity?',
+      'Thời gian báo trước nghỉ việc của Nam là bao lâu?',
+      'Nam có cần bảo lãnh visa không?',
+      'Nam có sẵn sàng chuyển chỗ ở không?',
+      'Mức lương mong muốn của Nam là bao nhiêu?',
+      'Vì sao Nam muốn rời công việc hiện tại?',
+      'Dự án nào Nam tự hào nhất?',
+      'Nam có bao nhiêu kinh nghiệm với Java và Spring Boot?',
+      'Nam có sẵn sàng làm việc từ xa không?',
+      'Hiện tại Nam đang làm gì ở Cumulocity?',
     ],
     assistantUnavailable: 'Trợ lý hiện tạm thời không khả dụng. Vui lòng thử lại sau ít phút.',
     assistantRateLimited: 'Bạn đang gửi tin nhắn quá nhanh — vui lòng đợi một chút rồi thử lại.',
     assistantInputTooLong: 'Tin nhắn này quá dài — vui lòng rút ngắn rồi thử lại.',
+    assistantVoiceButton: 'voice --live',
+    assistantVoiceUnavailable: 'Trợ lý giọng nói trực tiếp chưa khả dụng — hãy tiếp tục trò chuyện bằng văn bản.',
+    assistantVoiceUnavailableLocale:
+      'Trợ lý giọng nói trực tiếp chỉ hỗ trợ tiếng Anh và tiếng Đức — hãy tiếp tục trò chuyện bằng văn bản ở đây.',
   },
 };

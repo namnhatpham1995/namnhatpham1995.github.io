@@ -2,8 +2,16 @@
 // Sibling dialog opened by any element carrying `data-open-assistant` (see
 // `network-intro.astro`'s "ask my assistant" button). Talks to the
 // portfolio-voice-agent backend's /chat endpoint (see openspec change
-// voice-portfolio-agent, tasks.md section 2). Voice mode is a later addition
-// (tasks.md section 3), not built here.
+// voice-portfolio-agent, tasks.md section 2).
+//
+// Voice mode (tasks.md section 3) is feature-detected here but not
+// implemented: the backend has no live-voice WebSocket endpoint yet, so the
+// control below is always rendered disabled with a reason (per design.md's
+// "disabled-with-reason, not hidden" decision) rather than faking a working
+// toggle. Once portfolio-voice-agent's P3 (live voice) ships and sets
+// PUBLIC_ASSISTANT_VOICE_URL, this becomes reachable — actually opening a
+// voice session (capture/playback, reconnection) is tasks.md 3.2+, still to
+// be built at that point.
 interface Props {
   locale: 'en' | 'de' | 'vi';
   labels: {
@@ -17,10 +25,19 @@ interface Props {
     unavailable: string;
     rateLimited: string;
     inputTooLong: string;
+    voiceButton: string;
+    voiceUnavailable: string;
+    voiceUnavailableLocale: string;
   };
 }
 
 const { locale, labels } = Astro.props;
+
+// Live voice is English/German only (non-goal in proposal.md: Vietnamese
+// stays text-only), enforced here even before the backend endpoint exists.
+const voiceUrl = import.meta.env.PUBLIC_ASSISTANT_VOICE_URL;
+const voiceUnavailableReason =
+  locale === 'vi' ? labels.voiceUnavailableLocale : !voiceUrl ? labels.voiceUnavailable : null;
 ---
 
 <dialog
@@ -48,6 +65,25 @@ const { locale, labels } = Astro.props;
       </button>
     </div>
     <p class="assistant-dialog__disclosure">{labels.disclosure}</p>
+    <div class="assistant-dialog__voice-row">
+      <button
+        type="button"
+        class="assistant-dialog__voice"
+        data-assistant-voice-toggle
+        aria-label={labels.voiceButton}
+        disabled={voiceUnavailableReason !== null}
+        title={voiceUnavailableReason ?? undefined}
+      >
+        {labels.voiceButton}
+      </button>
+      {
+        voiceUnavailableReason && (
+          <p class="assistant-dialog__voice-note" data-assistant-voice-note>
+            {voiceUnavailableReason}
+          </p>
+        )
+      }
+    </div>
     <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite"></div>
     <div class="assistant-dialog__chips" data-assistant-chips>
       <p class="assistant-dialog__chips-label">{labels.suggestedLabel}</p>
@@ -180,6 +216,47 @@ const { locale, labels } = Astro.props;
     font-size: 0.75rem;
     line-height: 1.4;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__voice-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    flex: 0 0 auto;
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__voice {
+    flex: 0 0 auto;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: none;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease;
+  }
+
+  .assistant-dialog__voice:not(:disabled):hover,
+  .assistant-dialog__voice:not(:disabled):focus-visible {
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+  }
+
+  .assistant-dialog__voice:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .assistant-dialog__voice-note {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
 
   .assistant-dialog__messages {
