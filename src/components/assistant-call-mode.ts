@@ -233,7 +233,11 @@ export class CallMode {
         this.transcriptEl.append(line);
         this.transcriptLine = { speaker, el: body };
       }
-      this.transcriptLine.el.textContent = (this.transcriptLine.el.textContent ?? '') + text;
+      // The finished event carries the whole utterance rather than the last
+      // fragment, so it replaces the line instead of extending it. Replacing
+      // rather than ignoring also repairs a line whose fragments were partly
+      // lost, since this is the only authoritative copy of the text.
+      this.transcriptLine.el.textContent = finished ? text : (this.transcriptLine.el.textContent ?? '') + text;
       this.transcriptEl.scrollTop = this.transcriptEl.scrollHeight;
     }
     if (finished) this.transcriptLine = null;
