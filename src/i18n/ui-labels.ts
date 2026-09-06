@@ -18,6 +18,7 @@ export interface UiLabels {
   assistantDialogLabel: string;
   assistantClose: string;
   assistantDisclosure: string;
+  assistantGreeting: string;
   assistantPlaceholder: string;
   assistantSend: string;
   assistantSuggestedLabel: string;
@@ -37,6 +38,18 @@ export interface UiLabels {
   assistantVoiceQuotaReached: string;
   assistantVoiceMicDenied: string;
   assistantVoiceError: string;
+  assistantVoiceCallHint: string;
+  assistantVoiceCallLimit: string;
+  assistantCallAiNotice: string;
+  assistantCallStart: string;
+  assistantCallEnd: string;
+  assistantCallBack: string;
+  assistantCallYou: string;
+  assistantCallAssistant: string;
+  assistantCallYourTurn: string;
+  assistantCallSpeaking: string;
+  assistantCallSilenceEnded: string;
+  assistantCallTimeLeft: string;
 }
 
 export const uiLabels: Record<Locale, UiLabels> = {
@@ -59,6 +72,8 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantClose: 'Close assistant window',
     assistantDisclosure:
       "Conversations are saved for quality review and processed by Google's Gemini API.",
+    assistantGreeting:
+      "Hi — I'm Nam's assistant. Ask me about his work, experience, or availability and I'll share what I know.",
     assistantPlaceholder: 'Type a message…',
     assistantSend: 'Send',
     assistantSuggestedLabel: 'Try asking:',
@@ -90,6 +105,18 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantVoiceMicDenied:
       'Microphone access was denied — allow access in your browser settings to use voice mode.',
     assistantVoiceError: 'Voice connection failed — please try again.',
+    assistantVoiceCallHint: 'Call the assistant',
+    assistantVoiceCallLimit: '10 min limit · shared daily cap',
+    assistantCallAiNotice: "You'll be talking to an AI assistant, not to Nam.",
+    assistantCallStart: 'start call',
+    assistantCallEnd: 'end call',
+    assistantCallBack: 'back to chat',
+    assistantCallYou: 'you',
+    assistantCallAssistant: 'assistant',
+    assistantCallYourTurn: 'Your turn',
+    assistantCallSpeaking: 'Assistant is speaking',
+    assistantCallSilenceEnded: 'Call ended after a minute of silence.',
+    assistantCallTimeLeft: 'Time left',
   },
   de: {
     skipToContent: 'Zum Inhalt springen',
@@ -110,6 +137,8 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantClose: 'Assistentenfenster schließen',
     assistantDisclosure:
       'Unterhaltungen werden zur Qualitätsprüfung gespeichert und über die Gemini-API von Google verarbeitet.',
+    assistantGreeting:
+      'Hallo — ich bin Nams Assistent. Frag mich nach seiner Arbeit, seiner Erfahrung oder seiner Verfügbarkeit, und ich teile, was ich weiß.',
     assistantPlaceholder: 'Nachricht eingeben…',
     assistantSend: 'Senden',
     assistantSuggestedLabel: 'Frag zum Beispiel:',
@@ -142,6 +171,18 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantVoiceMicDenied:
       'Mikrofonzugriff wurde verweigert — erlaube den Zugriff in deinen Browsereinstellungen, um die Sprachfunktion zu nutzen.',
     assistantVoiceError: 'Sprachverbindung fehlgeschlagen — bitte versuch es erneut.',
+    assistantVoiceCallHint: 'Assistenten anrufen',
+    assistantVoiceCallLimit: '10 Min. Limit · gemeinsames Tageskontingent',
+    assistantCallAiNotice: 'Du sprichst mit einem KI-Assistenten, nicht mit Nam.',
+    assistantCallStart: 'Anruf starten',
+    assistantCallEnd: 'Anruf beenden',
+    assistantCallBack: 'zurück zum Chat',
+    assistantCallYou: 'du',
+    assistantCallAssistant: 'assistent',
+    assistantCallYourTurn: 'Du bist dran',
+    assistantCallSpeaking: 'Assistent spricht',
+    assistantCallSilenceEnded: 'Anruf nach einer Minute Stille beendet.',
+    assistantCallTimeLeft: 'Verbleibende Zeit',
   },
   vi: {
     skipToContent: 'Chuyển đến nội dung',
@@ -162,6 +203,8 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantClose: 'Đóng cửa sổ trợ lý',
     assistantDisclosure:
       'Cuộc trò chuyện được lưu lại để kiểm tra chất lượng và được xử lý qua Gemini API của Google.',
+    assistantGreeting:
+      'Xin chào — mình là trợ lý của Nam. Hãy hỏi mình về công việc, kinh nghiệm hay khả năng nhận việc của anh ấy, mình sẽ chia sẻ những gì mình biết.',
     assistantPlaceholder: 'Nhập tin nhắn…',
     assistantSend: 'Gửi',
     assistantSuggestedLabel: 'Thử hỏi:',
@@ -195,5 +238,17 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantVoiceMicDenied:
       'Quyền truy cập micro đã bị từ chối — vui lòng cho phép trong cài đặt trình duyệt để dùng chế độ giọng nói.',
     assistantVoiceError: 'Kết nối giọng nói thất bại — vui lòng thử lại.',
+    assistantVoiceCallHint: 'Gọi cho trợ lý',
+    assistantVoiceCallLimit: 'Giới hạn 10 phút · hạn mức chung mỗi ngày',
+    assistantCallAiNotice: 'Bạn đang nói chuyện với trợ lý AI, không phải với Nam.',
+    assistantCallStart: 'Bắt đầu gọi',
+    assistantCallEnd: 'Kết thúc cuộc gọi',
+    assistantCallBack: 'quay lại trò chuyện',
+    assistantCallYou: 'bạn',
+    assistantCallAssistant: 'trợ lý',
+    assistantCallYourTurn: 'Đến lượt bạn',
+    assistantCallSpeaking: 'Trợ lý đang nói',
+    assistantCallSilenceEnded: 'Cuộc gọi đã kết thúc sau một phút im lặng.',
+    assistantCallTimeLeft: 'Thời gian còn lại',
   },
 };

@@ -9,6 +9,9 @@
   --color-accent-green: #3fb950;
   --color-accent-amber: #d29922;
   --color-accent-red: #f85149;
+  /* Voice: green speaks for the visitor, cyan for the assistant, so the
+     call meters and transcript identify a speaker by color alone. */
+  --color-accent-cyan: #39d0d8;
 
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
