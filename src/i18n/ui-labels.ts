@@ -23,6 +23,13 @@ export interface UiLabels {
   assistantSend: string;
   assistantSuggestedLabel: string;
   assistantQuestions: string[];
+  assistantLanguageLabel: string;
+  assistantLanguageLocked: string;
+  assistantIdentityPrompt: string;
+  assistantIdentityNamePlaceholder: string;
+  assistantIdentityCompanyPlaceholder: string;
+  assistantIdentityShare: string;
+  assistantIdentitySkip: string;
   assistantUnavailable: string;
   assistantRateLimited: string;
   assistantInputTooLong: string;
@@ -91,6 +98,13 @@ export const uiLabels: Record<Locale, UiLabels> = {
       'Can Nam work on-site near Sindelfingen?',
       'What does Nam currently work on at Cumulocity?',
     ],
+    assistantLanguageLabel: 'Session language',
+    assistantLanguageLocked: 'Language is set for this session — start a new chat to change it.',
+    assistantIdentityPrompt: 'Want a more personal follow-up? Share your name and/or company (optional).',
+    assistantIdentityNamePlaceholder: 'Name (optional)',
+    assistantIdentityCompanyPlaceholder: 'Company (optional)',
+    assistantIdentityShare: 'Share',
+    assistantIdentitySkip: 'Skip',
     assistantUnavailable: 'Sorry, the assistant is temporarily unavailable. Please try again in a moment.',
     assistantRateLimited: "You're sending messages too quickly — please wait a moment and try again.",
     assistantInputTooLong: 'That message is too long — please shorten it and try again.',
@@ -159,6 +173,14 @@ export const uiLabels: Record<Locale, UiLabels> = {
       'Kann Nam in der Nähe von Sindelfingen vor Ort arbeiten?',
       'Woran arbeitet Nam aktuell bei Cumulocity?',
     ],
+    assistantLanguageLabel: 'Sitzungssprache',
+    assistantLanguageLocked: 'Die Sprache ist für diese Sitzung festgelegt — starte einen neuen Chat, um sie zu ändern.',
+    assistantIdentityPrompt:
+      'Für eine persönlichere Rückmeldung: Teile optional deinen Namen und/oder dein Unternehmen mit.',
+    assistantIdentityNamePlaceholder: 'Name (optional)',
+    assistantIdentityCompanyPlaceholder: 'Unternehmen (optional)',
+    assistantIdentityShare: 'Teilen',
+    assistantIdentitySkip: 'Überspringen',
     assistantUnavailable: 'Der Assistent ist momentan nicht verfügbar. Bitte versuche es gleich noch einmal.',
     assistantRateLimited: 'Du sendest Nachrichten zu schnell — bitte warte einen Moment und versuche es erneut.',
     assistantInputTooLong: 'Diese Nachricht ist zu lang — bitte kürze sie und versuche es erneut.',
@@ -228,6 +250,13 @@ export const uiLabels: Record<Locale, UiLabels> = {
       'Nam có thể làm việc tại văn phòng gần Sindelfingen không?',
       'Hiện tại Nam đang làm gì ở Cumulocity?',
     ],
+    assistantLanguageLabel: 'Ngôn ngữ phiên',
+    assistantLanguageLocked: 'Ngôn ngữ đã được cố định cho phiên này — hãy bắt đầu cuộc trò chuyện mới để thay đổi.',
+    assistantIdentityPrompt: 'Muốn được phản hồi cá nhân hơn? Chia sẻ tên và/hoặc công ty của bạn (không bắt buộc).',
+    assistantIdentityNamePlaceholder: 'Tên (không bắt buộc)',
+    assistantIdentityCompanyPlaceholder: 'Công ty (không bắt buộc)',
+    assistantIdentityShare: 'Chia sẻ',
+    assistantIdentitySkip: 'Bỏ qua',
     assistantUnavailable: 'Trợ lý hiện tạm thời không khả dụng. Vui lòng thử lại sau ít phút.',
     assistantRateLimited: 'Bạn đang gửi tin nhắn quá nhanh — vui lòng đợi một chút rồi thử lại.',
     assistantInputTooLong: 'Tin nhắn này quá dài — vui lòng rút ngắn rồi thử lại.',
