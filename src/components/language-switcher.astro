@@ -4,7 +4,7 @@ import { locales, localePath, type Locale } from '../i18n/locale-utils';
 interface Props {
   current: Locale;
   label: string;
-  context?: 'page' | 'network' | 'dialog';
+  context?: 'page' | 'network' | 'dialog' | 'assistant';
 }
 
 const { current, label, context = 'page' } = Astro.props;
