@@ -17,6 +17,8 @@
 // dialog into call mode, which opens on a pre-call screen -- the session
 // limit and shared quota are disclosed there *before* the microphone is
 // touched or a backend session is claimed.
+import LanguageSwitcher from './language-switcher.astro';
+
 interface Props {
   locale: 'en' | 'de' | 'vi';
   labels: {
@@ -28,6 +30,13 @@ interface Props {
     send: string;
     suggestedLabel: string;
     questions: string[];
+    languageLabel: string;
+    languageLocked: string;
+    identityPrompt: string;
+    identityNamePlaceholder: string;
+    identityCompanyPlaceholder: string;
+    identityShare: string;
+    identitySkip: string;
     unavailable: string;
     rateLimited: string;
     inputTooLong: string;
@@ -79,6 +88,13 @@ const callLabels = {
   speaking: labels.callSpeaking,
   silenceEnded: labels.callSilenceEnded,
 };
+const identityLabels = {
+  prompt: labels.identityPrompt,
+  namePlaceholder: labels.identityNamePlaceholder,
+  companyPlaceholder: labels.identityCompanyPlaceholder,
+  share: labels.identityShare,
+  skip: labels.identitySkip,
+};
 ---
 
 <dialog
@@ -92,6 +108,8 @@ const callLabels = {
   data-input-too-long={labels.inputTooLong}
   data-voice-url={voiceUrl ?? ''}
   data-call-labels={JSON.stringify(callLabels)}
+  data-identity-labels={JSON.stringify(identityLabels)}
+  data-language-locked={labels.languageLocked}
 >
   <div class="assistant-dialog__window">
     <div class="assistant-dialog__chrome">
@@ -111,6 +129,13 @@ const callLabels = {
     </div>
 
     <div class="assistant-dialog__panel" data-assistant-chat>
+      <div class="assistant-dialog__language" data-assistant-language>
+        <span class="assistant-dialog__language-label">{labels.languageLabel}</span>
+        <LanguageSwitcher current={locale} label={labels.languageLabel} context="assistant" />
+        <span class="assistant-dialog__language-locked" data-assistant-language-locked hidden>
+          {labels.languageLocked}
+        </span>
+      </div>
       <p class="assistant-dialog__disclosure">{labels.disclosure}</p>
       <div class="assistant-dialog__messages" data-assistant-messages role="log" aria-live="polite">
         <p class="assistant-dialog__message assistant-dialog__message--assistant">{labels.greeting}</p>
@@ -372,6 +397,97 @@ const callLabels = {
     font-size: 0.75rem;
     line-height: 1.4;
     border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__language {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .assistant-dialog__language-label {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+  }
+
+  .assistant-dialog__language-locked {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .assistant-dialog__language-locked[hidden] {
+    display: none;
+  }
+
+  /* Once a session starts, the picker itself disappears (spec: no in-session
+     control allows changing the language) and the locked hint takes over. */
+  .assistant-dialog__language[data-locked] :global(.language-switcher),
+  .assistant-dialog__language[data-locked] .assistant-dialog__language-label {
+    display: none;
+  }
+
+  /* Identity prompt is built in script (see the message-list comment above),
+     so it needs the same :global opt-out as message bubbles. */
+  :global(.assistant-dialog__identity) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-self: flex-start;
+    max-width: 88%;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    font-size: 0.875rem;
+  }
+
+  :global(.assistant-dialog__identity-prompt) {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+
+  :global(.assistant-dialog__identity-fields) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  :global(.assistant-dialog__identity-input) {
+    flex: 1 1 10rem;
+    min-width: 0;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.8125rem;
+  }
+
+  :global(.assistant-dialog__identity-actions) {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  :global(.assistant-dialog__identity-action) {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: none;
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+
+  :global(.assistant-dialog__identity-action--share) {
+    border-color: var(--color-accent-green);
+    color: var(--color-accent-green);
   }
 
   .assistant-dialog__messages {
@@ -914,8 +1030,31 @@ const callLabels = {
   // (see .github/workflows/deploy.yml) - not committed to source.
   const API_URL: string | undefined = import.meta.env.PUBLIC_ASSISTANT_API_URL;
   const SESSION_STORAGE_KEY = 'assistant-session-id';
+  const HISTORY_STORAGE_KEY = 'assistant-history';
+  const IDENTITY_STORAGE_KEY = 'assistant-identity';
+  const IDENTITY_OFFERED_KEY = 'assistant-identity-offered';
+  const PENDING_REOPEN_KEY = 'assistant-pending-reopen';
+  const IDENTITY_PROMPT_AFTER_REPLIES = 2;
 
   type MessageRole = 'user' | 'assistant' | 'error';
+
+  interface HistoryEntry {
+    role: MessageRole;
+    text: string;
+  }
+
+  interface IdentityLabels {
+    prompt: string;
+    namePlaceholder: string;
+    companyPlaceholder: string;
+    share: string;
+    skip: string;
+  }
+
+  interface Identity {
+    name?: string;
+    company?: string;
+  }
 
   const dialog = document.querySelector<HTMLDialogElement>('#assistant-dialog');
   const messagesEl = dialog?.querySelector<HTMLDivElement>('[data-assistant-messages]');
@@ -928,6 +1067,8 @@ const callLabels = {
   const ctaEl = dialog?.querySelector<HTMLElement>('[data-assistant-cta]');
   const voiceToggle = dialog?.querySelector<HTMLButtonElement>('[data-assistant-voice-toggle]');
   const pathEl = dialog?.querySelector<HTMLSpanElement>('[data-assistant-path]');
+  const languageEl = dialog?.querySelector<HTMLDivElement>('[data-assistant-language]');
+  const languageLockedEl = dialog?.querySelector<HTMLSpanElement>('[data-assistant-language-locked]');
 
   const locale = dialog?.dataset.locale ?? 'en';
   const unavailableMessage = dialog?.dataset.unavailable ?? '';
@@ -937,10 +1078,52 @@ const callLabels = {
   const callLabels: CallModeLabels | null = dialog?.dataset.callLabels
     ? JSON.parse(dialog.dataset.callLabels)
     : null;
+  const identityLabels: IdentityLabels | null = dialog?.dataset.identityLabels
+    ? JSON.parse(dialog.dataset.identityLabels)
+    : null;
 
   let opener: HTMLElement | null = null;
   let sending = false;
   let callMode: CallMode | null = null;
+  let sessionStarted = false;
+  let assistantReplyCount = 0;
+  let identityOffered = false;
+
+  function readIdentity(): Identity {
+    try {
+      const raw = sessionStorage.getItem(IDENTITY_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  let identity: Identity = readIdentity();
+
+  function readHistory(): HistoryEntry[] {
+    try {
+      const raw = sessionStorage.getItem(HISTORY_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveHistory(entries: HistoryEntry[]) {
+    try {
+      sessionStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(entries));
+    } catch {
+      // Storage full or unavailable -- the conversation still works, it just
+      // won't survive navigation this time.
+    }
+  }
+
+  function lockLanguage() {
+    if (sessionStarted) return;
+    sessionStarted = true;
+    languageEl?.setAttribute('data-locked', '');
+    languageLockedEl?.removeAttribute('hidden');
+  }
 
   function getSessionId(): string {
     let id = sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -966,13 +1149,87 @@ const callLabels = {
     return escaped.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/^(\s*)[*-] /gm, '$1• ');
   }
 
-  function appendMessage(role: MessageRole, text: string): HTMLParagraphElement {
+  function appendMessage(role: MessageRole, text: string, record = true): HTMLParagraphElement {
     const bubble = document.createElement('p');
     bubble.className = `assistant-dialog__message assistant-dialog__message--${role}`;
     bubble.textContent = text;
     messagesEl?.appendChild(bubble);
     if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
+    if (record) {
+      const history = readHistory();
+      history.push({ role, text });
+      saveHistory(history);
+    }
     return bubble;
+  }
+
+  function showIdentityPrompt() {
+    if (!identityLabels || !messagesEl) return;
+    identityOffered = true;
+    try {
+      sessionStorage.setItem(IDENTITY_OFFERED_KEY, '1');
+    } catch {
+      // Non-fatal -- worst case the prompt can reappear after a reload.
+    }
+
+    const block = document.createElement('div');
+    block.className = 'assistant-dialog__identity';
+
+    const prompt = document.createElement('p');
+    prompt.className = 'assistant-dialog__identity-prompt';
+    prompt.textContent = identityLabels.prompt;
+
+    const fields = document.createElement('div');
+    fields.className = 'assistant-dialog__identity-fields';
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.className = 'assistant-dialog__identity-input';
+    nameInput.placeholder = identityLabels.namePlaceholder;
+    nameInput.maxLength = 200;
+    const companyInput = document.createElement('input');
+    companyInput.type = 'text';
+    companyInput.className = 'assistant-dialog__identity-input';
+    companyInput.placeholder = identityLabels.companyPlaceholder;
+    companyInput.maxLength = 200;
+    fields.append(nameInput, companyInput);
+
+    const actions = document.createElement('div');
+    actions.className = 'assistant-dialog__identity-actions';
+    const shareButton = document.createElement('button');
+    shareButton.type = 'button';
+    shareButton.className = 'assistant-dialog__identity-action assistant-dialog__identity-action--share';
+    shareButton.textContent = identityLabels.share;
+    const skipButton = document.createElement('button');
+    skipButton.type = 'button';
+    skipButton.className = 'assistant-dialog__identity-action';
+    skipButton.textContent = identityLabels.skip;
+    actions.append(shareButton, skipButton);
+
+    shareButton.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const company = companyInput.value.trim();
+      if (name || company) {
+        identity = { ...(name ? { name } : {}), ...(company ? { company } : {}) };
+        try {
+          sessionStorage.setItem(IDENTITY_STORAGE_KEY, JSON.stringify(identity));
+        } catch {
+          // Non-fatal -- the value still applies for the rest of this page view.
+        }
+      }
+      block.remove();
+    });
+    skipButton.addEventListener('click', () => block.remove());
+
+    block.append(prompt, fields, actions);
+    messagesEl.appendChild(block);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function noteAssistantReply() {
+    assistantReplyCount += 1;
+    if (!identityOffered && assistantReplyCount >= IDENTITY_PROMPT_AFTER_REPLIES && !identity.name && !identity.company) {
+      showIdentityPrompt();
+    }
   }
 
   function setSending(value: boolean) {
@@ -983,6 +1240,7 @@ const callLabels = {
 
   function enterCallMode() {
     if (!dialog || !callMode) return;
+    lockLanguage();
     dialog.dataset.mode = 'call';
     chatPanel?.setAttribute('hidden', '');
     callPanel?.removeAttribute('hidden');
@@ -1014,6 +1272,25 @@ const callLabels = {
     enterCallMode();
   });
 
+  function restoreHistory() {
+    const history = readHistory();
+    if (!history.length) return;
+    chipsEl?.setAttribute('hidden', '');
+    for (const entry of history) {
+      const bubble = appendMessage(entry.role, entry.text, false);
+      if (entry.role === 'assistant') bubble.innerHTML = renderMarkdown(entry.text);
+    }
+    assistantReplyCount = history.filter((entry) => entry.role === 'assistant').length;
+    lockLanguage();
+  }
+
+  try {
+    identityOffered = sessionStorage.getItem(IDENTITY_OFFERED_KEY) === '1';
+  } catch {
+    identityOffered = false;
+  }
+  restoreHistory();
+
   if (!API_URL) {
     chipsEl?.setAttribute('hidden', '');
     if (input) input.disabled = true;
@@ -1023,16 +1300,23 @@ const callLabels = {
 
   async function sendMessage(text: string) {
     if (!API_URL || !text.trim() || sending) return;
+    lockLanguage();
     chipsEl?.setAttribute('hidden', '');
     appendMessage('user', text);
     setSending(true);
 
-    const bubble = appendMessage('assistant', '');
+    const bubble = appendMessage('assistant', '', false);
     try {
       const response = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ message: text, locale, session_id: getSessionId() }),
+        body: JSON.stringify({
+          message: text,
+          locale,
+          session_id: getSessionId(),
+          ...(identity.name ? { name: identity.name } : {}),
+          ...(identity.company ? { company: identity.company } : {}),
+        }),
       });
 
       if (!response.ok || !response.body) {
@@ -1053,6 +1337,10 @@ const callLabels = {
         bubble.innerHTML = renderMarkdown(raw);
         if (messagesEl) messagesEl.scrollTop = messagesEl.scrollHeight;
       }
+      const history = readHistory();
+      history.push({ role: 'assistant', text: raw });
+      saveHistory(history);
+      noteAssistantReply();
     } catch {
       bubble.remove();
       appendMessage('error', unavailableMessage);
@@ -1088,6 +1376,33 @@ const callLabels = {
   const closeAssistantDialog = () => {
     if (dialog?.open) dialog.close();
   };
+
+  // Picking a different language from the session-language picker navigates
+  // to that locale's page (each locale's labels are only ever loaded on its
+  // own page -- see design.md's language-selection decision), so this stashes
+  // a flag to reopen the widget there instead of leaving the visitor to find
+  // it again themselves.
+  document.addEventListener('click', (event) => {
+    const languageLink = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+      '[data-language-context="assistant"] [data-language-target]',
+    );
+    if (languageLink) {
+      try {
+        sessionStorage.setItem(PENDING_REOPEN_KEY, '1');
+      } catch {
+        // Non-fatal -- the visitor just has to reopen the assistant manually.
+      }
+    }
+  });
+
+  let pendingReopen = false;
+  try {
+    pendingReopen = sessionStorage.getItem(PENDING_REOPEN_KEY) === '1';
+    sessionStorage.removeItem(PENDING_REOPEN_KEY);
+  } catch {
+    pendingReopen = false;
+  }
+  if (pendingReopen) openAssistantDialog(null);
 
   const isFocusable = (el: HTMLElement) => document.body.contains(el) && !el.closest('[hidden]');
 
