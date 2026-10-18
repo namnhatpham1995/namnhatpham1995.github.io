@@ -28,31 +28,54 @@ interface Props {
 
 const { locale, items, introLabel, name, role, photoUrl, labels } = Astro.props;
 
-// Node centers in a 0–100 coordinate space (percent of the stage).
-// Hand-tuned ellipse around the center node with slight jitter for an
-// organic constellation feel. Order matches the `items` prop.
-const positions = [
-  { x: 50, y: 15 },
-  { x: 79, y: 28 },
-  { x: 86, y: 58 },
-  { x: 67, y: 82 },
-  { x: 33, y: 83 },
-  { x: 14, y: 56 },
-  { x: 21, y: 27 },
+// Constellation layout. Positions are percent of the stage, one set for a wide
+// stage and one for a tall one; each marks the centre of the node's orb. `size`
+// is the orb diameter in px at full scale, so heavier sections read bigger.
+// `depth` (0–1) scales the pointer parallax: deep nodes drift less.
+const layout: Record<string, { land: [number, number]; port: [number, number]; size: number; depth: number }> = {
+  intro: { land: [44, 48], port: [50, 40], size: 92, depth: 0.45 },
+  experience: { land: [67, 28], port: [74, 21], size: 76, depth: 1 },
+  projects: { land: [77, 67], port: [72, 72], size: 76, depth: 1 },
+  skills: { land: [23, 27], port: [22, 20], size: 60, depth: 0.6 },
+  education: { land: [21, 68], port: [24, 61], size: 60, depth: 0.6 },
+  certificates: { land: [42, 85], port: [46, 88], size: 46, depth: 0.3 },
+  languages: { land: [7, 46], port: [12, 41], size: 36, depth: 0.2 },
+  hobbies: { land: [91, 20], port: [88, 47], size: 36, depth: 0.2 },
+};
+
+// A real graph rather than a hub with spokes: each link joins two related
+// sections and bows to one side by `bend` (fraction of its length).
+const links: { from: string; to: string; bend: number; dashed?: boolean }[] = [
+  { from: 'intro', to: 'experience', bend: 0.14 },
+  { from: 'experience', to: 'projects', bend: -0.22 },
+  { from: 'intro', to: 'skills', bend: -0.16 },
+  { from: 'skills', to: 'projects', bend: -0.22 },
+  { from: 'intro', to: 'education', bend: 0.16 },
+  { from: 'education', to: 'certificates', bend: -0.2 },
+  { from: 'education', to: 'languages', bend: 0.22 },
+  { from: 'experience', to: 'hobbies', bend: -0.3, dashed: true },
 ];
 
-const center = { x: 50, y: 50 };
+const nodeStyle = (id: string, order: number) => {
+  const { land, port, size, depth } = layout[id];
+  // Front nodes land first, deep ones trail in behind them.
+  const delay = Math.round(150 + (1 - depth) * 380 + order * 40);
+  return `--lx: ${land[0]}%; --ly: ${land[1]}%; --px: ${port[0]}%; --py: ${port[1]}%; --size: ${size}; --node-delay: ${delay}ms;`;
+};
 
-const nodes = items.map((item, i) => ({
-  ...item,
-  ...positions[i % positions.length],
-}));
+const nodes = items.map((item, i) => ({ ...item, style: nodeStyle(item.id, i + 1) }));
 
-// Faint ring links between neighbouring nodes complete the "web" look.
-const ringLinks = nodes.map((node, i) => ({
-  from: node,
-  to: nodes[(i + 1) % nodes.length],
-}));
+// A few brighter stars that twinkle over the static star field (percent of the overlay).
+const sparks = [
+  [12, 14],
+  [36, 7],
+  [61, 11],
+  [84, 34],
+  [94, 72],
+  [58, 93],
+  [15, 87],
+  [4, 28],
+];
 ---
 
 <div
@@ -64,86 +87,56 @@ const ringLinks = nodes.map((node, i) => ({
   tabindex="-1"
   hidden
 >
-  <div class="network-intro__language">
-    <LanguageSwitcher
-      current={locale}
-      label={labels.languageSwitcher}
-      context="network"
-    />
-  </div>
-
-  <div class="network-intro__stage">
-    <svg
-      class="network-intro__lines"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      {
-        ringLinks.map((link, i) => (
-          <line
-            class="network-intro__ring-link"
-            x1={link.from.x}
-            y1={link.from.y}
-            x2={link.to.x}
-            y2={link.to.y}
-            pathLength="1"
-            style={`--line-delay: ${450 + i * 90}ms`}
-            vector-effect="non-scaling-stroke"
-          />
-        ))
-      }
-      {
-        nodes.map((node, i) => (
-          <g
-            class="network-intro__edge"
-            data-network-edge={node.id}
-            style={`--line-delay: ${150 + i * 80}ms`}
-          >
-            <line
-              class="network-intro__edge-rail"
-              x1={center.x}
-              y1={center.y}
-              x2={node.x}
-              y2={node.y}
-              vector-effect="non-scaling-stroke"
-            />
-            <line
-              class="network-intro__edge-core"
-              x1={center.x}
-              y1={center.y}
-              x2={node.x}
-              y2={node.y}
-              vector-effect="non-scaling-stroke"
-            />
-            <line
-              class="network-intro__edge-signal"
-              x1={center.x}
-              y1={center.y}
-              x2={node.x}
-              y2={node.y}
-              pathLength="1"
-              vector-effect="non-scaling-stroke"
-            />
-          </g>
-        ))
-      }
-    </svg>
-
+  <div class="network-intro__bar">
     <p class="network-intro__prompt" aria-hidden="true">
       <span class="network-intro__prompt-cmd">$ ssh nam@portfolio</span>
       <span class="network-intro__prompt-hint">{labels.hint}</span>
     </p>
+    <div class="network-intro__language">
+      <LanguageSwitcher
+        current={locale}
+        label={labels.languageSwitcher}
+        context="network"
+      />
+    </div>
+  </div>
+
+  {
+    sparks.map(([x, y], i) => (
+      <span
+        class="network-intro__spark"
+        aria-hidden="true"
+        style={`left: ${x}%; top: ${y}%; --twinkle-delay: ${i * -0.7}s;`}
+      />
+    ))
+  }
+
+  <div class="network-intro__stage">
+    <svg class="network-intro__lines" aria-hidden="true">
+      {
+        links.map((link, i) => (
+          <path
+            class:list={['network-intro__link', { 'network-intro__link--dashed': link.dashed }]}
+            data-network-link
+            data-from={link.from}
+            data-to={link.to}
+            data-bend={link.bend}
+            style={`--line-delay: ${450 + i * 70}ms`}
+          />
+        ))
+      }
+    </svg>
 
     <button
       type="button"
       class="network-intro__center"
       data-network-node="intro"
       data-network-label={introLabel}
-      style={`left: ${center.x}%; top: ${center.y}%; --node-delay: 80ms;`}
+      data-depth={layout.intro.depth}
+      style={nodeStyle('intro', 0)}
     >
       <span class="network-intro__center-ring" aria-hidden="true"></span>
-      <img src={photoUrl} alt="" width="88" height="88" loading="eager" />
+      <img src={photoUrl} alt="" width="92" height="92" loading="eager" />
       <span class="network-intro__center-label">
         <strong>{name}</strong>
         <small>{role}</small>
@@ -151,18 +144,18 @@ const ringLinks = nodes.map((node, i) => ({
     </button>
 
     {
-      nodes.map((node, i) => (
+      nodes.map((node) => (
         <button
           type="button"
           class="network-intro__node"
           data-network-node={node.id}
           data-network-label={node.label}
-          style={`left: ${node.x}%; top: ${node.y}%; --node-delay: ${350 + i * 90}ms; --float-delay: ${i * -1.3}s;`}
+          data-depth={layout[node.id].depth}
+          data-tier={layout[node.id].size >= 76 ? 'major' : layout[node.id].size <= 46 ? 'minor' : undefined}
+          style={node.style}
         >
           <span class="network-intro__node-circle" aria-hidden="true">
             <svg
-              width="22"
-              height="22"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -222,10 +215,16 @@ const ringLinks = nodes.map((node, i) => ({
     z-index: 40;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    /* Static star field: tiled dots over a soft glow, painted once. */
     background:
-      radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--color-accent-green) 5%, transparent), transparent 60%),
-      radial-gradient(color-mix(in srgb, var(--color-text-muted) 18%, transparent) 1px, transparent 1px) 0 0 / 26px 26px,
-      var(--color-bg);
+      radial-gradient(1.3px 1.3px at 22px 34px, color-mix(in srgb, var(--color-text) 55%, transparent) 60%, transparent) 0 0 / 240px 210px,
+      radial-gradient(1px 1px at 96px 122px, color-mix(in srgb, var(--color-text-muted) 50%, transparent) 60%, transparent) 0 0 / 240px 210px,
+      radial-gradient(1.5px 1.5px at 168px 58px, color-mix(in srgb, var(--color-accent-cyan) 55%, transparent) 60%, transparent) 0 0 / 240px 210px,
+      radial-gradient(1px 1px at 40px 200px, color-mix(in srgb, var(--color-text-muted) 40%, transparent) 60%, transparent) 0 0 / 340px 300px,
+      radial-gradient(1.2px 1.2px at 250px 90px, color-mix(in srgb, var(--color-accent-green) 40%, transparent) 60%, transparent) 0 0 / 340px 300px,
+      radial-gradient(circle at 44% 46%, color-mix(in srgb, var(--color-accent-green) 5%, transparent), transparent 40%),
+      radial-gradient(ellipse at 45% 45%, color-mix(in srgb, var(--color-accent-cyan) 6%, var(--color-bg)), var(--color-bg) 72%);
     opacity: 1;
     transition: opacity 320ms ease;
   }
@@ -234,11 +233,20 @@ const ringLinks = nodes.map((node, i) => ({
     display: none;
   }
 
+  /* The prompt and language switcher get their own row above the stage, so no
+     node can run under them and a long hint wraps instead of overlapping. */
+  .network-intro__bar {
+    position: relative;
+    z-index: 3; /* the language menu opens over the stage */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-2) 0 var(--space-3);
+  }
+
   .network-intro__language {
-    position: absolute;
-    top: var(--space-2);
-    right: var(--space-2);
-    z-index: 3;
+    flex: none;
   }
 
   .network-intro.is-leaving {
@@ -246,10 +254,37 @@ const ringLinks = nodes.map((node, i) => ({
     pointer-events: none;
   }
 
+  /* Twinkle lives on a few 3px sparks rather than a full-screen layer, so it
+     stays cheap even where compositing runs on the CPU. */
+  .network-intro__spark {
+    position: absolute;
+    z-index: -1;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-text);
+    box-shadow: 0 0 6px var(--color-accent-cyan);
+    opacity: 0.2;
+    pointer-events: none;
+    animation: network-twinkle 4s ease-in-out var(--twinkle-delay) infinite alternate;
+  }
+
+  @keyframes network-twinkle {
+    to {
+      opacity: 0.9;
+    }
+  }
+
   .network-intro__stage {
     position: relative;
     flex: 1;
     min-height: 0;
+    /* Past this size the graph would only sprawl; keep it centred instead. */
+    width: min(100%, 1600px);
+    max-height: 1000px;
+    margin: auto;
+    /* Nodes pick their layout from the stage's own shape, not the viewport's. */
+    container: network-stage / size;
     animation: network-zoom-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
@@ -269,107 +304,53 @@ const ringLinks = nodes.map((node, i) => ({
     inset: 0;
     width: 100%;
     height: 100%;
+    overflow: visible;
   }
 
-  .network-intro__ring-link,
-  .network-intro__edge-rail,
-  .network-intro__edge-core {
-    --edge-opacity: 0.5;
+  .network-intro__link {
+    fill: none;
+    stroke: color-mix(in srgb, var(--color-text-muted) 45%, var(--color-border));
+    stroke-width: 1.2;
     stroke-linecap: round;
-    opacity: 0;
-    animation: network-link-in 520ms ease-out var(--line-delay) forwards;
-  }
-
-  .network-intro__ring-link {
-    --edge-opacity: 0.28;
-    stroke: color-mix(in srgb, var(--color-border) 78%, var(--color-text-muted));
-    stroke-width: 1;
-  }
-
-  .network-intro__edge-rail {
-    --edge-opacity: 0.2;
-    stroke: color-mix(in srgb, var(--color-accent-green) 28%, var(--color-border));
-    stroke-width: 5;
-  }
-
-  .network-intro__edge-core {
-    --edge-opacity: 0.58;
-    stroke: color-mix(in srgb, var(--color-accent-green) 52%, var(--color-border));
-    stroke-width: 1;
-  }
-
-  @keyframes network-link-in {
-    to {
-      opacity: var(--edge-opacity);
-    }
-  }
-
-  .network-intro__edge-rail,
-  .network-intro__edge-core,
-  .network-intro__ring-link {
+    opacity: 0.7;
     transition:
       opacity 180ms ease,
       stroke 180ms ease,
-      stroke-width 180ms ease,
-      filter 180ms ease;
+      stroke-width 180ms ease;
+    animation: network-link-in 520ms ease-out var(--line-delay) backwards;
   }
 
-  .network-intro__edge-signal {
-    stroke: var(--color-accent-green);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 0.07 0.93;
-    stroke-dashoffset: 0.07;
-    opacity: 0;
-    pointer-events: none;
+  .network-intro__link--dashed {
+    stroke-dasharray: 3 6;
   }
 
-  .network-intro__stage[data-connection-active] .network-intro__ring-link {
-    opacity: 0.12;
+  @keyframes network-link-in {
+    from {
+      opacity: 0;
+    }
   }
 
-  .network-intro__stage[data-connection-active]
-    .network-intro__edge:not([data-active])
-    .network-intro__edge-rail {
-    opacity: 0.08;
-  }
-
-  .network-intro__stage[data-connection-active]
-    .network-intro__edge:not([data-active])
-    .network-intro__edge-core {
+  .network-intro__stage[data-connection-active] .network-intro__link {
     opacity: 0.18;
   }
 
-  .network-intro__edge[data-active] .network-intro__edge-rail {
-    stroke: color-mix(in srgb, var(--color-accent-green) 62%, transparent);
-    opacity: 0.52;
-    filter: drop-shadow(0 0 5px color-mix(in srgb, var(--color-accent-green) 55%, transparent));
-  }
-
-  .network-intro__edge[data-active] .network-intro__edge-core {
+  .network-intro__stage[data-connection-active] .network-intro__link[data-active] {
     stroke: var(--color-accent-green);
     stroke-width: 2;
+    stroke-dasharray: 7 7;
     opacity: 1;
-    filter: drop-shadow(0 0 3px var(--color-accent-green));
+    animation: network-link-flow 900ms linear infinite;
   }
 
-  .network-intro__edge[data-active] .network-intro__edge-signal {
-    opacity: 1;
-    filter: drop-shadow(0 0 4px var(--color-accent-green));
-    animation: network-packet-flow 820ms linear infinite;
-  }
-
-  @keyframes network-packet-flow {
+  @keyframes network-link-flow {
     to {
-      stroke-dashoffset: -0.93;
+      stroke-dashoffset: -14;
     }
   }
 
   .network-intro__prompt {
-    position: absolute;
-    top: var(--space-3);
-    left: var(--space-3);
-    margin: 0;
+    min-width: 0;
+    margin: var(--space-2) 0 0;
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
@@ -389,8 +370,17 @@ const ringLinks = nodes.map((node, i) => ({
 
   .network-intro__node,
   .network-intro__center {
+    /* Orb diameter: the node's weight (`--size`), scaled to the stage's short side. */
+    --orb: clamp(calc(var(--size) * var(--orb-min) * 1px), calc(var(--size) * 0.139cqmin), calc(var(--size) * 1px));
+    --orb-min: 0.7;
     position: absolute;
-    transform: translate(-50%, -50%);
+    left: var(--lx);
+    top: var(--ly);
+    /* (left, top) is the orb's centre, where links meet; the label hangs below. */
+    transform: translate(-50%, calc(var(--orb) / -2));
+    /* Size to the label, not to the room left of `left`, or labels near the
+       right edge wrap early. */
+    width: max-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -401,46 +391,64 @@ const ringLinks = nodes.map((node, i) => ({
     color: var(--color-text);
     font-family: inherit;
     cursor: pointer;
-    animation: network-node-in 500ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--node-delay) both;
+    transition: opacity 180ms ease;
+  }
+
+  @container network-stage (orientation: portrait) {
+    .network-intro__node,
+    .network-intro__center {
+      left: var(--px);
+      top: var(--py);
+    }
+  }
+
+  .network-intro__node-circle,
+  .network-intro__node-label,
+  .network-intro__center img,
+  .network-intro__center-label {
+    animation: network-node-in 600ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--node-delay) backwards;
   }
 
   @keyframes network-node-in {
     from {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.4);
-    }
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      scale: 0.5;
     }
   }
 
   .network-intro__node-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px;
-    height: 60px;
+    display: grid;
+    place-items: center;
+    width: var(--orb);
+    height: var(--orb);
     border-radius: 50%;
     border: 1px solid var(--color-border);
-    background: color-mix(in srgb, var(--color-surface) 94%, transparent);
+    background: var(--color-surface);
     color: var(--color-text-muted);
     transition:
       border-color 160ms ease,
       color 160ms ease,
       box-shadow 160ms ease,
       transform 160ms ease;
-    animation: network-float 7s ease-in-out var(--float-delay, 0s) infinite;
   }
 
-  @keyframes network-float {
-    0%,
-    100% {
-      translate: 0 0;
-    }
-    50% {
-      translate: 0 -5px;
-    }
+  .network-intro__node-circle svg {
+    width: 36%;
+    height: 36%;
+  }
+
+  .network-intro__node[data-tier='major'] .network-intro__node-circle {
+    border-color: color-mix(in srgb, var(--color-accent-cyan) 55%, transparent);
+    background: radial-gradient(
+      circle at 35% 30%,
+      color-mix(in srgb, var(--color-accent-cyan) 12%, var(--color-surface)),
+      var(--color-surface) 70%
+    );
+    color: var(--color-text);
+  }
+
+  .network-intro__node[data-tier='minor'] {
+    opacity: 0.8;
   }
 
   .network-intro__node:hover .network-intro__node-circle,
@@ -448,8 +456,17 @@ const ringLinks = nodes.map((node, i) => ({
   .network-intro__node[data-connected] .network-intro__node-circle {
     border-color: var(--color-accent-green);
     color: var(--color-accent-green);
-    box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent-green) 35%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent-green) 12%, transparent);
     transform: scale(1.08);
+  }
+
+  .network-intro__node[data-near] .network-intro__node-circle {
+    border-color: color-mix(in srgb, var(--color-accent-green) 60%, transparent);
+  }
+
+  .network-intro__stage[data-connection-active]
+    :is(.network-intro__node, .network-intro__center):not([data-connected], [data-near]) {
+    opacity: 0.45;
   }
 
   .network-intro__node-label {
@@ -462,6 +479,7 @@ const ringLinks = nodes.map((node, i) => ({
     transition: color 160ms ease;
   }
 
+  .network-intro__node[data-tier='major'] .network-intro__node-label,
   .network-intro__node:hover .network-intro__node-label,
   .network-intro__node:focus-visible .network-intro__node-label,
   .network-intro__node[data-connected] .network-intro__node-label {
@@ -471,8 +489,8 @@ const ringLinks = nodes.map((node, i) => ({
   /* --- Center node -------------------------------------------------------- */
 
   .network-intro__center img {
-    width: 88px;
-    height: 88px;
+    width: var(--orb);
+    height: var(--orb);
     border-radius: 50%;
     border: 2px solid var(--color-accent-green);
     object-fit: cover;
@@ -482,10 +500,10 @@ const ringLinks = nodes.map((node, i) => ({
 
   .network-intro__center-ring {
     position: absolute;
-    top: 44px; /* img half-height: ring centers on the photo */
+    top: calc(var(--orb) / 2); /* centred on the photo */
     left: 50%;
-    width: 104px;
-    height: 104px;
+    width: calc(var(--orb) * 1.18);
+    height: calc(var(--orb) * 1.18);
     transform: translate(-50%, -50%);
     border: 1px solid color-mix(in srgb, var(--color-accent-green) 45%, transparent);
     border-radius: 50%;
@@ -506,18 +524,17 @@ const ringLinks = nodes.map((node, i) => ({
   }
 
   .network-intro__center:hover img,
-  .network-intro__center:focus-visible img {
+  .network-intro__center:focus-visible img,
+  .network-intro__center[data-connected] img,
+  .network-intro__center[data-near] img {
     box-shadow: 0 0 24px color-mix(in srgb, var(--color-accent-green) 45%, transparent);
     transform: scale(1.04);
-  }
-
-  .network-intro__stage[data-connection-active] .network-intro__center img {
-    box-shadow: 0 0 28px color-mix(in srgb, var(--color-accent-green) 55%, transparent);
   }
 
   .network-intro__center-label {
     display: flex;
     flex-direction: column;
+    align-items: center;
     background: color-mix(in srgb, var(--color-bg) 78%, transparent);
     border-radius: var(--radius);
     padding: 0 var(--space-2);
@@ -584,26 +601,10 @@ const ringLinks = nodes.map((node, i) => ({
   }
 
   @media (max-width: 640px) {
-    .network-intro__node-circle {
-      width: 50px;
-      height: 50px;
-    }
-
     .network-intro__node-label {
       font-size: 0.75rem;
       max-width: 96px;
       line-height: 1.3;
-    }
-
-    .network-intro__center img {
-      width: 72px;
-      height: 72px;
-    }
-
-    .network-intro__center-ring {
-      top: 36px;
-      width: 86px;
-      height: 86px;
     }
 
     .network-intro__prompt {
@@ -611,38 +612,66 @@ const ringLinks = nodes.map((node, i) => ({
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .network-intro__stage,
+  /* Landscape phones: smaller buttons side by side leave the graph more height. */
+  @media (max-height: 500px) {
+    .network-intro__actions {
+      flex-flow: row wrap;
+      justify-content: center;
+      margin-bottom: calc(var(--space-2) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .network-intro__assistant,
+    .network-intro__skip {
+      padding: var(--space-1) var(--space-2);
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Short stages (landscape phones, the smallest portrait ones): orbs and labels
+     shrink further so the graph still fits between the prompt and the buttons. */
+  @container network-stage (max-height: 420px) {
     .network-intro__node,
-    .network-intro__center,
+    .network-intro__center {
+      --orb-min: 0.5;
+    }
+
+    .network-intro__node-label {
+      font-size: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .network-intro__center-label strong {
+      font-size: 0.8125rem;
+    }
+
+    .network-intro__center-label small {
+      font-size: 0.6875rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .network-intro__spark,
+    .network-intro__stage,
+    .network-intro__link,
     .network-intro__node-circle,
+    .network-intro__node-label,
+    .network-intro__center img,
+    .network-intro__center-label,
     .network-intro__center-ring,
     .network-intro__assistant,
     .network-intro__skip {
       animation: none;
     }
 
-    .network-intro__ring-link,
-    .network-intro__edge-rail,
-    .network-intro__edge-core {
-      animation: none;
-      opacity: var(--edge-opacity);
-    }
-
-    .network-intro__edge-signal {
-      display: none;
+    .network-intro__stage[data-connection-active] .network-intro__link[data-active] {
+      stroke-dasharray: none;
       animation: none;
     }
   }
 
   @media (hover: none), (pointer: coarse) {
-    .network-intro__node-circle,
-    .network-intro__center-ring {
-      animation: none;
-    }
-
-    .network-intro__edge-signal {
-      filter: none;
+    .network-intro__center-ring,
+    .network-intro__stage[data-connection-active] .network-intro__link[data-active] {
       animation: none;
     }
   }
@@ -935,33 +964,123 @@ const ringLinks = nodes.map((node, i) => ({
 
   if (overlay) {
     const networkStage = overlay.querySelector<HTMLElement>('.network-intro__stage');
-    const connectionNodes = Array.from(
-      overlay.querySelectorAll<HTMLElement>('.network-intro__node[data-network-node]'),
+    const linesSvg = overlay.querySelector<SVGSVGElement>('.network-intro__lines');
+    // Nodes drift with the pointer. (x, y) is a node's orb centre in stage px
+    // at rest; (dx, dy) its parallax offset.
+    const layers = Array.from(overlay.querySelectorAll<HTMLElement>('[data-depth]')).map((el) => ({
+      el,
+      depth: Number(el.dataset.depth),
+      x: 0,
+      y: 0,
+      dx: 0,
+      dy: 0,
+    }));
+    const graphNodes = new Map(
+      layers.filter(({ el }) => el.dataset.networkNode).map((node) => [node.el.dataset.networkNode!, node]),
     );
-    const connectionEdges = new Map(
-      Array.from(overlay.querySelectorAll<SVGGElement>('[data-network-edge]')).map((edge) => [
-        edge.dataset.networkEdge ?? '',
-        edge,
-      ]),
-    );
+    const graphLinks = Array.from(overlay.querySelectorAll<SVGPathElement>('[data-network-link]')).map((el) => ({
+      el,
+      from: el.dataset.from ?? '',
+      to: el.dataset.to ?? '',
+      bend: Number(el.dataset.bend),
+    }));
     let connectedNode: HTMLElement | null = null;
+
+    const drawLinks = () => {
+      graphLinks.forEach(({ el, from, to, bend }) => {
+        const a = graphNodes.get(from);
+        const b = graphNodes.get(to);
+        if (!a || !b) return;
+        const x0 = a.x + a.dx;
+        const y0 = a.y + a.dy;
+        const x2 = b.x + b.dx;
+        const y2 = b.y + b.dy;
+        // Control point pushed off the midpoint, perpendicular to the link.
+        const cx = (x0 + x2) / 2 - (y2 - y0) * bend;
+        const cy = (y0 + y2) / 2 + (x2 - x0) * bend;
+        const r = (value: number) => value.toFixed(1);
+        el.setAttribute('d', `M${r(x0)} ${r(y0)} Q${r(cx)} ${r(cy)} ${r(x2)} ${r(y2)}`);
+      });
+    };
+
+    // CSS owns the layout (including the portrait switch); links are drawn from
+    // where it put each node. offsetLeft/Top ignore transforms, so the stage's
+    // zoom-in and the parallax translate never skew the measurement.
+    if (networkStage && linesSvg) {
+      new ResizeObserver(() => {
+        linesSvg.setAttribute('viewBox', `0 0 ${networkStage.clientWidth} ${networkStage.clientHeight}`);
+        graphNodes.forEach((node) => {
+          node.x = node.el.offsetLeft;
+          node.y = node.el.offsetTop;
+        });
+        drawLinks();
+      }).observe(networkStage);
+    }
+
+    // Pointer parallax: layers drift against the mouse in proportion to their
+    // depth. The frame loop runs only while the scene is catching up with the
+    // pointer, then stops, so an idle map costs nothing.
+    const parallaxAllowed = window.matchMedia(
+      '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+    );
+    const PARALLAX_SHIFT = 30;
+    const pointerTarget = { x: 0, y: 0 };
+    const pointerCurrent = { x: 0, y: 0 };
+    let parallaxFrame = 0;
+    let lastFrameTime = 0;
+
+    const stepParallax = (time: number) => {
+      // Close ~10% of the gap per 60 Hz frame, at whatever rate frames arrive.
+      const ease = lastFrameTime ? 1 - 0.9 ** ((time - lastFrameTime) / 16.7) : 0.1;
+      pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * ease;
+      pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * ease;
+      const settled =
+        Math.abs(pointerTarget.x - pointerCurrent.x) + Math.abs(pointerTarget.y - pointerCurrent.y) < 0.002;
+      lastFrameTime = settled ? 0 : time;
+      layers.forEach((layer) => {
+        layer.dx = -pointerCurrent.x * PARALLAX_SHIFT * layer.depth;
+        layer.dy = -pointerCurrent.y * PARALLAX_SHIFT * layer.depth;
+        layer.el.style.translate = `${layer.dx.toFixed(1)}px ${layer.dy.toFixed(1)}px`;
+      });
+      drawLinks();
+      parallaxFrame = settled ? 0 : requestAnimationFrame(stepParallax);
+    };
+
+    const moveParallax = (x: number, y: number) => {
+      pointerTarget.x = x;
+      pointerTarget.y = y;
+      if (!parallaxFrame) parallaxFrame = requestAnimationFrame(stepParallax);
+    };
+
+    overlay.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || !parallaxAllowed.matches) return;
+      moveParallax(event.clientX / window.innerWidth - 0.5, event.clientY / window.innerHeight - 0.5);
+    });
+    overlay.addEventListener('pointerleave', (event) => {
+      if (event.pointerType === 'mouse') moveParallax(0, 0);
+    });
 
     const setConnectedNode = (node: HTMLElement | null) => {
       if (connectedNode === node) return;
       connectedNode = node;
       const activeId = node?.dataset.networkNode;
+      // Light up every link touching the node, and the nodes at their far ends.
+      const nearIds = new Set<string>();
+      graphLinks.forEach(({ el, from, to }) => {
+        const active = Boolean(activeId) && (from === activeId || to === activeId);
+        el.toggleAttribute('data-active', active);
+        if (active) nearIds.add(from === activeId ? to : from);
+      });
       networkStage?.toggleAttribute('data-connection-active', Boolean(activeId));
-      connectionNodes.forEach((item) =>
-        item.toggleAttribute('data-connected', item === node && Boolean(activeId)),
-      );
-      connectionEdges.forEach((edge, id) =>
-        edge.toggleAttribute('data-active', id === activeId && Boolean(activeId)),
-      );
+      graphNodes.forEach(({ el }, id) => {
+        el.toggleAttribute('data-connected', el === node && Boolean(activeId));
+        el.toggleAttribute('data-near', nearIds.has(id));
+      });
     };
 
     const findConnectionNode = (target: EventTarget | null) =>
       target instanceof Element
-        ? target.closest<HTMLElement>('.network-intro__node[data-network-node]')
+        ? target.closest<HTMLElement>('.network-intro__stage [data-network-node]')
         : null;
 
     overlay.addEventListener('pointerover', (event) => {

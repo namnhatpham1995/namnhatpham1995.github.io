@@ -193,61 +193,151 @@ test('view full page control stays centered without overlapping the network', as
   }
 });
 
-test('network uses solid layered links for every peripheral node', async ({ page }) => {
+test('nodes stay clear of each other and the overlay controls on cramped screens', async ({ page }) => {
+  // Reduced motion lays the overlay out in its final state straight away.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  // The tightest fits: a narrow phone with a long wrapped hint, landscape phones
+  // with long German button labels.
+  for (const [path, width, height] of [
+    ['/vi/', 320, 568],
+    ['/de/', 568, 320],
+    ['/de/', 844, 340],
+  ] as const) {
+    await page.setViewportSize({ width, height });
+    await page.goto(path);
+
+    const problems = await page.locator('#network-intro').evaluate((overlay) => {
+      const boxes = Array.from(
+        overlay.querySelectorAll<HTMLElement>(
+          '[data-network-node], .network-intro__prompt, .network-intro__language, .network-intro__actions',
+        ),
+      ).map((element) => [element.dataset.networkNode ?? element.classList[0], element.getBoundingClientRect()] as const);
+      const found: string[] = [];
+      for (const [name, box] of boxes) {
+        if (box.left < 0 || box.top < 0 || box.right > innerWidth || box.bottom > innerHeight) found.push(`${name} clipped`);
+      }
+      boxes.forEach(([a, boxA], i) => {
+        for (const [b, boxB] of boxes.slice(i + 1)) {
+          const overlapX = Math.min(boxA.right, boxB.right) - Math.max(boxA.left, boxB.left);
+          const overlapY = Math.min(boxA.bottom, boxB.bottom) - Math.max(boxA.top, boxB.top);
+          if (overlapX > 1 && overlapY > 1) found.push(`${a} overlaps ${b}`);
+        }
+      });
+      return found;
+    });
+    expect(problems, `${path} at ${width}x${height}`).toEqual([]);
+  }
+});
+
+test('network links form a curved graph that reaches every node', async ({ page }) => {
   await page.goto('/');
 
-  const edges = page.locator('[data-network-edge]');
-  await expect(edges).toHaveCount(sectionIds.length - 1);
-  await expect(page.locator('.network-intro__ring-link')).toHaveCount(sectionIds.length - 1);
+  const links = page.locator('[data-network-link]');
+  await expect
+    .poll(() => links.evaluateAll((paths) => paths.every((path) => /^M.+Q.+/.test(path.getAttribute('d') ?? ''))))
+    .toBe(true);
 
-  for (const sectionId of sectionIds.filter((id) => id !== 'intro')) {
-    const edge = page.locator(`[data-network-edge="${sectionId}"]`);
-    await expect(edge).toHaveCount(1);
-    await expect(edge.locator('.network-intro__edge-rail')).toHaveCount(1);
-    await expect(edge.locator('.network-intro__edge-core')).toHaveCount(1);
-    await expect(edge.locator('.network-intro__edge-signal')).toHaveCount(1);
-  }
+  const endpoints = await links.evaluateAll((paths) =>
+    paths.map((path) => [path.getAttribute('data-from'), path.getAttribute('data-to')]),
+  );
+  const linked = new Set(endpoints.flat());
+  for (const sectionId of sectionIds) expect(linked.has(sectionId)).toBe(true);
+  // A constellation, not a hub with spokes: some links skip the centre entirely.
+  expect(endpoints.some((pair) => !pair.includes('intro'))).toBe(true);
 
   const baseDash = await page
-    .locator('[data-network-edge="skills"] .network-intro__edge-core')
+    .locator('[data-network-link][data-from="intro"][data-to="skills"]')
     .evaluate((element) => getComputedStyle(element).strokeDasharray);
   expect(baseDash).toBe('none');
 });
 
-test('hover, focus, and touch connect the center to the selected node', async ({ page }) => {
+test('links start and end on the orbs they join', async ({ page }) => {
+  for (const viewport of [
+    { width: 1280, height: 720 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+    // Let the entry animations settle so the rendered orbs are at rest.
+    await page.waitForTimeout(1_200);
+
+    const gaps = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<SVGPathElement>('[data-network-link]')).flatMap((path) => {
+        const length = path.getTotalLength();
+        const matrix = path.getScreenCTM()!;
+        return [
+          [path.dataset.from!, path.getPointAtLength(0)],
+          [path.dataset.to!, path.getPointAtLength(length)],
+        ].map(([id, point]) => {
+          const { x, y } = (point as DOMPoint).matrixTransform(matrix);
+          const orb = document.querySelector(
+            `[data-network-node="${id}"] :is(.network-intro__node-circle, img)`,
+          )!.getBoundingClientRect();
+          return Math.hypot(x - (orb.left + orb.width / 2), y - (orb.top + orb.height / 2));
+        });
+      }),
+    );
+    for (const gap of gaps) expect(gap).toBeLessThan(2);
+  }
+});
+
+test('hover, focus, and touch light up the selected node and its neighbours', async ({ page }) => {
   await page.goto('/');
 
   const stage = page.locator('.network-intro__stage');
   const projectsNode = page.locator('[data-network-node="projects"]');
-  const projectsEdge = page.locator('[data-network-edge="projects"]');
-  const skillsEdge = page.locator('[data-network-edge="skills"]');
-  const signal = projectsEdge.locator('.network-intro__edge-signal');
-
-  await expect
-    .poll(() => signal.evaluate((element) => getComputedStyle(element).filter))
-    .toBe('none');
+  const projectsLinks = page.locator('[data-network-link]:is([data-from="projects"], [data-to="projects"])');
+  const firstProjectsLink = projectsLinks.first();
+  const unrelatedLink = page.locator('[data-network-link][data-from="education"][data-to="languages"]');
 
   await projectsNode.hover();
   await expect(stage).toHaveAttribute('data-connection-active', '');
   await expect(projectsNode).toHaveAttribute('data-connected', '');
-  await expect(projectsEdge).toHaveAttribute('data-active', '');
-  await expect(skillsEdge).not.toHaveAttribute('data-active', '');
+  await expect(projectsLinks).toHaveCount(2);
+  for (const link of await projectsLinks.all()) await expect(link).toHaveAttribute('data-active', '');
+  await expect(unrelatedLink).not.toHaveAttribute('data-active', '');
+  await expect(page.locator('[data-network-node="experience"]')).toHaveAttribute('data-near', '');
+  await expect(page.locator('[data-network-node="skills"]')).toHaveAttribute('data-near', '');
+  await expect(page.locator('[data-network-node="languages"]')).not.toHaveAttribute('data-near', '');
   await expect
-    .poll(() => signal.evaluate((element) => getComputedStyle(element).animationName))
-    .toBe('network-packet-flow');
+    .poll(() => firstProjectsLink.evaluate((element) => getComputedStyle(element).animationName))
+    .toBe('network-link-flow');
 
   await page.mouse.move(1, 1);
-  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+  await expect(firstProjectsLink).not.toHaveAttribute('data-active', '');
+  await expect(page.locator('[data-network-node][data-near]')).toHaveCount(0);
 
   await projectsNode.focus();
-  await expect(projectsEdge).toHaveAttribute('data-active', '');
+  await expect(firstProjectsLink).toHaveAttribute('data-active', '');
   await page.locator('[data-network-skip]').focus();
-  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+  await expect(firstProjectsLink).not.toHaveAttribute('data-active', '');
 
   await projectsNode.dispatchEvent('pointerdown', { pointerType: 'touch' });
-  await expect(projectsEdge).toHaveAttribute('data-active', '');
+  await expect(firstProjectsLink).toHaveAttribute('data-active', '');
   await projectsNode.dispatchEvent('pointerup', { pointerType: 'touch' });
-  await expect(projectsEdge).not.toHaveAttribute('data-active', '');
+  await expect(firstProjectsLink).not.toHaveAttribute('data-active', '');
+});
+
+test('mouse parallax drifts the nodes and then stops', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('/');
+
+  const node = page.locator('[data-network-node="experience"]');
+  await page.mouse.move(1200, 650);
+  await expect.poll(() => node.evaluate((element) => element.style.translate)).not.toBe('');
+
+  // Once the scene catches up with a still pointer, the frame loop goes quiet.
+  await expect
+    .poll(
+      () =>
+        node.evaluate(async (element) => {
+          const before = element.style.translate;
+          await new Promise((resolve) => setTimeout(resolve, 250));
+          return element.style.translate === before;
+        }),
+      { timeout: 3_000 },
+    )
+    .toBe(true);
 });
 
 test('reduced motion keeps a static highlighted connection', async ({ page }) => {
@@ -255,24 +345,26 @@ test('reduced motion keeps a static highlighted connection', async ({ page }) =>
   await page.goto('/');
 
   const node = page.locator('[data-network-node="experience"]');
-  const edge = page.locator('[data-network-edge="experience"]');
+  const link = page.locator('[data-network-link][data-from="intro"][data-to="experience"]');
   await node.hover();
-  await expect(edge).toHaveAttribute('data-active', '');
+  await expect(link).toHaveAttribute('data-active', '');
 
-  const styles = await edge.evaluate((element) => ({
-    coreOpacity: getComputedStyle(element.querySelector('.network-intro__edge-core')!).opacity,
-    signalDisplay: getComputedStyle(element.querySelector('.network-intro__edge-signal')!).display,
-    nodeAnimation: getComputedStyle(
-      document.querySelector('.network-intro__node-circle')!,
-    ).animationName,
+  const styles = await link.evaluate((element) => ({
+    linkOpacity: getComputedStyle(element).opacity,
+    linkAnimation: getComputedStyle(element).animationName,
+    linkDash: getComputedStyle(element).strokeDasharray,
+    starsAnimation: getComputedStyle(document.querySelector('.network-intro__spark')!).animationName,
     pulseAnimation: getComputedStyle(
       document.querySelector('.network-intro__center-ring')!,
     ).animationName,
+    nodeTranslate: (document.querySelector('[data-network-node="experience"]') as HTMLElement).style.translate,
   }));
-  expect(styles.coreOpacity).toBe('1');
-  expect(styles.signalDisplay).toBe('none');
-  expect(styles.nodeAnimation).toBe('none');
+  expect(styles.linkOpacity).toBe('1');
+  expect(styles.linkAnimation).toBe('none');
+  expect(styles.linkDash).toBe('none');
+  expect(styles.starsAnimation).toBe('none');
   expect(styles.pulseAnimation).toBe('none');
+  expect(styles.nodeTranslate).toBe('');
 });
 
 for (const localeCase of localeCases) {
