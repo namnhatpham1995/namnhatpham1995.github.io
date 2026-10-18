@@ -6,7 +6,7 @@ interface Props {
 const { promptUser } = Astro.props;
 ---
 
-<div class="terminal-window glass-edge">
+<div class="terminal-window">
   <div class="terminal-window__chrome" role="presentation">
     <span class="dot dot--red" aria-hidden="true"></span>
     <span class="dot dot--amber" aria-hidden="true"></span>
@@ -22,16 +22,14 @@ const { promptUser } = Astro.props;
   .terminal-window {
     max-width: var(--max-width);
     margin: 0 auto;
-    border: 1px solid var(--color-border);
+    border: 1px solid transparent;
     border-radius: var(--radius);
-    /* Opaque so the page grid stays in the margins, not behind the text. */
-    background: var(--color-bg);
+    overflow: hidden;
+    /* Opaque fill keeps the page grid in the margins, not behind the text. */
+    background: linear-gradient(var(--color-bg) 0 0) padding-box, var(--glass-edge-glow), var(--color-border);
   }
 
   .terminal-window__chrome {
-    /* Rounded here rather than via overflow: hidden on the window, which would
-       clip the glass-edge ring drawn just outside the padding box. */
-    border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
     display: flex;
     align-items: center;
     gap: var(--space-2);

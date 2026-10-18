@@ -23,6 +23,16 @@
   --space-6: 3rem;
 
   --radius: 6px;
+  /* Gradient "glass" edge: green/cyan glows in opposite corners. A host shows it
+     through a transparent border, under an opaque fill clipped to the padding box:
+       border: 1px solid transparent;
+       background: linear-gradient(<fill> 0 0) padding-box, var(--glass-edge-glow), var(--color-border);
+     Each glow is sized to its own corner tile: a gradient (or mask) layer spanning
+     the full-height terminal window gets rasterized at that full size, which was
+     costly enough to delay frames right after the network intro closes. */
+  --glass-edge-glow:
+    radial-gradient(circle 14rem at 0 0, var(--color-accent-green), transparent) left top / 14rem 14rem no-repeat border-box,
+    radial-gradient(circle 14rem at 100% 100%, var(--color-accent-cyan), transparent) right bottom / 14rem 14rem no-repeat border-box;
   --max-width: 860px;
 }
 
@@ -59,29 +69,6 @@ body::before {
     linear-gradient(to bottom, color-mix(in srgb, var(--color-text) 5%, transparent) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(to bottom, #000, transparent 85%);
-}
-
-/* Gradient "glass" edge: a 1px ring drawn over the element's own border by a masked
-   pseudo-element, so accent glows can sit in opposite corners (border-color can't
-   do that on rounded corners). The host must not clip overflow, or the ring is cut. */
-.glass-edge {
-  position: relative;
-}
-
-.glass-edge::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  padding: 1px;
-  border-radius: inherit;
-  pointer-events: none;
-  background:
-    radial-gradient(14rem circle at 0 0, var(--color-accent-green), transparent),
-    radial-gradient(14rem circle at 100% 100%, var(--color-accent-cyan), transparent),
-    var(--color-border);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
 }
 
 img {
