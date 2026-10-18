@@ -22,9 +22,11 @@ const { promptUser } = Astro.props;
   .terminal-window {
     max-width: var(--max-width);
     margin: 0 auto;
-    border: 1px solid var(--color-border);
+    border: 1px solid transparent;
     border-radius: var(--radius);
     overflow: hidden;
+    /* Opaque fill keeps the page grid in the margins, not behind the text. */
+    background: linear-gradient(var(--color-bg) 0 0) padding-box, var(--glass-edge-glow), var(--color-border);
   }
 
   .terminal-window__chrome {

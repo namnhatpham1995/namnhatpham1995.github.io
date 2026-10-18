@@ -23,6 +23,16 @@
   --space-6: 3rem;
 
   --radius: 6px;
+  /* Gradient "glass" edge: green/cyan glows in opposite corners. A host shows it
+     through a transparent border, under an opaque fill clipped to the padding box:
+       border: 1px solid transparent;
+       background: linear-gradient(<fill> 0 0) padding-box, var(--glass-edge-glow), var(--color-border);
+     Each glow is sized to its own corner tile: a gradient (or mask) layer spanning
+     the full-height terminal window gets rasterized at that full size, which was
+     costly enough to delay frames right after the network intro closes. */
+  --glass-edge-glow:
+    radial-gradient(circle 14rem at 0 0, var(--color-accent-green), transparent) left top / 14rem 14rem no-repeat border-box,
+    radial-gradient(circle 14rem at 100% 100%, var(--color-accent-cyan), transparent) right bottom / 14rem 14rem no-repeat border-box;
   --max-width: 860px;
 }
 
@@ -44,6 +54,21 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Faint dev-grid backdrop. Fixed so it stays put while content scrolls, and faded
+   toward the bottom of the viewport so it never competes with text. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-text) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-text) 5%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, #000, transparent 85%);
 }
 
 img {
