@@ -74,12 +74,12 @@ export interface WorkLocationPolicy {
   };
   hybrid: {
     available: boolean;
-    maximumDistanceKm: number;
+    maximumDistanceKm: number | null;
     rule: string;
   };
   onSite: {
     available: boolean;
-    maximumDistanceKm: number;
+    maximumDistanceKm: number | null;
     rule: string;
   };
   guidance: string;

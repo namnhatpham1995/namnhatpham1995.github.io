@@ -46,7 +46,7 @@ export const de: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote-Arbeit: ja, von überall, auch aus Vietnam. Arbeiten aus jeder vietnamesischen Stadt ist möglich, muss aber mit Nam weiter besprochen werden und ist nicht automatisch zugesagt.',
+      rule: 'Remote-Arbeit: ja, weltweit, auch aus Vietnam. Arbeiten aus jeder vietnamesischen Stadt ist möglich, muss aber mit Nam weiter besprochen werden und ist nicht automatisch zugesagt.',
       vietnam: {
         possible: true,
         automatic: false,
@@ -57,16 +57,16 @@ export const de: CvContent = {
     },
     hybrid: {
       available: true,
-      maximumDistanceKm: 50,
-      rule: 'Hybridarbeit: ja, bis maximal 50 km von Sindelfingen, Deutschland entfernt.',
+      maximumDistanceKm: null,
+      rule: 'Hybridarbeit: ja, ohne Entfernungsgrenze. Nam ist offen für einen Umzug, in Deutschland oder ins Ausland.',
     },
     onSite: {
       available: true,
-      maximumDistanceKm: 30,
-      rule: 'Arbeiten vor Ort: ja, bis maximal 30 km von Sindelfingen, Deutschland entfernt.',
+      maximumDistanceKm: null,
+      rule: 'Arbeiten vor Ort: ja, ohne Entfernungsgrenze. Nam ist offen für einen Umzug, in Deutschland oder ins Ausland.',
     },
     guidance:
-      'Bei einem konkreten Ort für Hybrid- oder Vor-Ort-Arbeit muss die Entfernung zum jeweils geltenden Radius um Sindelfingen geprüft werden. Wenn die genaue Entfernung nicht bekannt ist, soll die Regel erklärt und nicht geraten werden. Bei Remote-Arbeit aus Vietnam soll erklärt werden, dass sie aus jeder vietnamesischen Stadt möglich ist, aber mit Nam weiter besprochen werden muss und nicht automatisch zugesagt ist.',
+      'Nam wohnt in Sindelfingen, Deutschland, ist offen für einen Umzug und für Remote-Arbeit weltweit, daher sind Hybrid- und Vor-Ort-Stellen nicht auf einen Radius um Sindelfingen beschränkt. Nam besitzt eine deutsche Niederlassungserlaubnis, die nur für Arbeit in Deutschland gilt: Bei einer Stelle außerhalb Deutschlands soll erklärt werden, dass die Arbeitserlaubnis mit dem Arbeitgeber geklärt werden muss, statt sie vorauszusetzen. Bei Remote-Arbeit aus Vietnam soll erklärt werden, dass sie aus jeder vietnamesischen Stadt möglich ist, aber mit Nam weiter besprochen werden muss und nicht automatisch zugesagt ist.',
   },
   skills: {
     heading: 'ls skills/',
@@ -86,23 +86,23 @@ export const de: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–present,
+    // TODO: native review — dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Sep 2026,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Software-Ingenieur in F&E',
         company: 'Cumulocity GmbH (vormals Software AG) — Digital Twin Management Team',
-        dates: "Oktober 2022 - heute",
+        dates: "Oktober 2022 - September 2026",
         // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
           "Entwickelte microservice-deployer, um Versionskonflikte und Probleme mit Paketnamen bei Cumulocity-Deployments zu lösen. Das in Bash auf Basis von c8y-cli geschriebene Werkzeug entwickelte sich von einem Teamwerkzeug zu einem offiziellen internen Produkt, das teamübergreifend eingesetzt wird.",
           "Migrierte fast die Hälfte der OEE-REST-API von Python zu Java/Spring Boot und trug damit zur abgeschlossenen Migration des Teams bei. Überarbeitete gemeinsam genutzte Abläufe für Paginierung und Migration mit Builder-, Factory-Method- und Template-Method-Patterns, reduzierte dadurch doppelten Code und verbesserte die Testbarkeit. Analysierte vorhandene Logik und verbesserte oder ergänzte sie bei Bedarf.",
-          "Erarbeite mit erfahrenen Teamkollegen B2B-Anforderungen und stimme Änderungen an Schemata, Modellen und REST-APIs sowie Fehlerbehebungen für den Digital-Twin-Management-Microservice ab.",
-          "Verantworte die Umsetzung bis zum Deployment in der Vorproduktionsumgebung: implementiere die vereinbarten Java/Spring-Boot-Änderungen, schreibe Unit- und Cypress-Integrationstests und verbessere GitHub-Actions-CI/CD-Pipelines für automatisierte Validierung und Regressionsprüfungen. Prüfe das Zusammenspiel zwischen Microservice und Cumulocity und stelle die Funktionalität für Demos mit Geschäftskunden bereit.",
-          "Unterstütze Anpassungen des Angular-Frontends nach Änderungen an Backend-APIs und behebe Integrationsfehler, damit Frontend und Backend konsistent zusammenarbeiten.",
+          "Erarbeitete mit erfahrenen Teamkollegen B2B-Anforderungen und stimmte Änderungen an Schemata, Modellen und REST-APIs sowie Fehlerbehebungen für den Digital-Twin-Management-Microservice ab.",
+          "Verantwortete die Umsetzung bis zum Deployment in der Vorproduktionsumgebung: implementierte die vereinbarten Java/Spring-Boot-Änderungen, schrieb Unit- und Cypress-Integrationstests und verbesserte GitHub-Actions-CI/CD-Pipelines für automatisierte Validierung und Regressionsprüfungen. Prüfte das Zusammenspiel zwischen Microservice und Cumulocity und stellte die Funktionalität für Demos mit Geschäftskunden bereit.",
+          "Unterstützte Anpassungen des Angular-Frontends nach Änderungen an Backend-APIs und behob Integrationsfehler, damit Frontend und Backend konsistent zusammenarbeiten.",
           "Automatisierte die API-Dokumentation über die Swagger/OpenAPI-Konfiguration bei jedem Microservice-Build, sodass die Spezifikation mit geringem manuellem Aufwand aktuell bleibt.",
           "Entwickelte Python-Simulationsskripte für Stress- und Integrationstests der OEE-Anwendung.",
-          "Nutze GitHub Copilot und Claude Code im gesamten Ticketablauf, von der Anforderungsanalyse und Implementierung bis zur Fehlersuche und zum Testen.",
+          "Nutzte GitHub Copilot und Claude Code im gesamten Ticketablauf, von der Anforderungsanalyse und Implementierung bis zur Fehlersuche und zum Testen.",
         ],
       },
       {
