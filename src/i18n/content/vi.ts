@@ -85,13 +85,13 @@ export const vi: CvContent = {
   },
   experience: {
     heading: 'git log --experience',
-    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–present,
+    // Dates and bullets updated to match 2026 CV (Cumulocity: Oct 2022–Sep 2026,
     // Software AG: Oct 2021–Oct 2022; legacy translations.js had different dates/role split)
     entries: [
       {
         role: 'Kỹ sư phần mềm tại bộ phận R&D',
         company: 'Cumulocity GmbH (trước đây là Software AG) — Đội Digital Twin Management',
-        dates: "Tháng 10 năm 2022 - hiện tại",
+        dates: "Tháng 10 năm 2022 - tháng 9 năm 2026",
         // TODO: native review - confirmed CV experience refreshed on 2026-08-31
         bullets: [
           "Xây dựng microservice-deployer để giải quyết xung đột phiên bản và vấn đề đặt tên gói trong quá trình triển khai lên Cumulocity. Được viết bằng Bash dựa trên c8y-cli, công cụ phát triển từ tiện ích của một nhóm thành sản phẩm nội bộ chính thức được nhiều nhóm trong công ty sử dụng.",

@@ -85,16 +85,16 @@ export const en: CvContent = {
       {
         role: 'Software Engineer in R&D',
         company: 'Cumulocity GmbH (formerly Software AG) — Digital Twin Management team',
-        dates: "October 2022 - Present",
+        dates: "October 2022 - September 2026",
         bullets: [
           "Built microservice-deployer to resolve version conflicts and package-naming issues during Cumulocity deployments. Written in Bash around c8y-cli, it grew from a team tool into an official internal product adopted across company teams.",
           "Migrated nearly half of the OEE REST API from Python to Java/Spring Boot, contributing to the team's completed migration. Refactored shared pagination and migration workflows using Builder, Factory Method, and Template Method patterns. This reduced duplication and improved testability. Reviewed existing logic and improved or introduced logic where needed.",
-          "Collaborate with senior teammates to document B2B requirements and agree on schema, model, REST API changes, and bug fixes for the Digital Twin Management microservice.",
-          "Own delivery from implementation through pre-production deployment: develop the agreed Java/Spring Boot changes, write unit and Cypress integration tests, and improve GitHub Actions CI/CD to automate validation and regression checks. Verify microservice-to-Cumulocity integration and deploy working functionality for business customer demos.",
-          "Support Angular frontend updates following backend API changes, debugging and fixing integration issues to keep frontend and backend behavior consistent.",
+          "Collaborated with senior teammates to document B2B requirements and agree on schema, model, REST API changes, and bug fixes for the Digital Twin Management microservice.",
+          "Owned delivery from implementation through pre-production deployment: developed the agreed Java/Spring Boot changes, wrote unit and Cypress integration tests, and improved GitHub Actions CI/CD to automate validation and regression checks. Verified microservice-to-Cumulocity integration and deployed working functionality for business customer demos.",
+          "Supported Angular frontend updates following backend API changes, debugging and fixing integration issues to keep frontend and backend behavior consistent.",
           "Automated API documentation through Swagger/OpenAPI configuration on every microservice build, keeping the specification current with minimal manual effort.",
           "Developed Python simulation scripts for stress and integration testing of the OEE application.",
-          "Use GitHub Copilot and Claude Code across the ticket lifecycle, from requirements analysis and implementation to debugging and testing.",
+          "Used GitHub Copilot and Claude Code across the ticket lifecycle, from requirements analysis and implementation to debugging and testing.",
         ],
       },
       {
