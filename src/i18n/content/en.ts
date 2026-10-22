@@ -42,7 +42,7 @@ export const en: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote work: yes, from anywhere, including Vietnam. Working from any city in Vietnam is possible, but it must be discussed further with Nam and is not automatic.',
+      rule: 'Remote work: yes, worldwide, including Vietnam. Working from any city in Vietnam is possible, but it must be discussed further with Nam and is not automatic.',
       vietnam: {
         possible: true,
         automatic: false,
@@ -53,16 +53,16 @@ export const en: CvContent = {
     },
     hybrid: {
       available: true,
-      maximumDistanceKm: 50,
-      rule: 'Hybrid work: yes, within a maximum of 50 km from Sindelfingen, Germany.',
+      maximumDistanceKm: null,
+      rule: 'Hybrid work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad.',
     },
     onSite: {
       available: true,
-      maximumDistanceKm: 30,
-      rule: 'On-site work: yes, within a maximum of 30 km from Sindelfingen, Germany.',
+      maximumDistanceKm: null,
+      rule: 'On-site work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad.',
     },
     guidance:
-      'For a specific hybrid or on-site location, compare its distance with the applicable radius from Sindelfingen. If the exact distance is unknown, explain the rule and say it needs to be checked rather than guessing. For remote work from Vietnam, answer that it is possible from any Vietnamese city but requires further discussion with Nam and is not automatic.',
+      'Nam is based in Sindelfingen, Germany, and is open to relocation and to remote work worldwide, so hybrid and on-site roles are not limited to a radius around Sindelfingen. Nam holds German permanent residency, which covers work in Germany only: for a role based outside Germany, say that work authorization must be confirmed with the employer rather than assuming it. For remote work from Vietnam, answer that it is possible from any Vietnamese city but requires further discussion with Nam and is not automatic.',
   },
   skills: {
     heading: 'ls skills/',

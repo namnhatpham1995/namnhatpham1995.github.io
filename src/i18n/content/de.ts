@@ -46,7 +46,7 @@ export const de: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote-Arbeit: ja, von überall, auch aus Vietnam. Arbeiten aus jeder vietnamesischen Stadt ist möglich, muss aber mit Nam weiter besprochen werden und ist nicht automatisch zugesagt.',
+      rule: 'Remote-Arbeit: ja, weltweit, auch aus Vietnam. Arbeiten aus jeder vietnamesischen Stadt ist möglich, muss aber mit Nam weiter besprochen werden und ist nicht automatisch zugesagt.',
       vietnam: {
         possible: true,
         automatic: false,
@@ -57,16 +57,16 @@ export const de: CvContent = {
     },
     hybrid: {
       available: true,
-      maximumDistanceKm: 50,
-      rule: 'Hybridarbeit: ja, bis maximal 50 km von Sindelfingen, Deutschland entfernt.',
+      maximumDistanceKm: null,
+      rule: 'Hybridarbeit: ja, ohne Entfernungsgrenze. Nam ist offen für einen Umzug, in Deutschland oder ins Ausland.',
     },
     onSite: {
       available: true,
-      maximumDistanceKm: 30,
-      rule: 'Arbeiten vor Ort: ja, bis maximal 30 km von Sindelfingen, Deutschland entfernt.',
+      maximumDistanceKm: null,
+      rule: 'Arbeiten vor Ort: ja, ohne Entfernungsgrenze. Nam ist offen für einen Umzug, in Deutschland oder ins Ausland.',
     },
     guidance:
-      'Bei einem konkreten Ort für Hybrid- oder Vor-Ort-Arbeit muss die Entfernung zum jeweils geltenden Radius um Sindelfingen geprüft werden. Wenn die genaue Entfernung nicht bekannt ist, soll die Regel erklärt und nicht geraten werden. Bei Remote-Arbeit aus Vietnam soll erklärt werden, dass sie aus jeder vietnamesischen Stadt möglich ist, aber mit Nam weiter besprochen werden muss und nicht automatisch zugesagt ist.',
+      'Nam wohnt in Sindelfingen, Deutschland, ist offen für einen Umzug und für Remote-Arbeit weltweit, daher sind Hybrid- und Vor-Ort-Stellen nicht auf einen Radius um Sindelfingen beschränkt. Nam besitzt eine deutsche Niederlassungserlaubnis, die nur für Arbeit in Deutschland gilt: Bei einer Stelle außerhalb Deutschlands soll erklärt werden, dass die Arbeitserlaubnis mit dem Arbeitgeber geklärt werden muss, statt sie vorauszusetzen. Bei Remote-Arbeit aus Vietnam soll erklärt werden, dass sie aus jeder vietnamesischen Stadt möglich ist, aber mit Nam weiter besprochen werden muss und nicht automatisch zugesagt ist.',
   },
   skills: {
     heading: 'ls skills/',

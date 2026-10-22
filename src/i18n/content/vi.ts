@@ -45,7 +45,7 @@ export const vi: CvContent = {
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Làm việc từ xa: có, ở bất kỳ đâu, bao gồm cả Việt Nam. Làm việc từ bất kỳ thành phố nào ở Việt Nam là khả thi nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
+      rule: 'Làm việc từ xa: có, trên toàn thế giới, bao gồm cả Việt Nam. Làm việc từ bất kỳ thành phố nào ở Việt Nam là khả thi nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
       vietnam: {
         possible: true,
         automatic: false,
@@ -56,16 +56,16 @@ export const vi: CvContent = {
     },
     hybrid: {
       available: true,
-      maximumDistanceKm: 50,
-      rule: 'Làm việc hybrid: có, trong phạm vi tối đa 50 km quanh Sindelfingen, Đức.',
+      maximumDistanceKm: null,
+      rule: 'Làm việc hybrid: có, không giới hạn khoảng cách. Nam sẵn sàng chuyển nơi ở, trong nước Đức hoặc ra nước ngoài.',
     },
     onSite: {
       available: true,
-      maximumDistanceKm: 30,
-      rule: 'Làm việc tại văn phòng: có, trong phạm vi tối đa 30 km quanh Sindelfingen, Đức.',
+      maximumDistanceKm: null,
+      rule: 'Làm việc tại văn phòng: có, không giới hạn khoảng cách. Nam sẵn sàng chuyển nơi ở, trong nước Đức hoặc ra nước ngoài.',
     },
     guidance:
-      'Với một địa điểm cụ thể cho hình thức hybrid hoặc làm việc tại văn phòng, cần so sánh khoảng cách với bán kính tương ứng tính từ Sindelfingen. Nếu chưa biết chính xác khoảng cách, hãy giải thích quy tắc và nói rằng cần kiểm tra thay vì đoán. Với việc làm từ xa tại Việt Nam, hãy trả lời rằng có thể làm việc từ bất kỳ thành phố nào nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
+      'Nam sống tại Sindelfingen, Đức, sẵn sàng chuyển nơi ở và làm việc từ xa trên toàn thế giới, nên các vị trí hybrid hoặc tại văn phòng không bị giới hạn trong bán kính quanh Sindelfingen. Nam có thẻ thường trú tại Đức, chỉ có hiệu lực cho việc làm tại Đức: với vị trí ngoài nước Đức, hãy nói rằng giấy phép lao động cần được xác nhận với nhà tuyển dụng thay vì mặc định là đã có. Với việc làm từ xa tại Việt Nam, hãy trả lời rằng có thể làm việc từ bất kỳ thành phố nào nhưng cần trao đổi thêm với Nam và không mặc nhiên được chấp thuận.',
   },
   skills: {
     heading: 'ls skills/',
