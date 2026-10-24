@@ -229,12 +229,12 @@ test('nodes stay clear of each other and the overlay controls on cramped screens
   }
 });
 
-test('network links form a curved graph that reaches every node', async ({ page }) => {
+test('circuit connections reach every node with solid angular traces', async ({ page }) => {
   await page.goto('/');
 
   const links = page.locator('[data-network-link]');
   await expect
-    .poll(() => links.evaluateAll((paths) => paths.every((path) => /^M.+Q.+/.test(path.getAttribute('d') ?? ''))))
+    .poll(() => links.evaluateAll((paths) => paths.every((path) => /^M.+L.+L.+L.+/.test(path.getAttribute('d') ?? ''))))
     .toBe(true);
 
   const endpoints = await links.evaluateAll((paths) =>
@@ -293,6 +293,10 @@ test('hover, focus, and touch light up the selected node and its neighbours', as
   await projectsNode.hover();
   await expect(stage).toHaveAttribute('data-connection-active', '');
   await expect(projectsNode).toHaveAttribute('data-connected', '');
+  // Hovered ports must stay still instead of drifting away from the pointer.
+  const position = await projectsNode.evaluate(el => el.style.translate);
+  await page.waitForTimeout(350);
+  expect(await projectsNode.evaluate(el => el.style.translate)).toBe(position);
   await expect(projectsLinks).toHaveCount(2);
   for (const link of await projectsLinks.all()) await expect(link).toHaveAttribute('data-active', '');
   await expect(unrelatedLink).not.toHaveAttribute('data-active', '');
@@ -300,8 +304,8 @@ test('hover, focus, and touch light up the selected node and its neighbours', as
   await expect(page.locator('[data-network-node="skills"]')).toHaveAttribute('data-near', '');
   await expect(page.locator('[data-network-node="languages"]')).not.toHaveAttribute('data-near', '');
   await expect
-    .poll(() => firstProjectsLink.evaluate((element) => getComputedStyle(element).animationName))
-    .toBe('network-link-flow');
+    .poll(() => firstProjectsLink.evaluate((element) => getComputedStyle(element.parentElement!.querySelector('[data-network-trace-signal]')!).animationName))
+    .toBe('network-signal-flow');
 
   await page.mouse.move(1, 1);
   await expect(firstProjectsLink).not.toHaveAttribute('data-active', '');
@@ -546,4 +550,31 @@ test('long content scrolls inside the dialog on mobile', async ({ page }) => {
   await expect
     .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
     .toBe(true);
+});
+
+
+test('circuit elbows and junctions stay aligned at desktop and phone sizes', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const viewport of [{ width: 1280, height: 720 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+    await expect.poll(() => page.locator('[data-network-junction][cx]').count()).toBe(16);
+    const issues = await page.locator('[data-network-trace]').evaluateAll(traces => traces.flatMap(trace => {
+      const path = trace.querySelector('[data-network-link]')!;
+      const coordinates = (path.getAttribute('d')!.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number);
+      const points = Array.from({ length: coordinates.length / 2 }, (_, i) => [coordinates[i * 2], coordinates[i * 2 + 1]]);
+      const errors: string[] = [];
+      for (let i = 1; i < points.length; i++) {
+        const dx = Math.abs(points[i][0] - points[i - 1][0]);
+        const dy = Math.abs(points[i][1] - points[i - 1][1]);
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        if (Math.min(...[0, 30, 90].map(expected => Math.abs(expected - angle))) > .6) errors.push(`Unexpected trace angle ${angle}`);
+      }
+      trace.querySelectorAll('[data-network-junction]').forEach((junction, i) => {
+        if (Math.hypot(Number(junction.getAttribute('cx')) - points[i + 1][0], Number(junction.getAttribute('cy')) - points[i + 1][1]) > .2) errors.push('Detached junction');
+      });
+      return errors;
+    }));
+    expect(issues).toEqual([]);
+  }
 });
