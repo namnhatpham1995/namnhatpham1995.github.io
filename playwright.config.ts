@@ -11,7 +11,7 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   webServer: {
-    command: 'npm run preview -- --host 127.0.0.1',
+    command: 'npm run preview -- --host 127.0.0.1 --ignore-lock',
     url: 'http://127.0.0.1:4321',
     reuseExistingServer: !process.env.CI,
   },
@@ -23,6 +23,7 @@ export default defineConfig({
         permissions: ['microphone'],
         // Voice-mode tests need getUserMedia to resolve without a real mic.
         launchOptions: {
+          executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
           args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
         },
       },
