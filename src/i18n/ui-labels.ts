@@ -50,6 +50,7 @@ export interface UiLabels {
   assistantCallAiNotice: string;
   assistantCallStart: string;
   assistantCallEnd: string;
+  assistantCallEndNote: string;
   assistantCallBack: string;
   assistantCallYou: string;
   assistantCallAssistant: string;
@@ -127,6 +128,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantCallAiNotice: "You'll be talking to an AI assistant, not to Nam.",
     assistantCallStart: 'start call',
     assistantCallEnd: 'end call',
+    assistantCallEndNote: 'Keep talking naturally — press “end call” only when you want to end the conversation.',
     assistantCallBack: 'back to chat',
     assistantCallYou: 'you',
     assistantCallAssistant: 'assistant',
@@ -204,6 +206,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantCallAiNotice: 'Du sprichst mit einem KI-Assistenten, nicht mit Nam.',
     assistantCallStart: 'Anruf starten',
     assistantCallEnd: 'Anruf beenden',
+    assistantCallEndNote: 'Sprechen Sie einfach weiter — drücken Sie „Anruf beenden“ nur, wenn Sie das Gespräch beenden möchten.',
     assistantCallBack: 'zurück zum Chat',
     assistantCallYou: 'du',
     assistantCallAssistant: 'assistent',
@@ -281,6 +284,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantCallAiNotice: 'Bạn đang nói chuyện với trợ lý AI, không phải với Nam.',
     assistantCallStart: 'Bắt đầu gọi',
     assistantCallEnd: 'Kết thúc cuộc gọi',
+    assistantCallEndNote: 'Cứ trò chuyện tự nhiên — chỉ nhấn “Kết thúc cuộc gọi” khi bạn muốn dừng cuộc trò chuyện.',
     assistantCallBack: 'quay lại trò chuyện',
     assistantCallYou: 'bạn',
     assistantCallAssistant: 'trợ lý',
