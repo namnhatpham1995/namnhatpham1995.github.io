@@ -43,17 +43,16 @@ const layout: Record<string, { land: [number, number]; port: [number, number]; s
   hobbies: { land: [91, 20], port: [88, 47], size: 36, depth: 0.2 },
 };
 
-// A real graph rather than a hub with spokes: each link joins two related
-// sections and bows to one side by `bend` (fraction of its length).
-const links: { from: string; to: string; bend: number; dashed?: boolean }[] = [
-  { from: 'intro', to: 'experience', bend: 0.14 },
-  { from: 'experience', to: 'projects', bend: -0.22 },
-  { from: 'intro', to: 'skills', bend: -0.16 },
-  { from: 'skills', to: 'projects', bend: -0.22 },
-  { from: 'intro', to: 'education', bend: 0.16 },
-  { from: 'education', to: 'certificates', bend: -0.2 },
-  { from: 'education', to: 'languages', bend: 0.22 },
-  { from: 'experience', to: 'hobbies', bend: -0.3, dashed: true },
+// Keep the existing relationships; render them as routed isometric circuit traces.
+const links: { from: string; to: string }[] = [
+  { from: 'intro', to: 'experience' },
+  { from: 'experience', to: 'projects' },
+  { from: 'intro', to: 'skills' },
+  { from: 'skills', to: 'projects' },
+  { from: 'intro', to: 'education' },
+  { from: 'education', to: 'certificates' },
+  { from: 'education', to: 'languages' },
+  { from: 'experience', to: 'hobbies' },
 ];
 
 const nodeStyle = (id: string, order: number) => {
@@ -115,14 +114,13 @@ const sparks = [
     <svg class="network-intro__lines" aria-hidden="true">
       {
         links.map((link, i) => (
-          <path
-            class:list={['network-intro__link', { 'network-intro__link--dashed': link.dashed }]}
-            data-network-link
-            data-from={link.from}
-            data-to={link.to}
-            data-bend={link.bend}
-            style={`--line-delay: ${450 + i * 70}ms`}
-          />
+          <g class="network-intro__trace" data-network-trace style={`--line-delay: ${450 + i * 70}ms`}>
+            <path class="network-intro__trace-halo" />
+            <path class="network-intro__link" data-network-link data-from={link.from} data-to={link.to} />
+            <path class="network-intro__trace-signal" pathLength="100" data-network-trace-signal />
+            <circle class="network-intro__junction" r="2.2" data-network-junction />
+            <circle class="network-intro__junction" r="2.2" data-network-junction />
+          </g>
         ))
       }
     </svg>
@@ -307,13 +305,15 @@ const sparks = [
     width: 100%;
     height: 100%;
     overflow: visible;
+    pointer-events: none;
   }
 
   .network-intro__link {
     fill: none;
     stroke: color-mix(in srgb, var(--color-accent-gold) 55%, var(--color-border));
-    stroke-width: 1.2;
+    stroke-width: 1.25;
     stroke-linecap: round;
+    stroke-linejoin: bevel;
     opacity: 0.7;
     transition:
       opacity 180ms ease,
@@ -322,14 +322,39 @@ const sparks = [
     animation: network-link-in 520ms ease-out var(--line-delay) backwards;
   }
 
-  .network-intro__link--dashed {
-    stroke-dasharray: 3 6;
+  .network-intro__trace-halo,
+  .network-intro__trace-signal {
+    fill: none;
+    stroke: var(--color-accent-gold);
+    stroke-linecap: round;
+    stroke-linejoin: bevel;
+    pointer-events: none;
+  }
+
+  .network-intro__trace-halo {
+    stroke-width: 5;
+    opacity: .08;
+    transition: opacity 180ms ease;
+  }
+
+  .network-intro__trace-signal {
+    stroke: #fff0bd;
+    stroke-width: 2;
+    stroke-dasharray: 2 98;
+    opacity: 0;
+  }
+
+  .network-intro__junction {
+    fill: var(--color-accent-gold);
+    stroke: color-mix(in srgb, var(--color-accent-gold) 20%, transparent);
+    stroke-width: 5;
+    paint-order: stroke;
+    opacity: .75;
+    transition: opacity 180ms ease, fill 180ms ease;
   }
 
   @keyframes network-link-in {
-    from {
-      opacity: 0;
-    }
+    from { opacity: 0; }
   }
 
   .network-intro__stage[data-connection-active] .network-intro__link {
@@ -339,15 +364,27 @@ const sparks = [
   .network-intro__stage[data-connection-active] .network-intro__link[data-active] {
     stroke: var(--color-accent-gold);
     stroke-width: 2;
-    stroke-dasharray: 7 7;
     opacity: 1;
-    animation: network-link-flow 900ms linear infinite;
+    animation: none;
   }
 
-  @keyframes network-link-flow {
-    to {
-      stroke-dashoffset: -14;
-    }
+  .network-intro__trace:is([data-active], [data-energized]) .network-intro__trace-halo {
+    opacity: .22;
+  }
+
+  .network-intro__trace:is([data-active], [data-energized]) .network-intro__trace-signal {
+    opacity: 1;
+    animation: network-signal-flow 1600ms linear infinite;
+  }
+
+  .network-intro__trace:is([data-active], [data-energized]) .network-intro__junction {
+    fill: #fff0bd;
+    opacity: 1;
+  }
+
+  @keyframes network-signal-flow {
+    from { stroke-dashoffset: 100; }
+    to { stroke-dashoffset: 0; }
   }
 
   .network-intro__prompt {
@@ -691,6 +728,7 @@ const sparks = [
     .network-intro__spark,
     .network-intro__stage,
     .network-intro__link,
+    .network-intro__trace-signal,
     .network-intro__node-circle,
     .network-intro__node-label,
     .network-intro__center img,
@@ -705,11 +743,16 @@ const sparks = [
       stroke-dasharray: none;
       animation: none;
     }
+    .network-intro__trace:is([data-active], [data-energized]) .network-intro__trace-signal {
+      display: none;
+      animation: none;
+    }
   }
 
   @media (hover: none), (pointer: coarse) {
     .network-intro__center-ring,
-    .network-intro__stage[data-connection-active] .network-intro__link[data-active] {
+    .network-intro__stage[data-connection-active] .network-intro__link[data-active],
+    .network-intro__trace:is([data-active], [data-energized]) .network-intro__trace-signal {
       animation: none;
     }
   }
@@ -958,6 +1001,7 @@ const sparks = [
     overlay?.querySelectorAll<SVGPathElement>('[data-network-link]').forEach(link => {
       const connected = link.dataset.from === targetId || link.dataset.to === targetId;
       link.toggleAttribute('data-energized', connected);
+      link.parentElement?.toggleAttribute('data-energized', connected);
     });
     target.parentNode.insertBefore(activeSectionAnchor, target);
     target.classList.add('is-network-dialog-section');
@@ -1035,24 +1079,41 @@ const sparks = [
       el,
       from: el.dataset.from ?? '',
       to: el.dataset.to ?? '',
-      bend: Number(el.dataset.bend),
+      trace: el.closest<SVGGElement>('[data-network-trace]'),
     }));
     let connectedNode: HTMLElement | null = null;
 
     const drawLinks = () => {
-      graphLinks.forEach(({ el, from, to, bend }) => {
+      graphLinks.forEach(({ el, from, to, trace }) => {
         const a = graphNodes.get(from);
         const b = graphNodes.get(to);
         if (!a || !b) return;
         const x0 = a.x + a.dx;
         const y0 = a.y + a.dy;
-        const x2 = b.x + b.dx;
-        const y2 = b.y + b.dy;
-        // Control point pushed off the midpoint, perpendicular to the link.
-        const cx = (x0 + x2) / 2 - (y2 - y0) * bend;
-        const cy = (y0 + y2) / 2 + (x2 - x0) * bend;
-        const r = (value: number) => value.toFixed(1);
-        el.setAttribute('d', `M${r(x0)} ${r(y0)} Q${r(cx)} ${r(cy)} ${r(x2)} ${r(y2)}`);
+        const x3 = b.x + b.dx;
+        const y3 = b.y + b.dy;
+        const dx = x3 - x0;
+        const dy = y3 - y0;
+        // A 30° circuit segment joins horizontal or vertical leads. Recompute
+        // from the same anchors on resize/parallax, so traces never detach.
+        const slope = Math.tan(Math.PI / 6);
+        let elbows: [number, number][];
+        if (Math.abs(dx) >= Math.abs(dy) / slope) {
+          const lead = (dx - Math.sign(dx) * Math.abs(dy) / slope) / 2;
+          elbows = [[x0 + lead, y0], [x3 - lead, y3]];
+        } else {
+          const lead = (dy - Math.sign(dy) * Math.abs(dx) * slope) / 2;
+          elbows = [[x0, y0 + lead], [x3, y3 - lead]];
+        }
+        const points = [[x0, y0], ...elbows, [x3, y3]];
+        const path = points.map(([x, y], index) => `${index ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+        el.setAttribute('d', path);
+        trace?.querySelectorAll<SVGPathElement>('.network-intro__trace-halo, .network-intro__trace-signal')
+          .forEach(layer => layer.setAttribute('d', path));
+        trace?.querySelectorAll<SVGCircleElement>('[data-network-junction]').forEach((junction, index) => {
+          junction.setAttribute('cx', elbows[index][0].toFixed(1));
+          junction.setAttribute('cy', elbows[index][1].toFixed(1));
+        });
       });
     };
 
@@ -1107,6 +1168,8 @@ const sparks = [
 
     overlay.addEventListener('pointermove', (event) => {
       if (event.pointerType !== 'mouse' || !parallaxAllowed.matches) return;
+      // Hold a hovered node still so its ports and signals stay under the pointer.
+      if (event.target instanceof Element && event.target.closest('[data-network-node]')) return;
       moveParallax(event.clientX / window.innerWidth - 0.5, event.clientY / window.innerHeight - 0.5);
     });
     overlay.addEventListener('pointerleave', (event) => {
@@ -1116,12 +1179,20 @@ const sparks = [
     const setConnectedNode = (node: HTMLElement | null) => {
       if (connectedNode === node) return;
       connectedNode = node;
+      if (node) {
+        cancelAnimationFrame(parallaxFrame);
+        parallaxFrame = 0;
+        lastFrameTime = 0;
+        pointerTarget.x = pointerCurrent.x;
+        pointerTarget.y = pointerCurrent.y;
+      }
       const activeId = node?.dataset.networkNode;
       // Light up every link touching the node, and the nodes at their far ends.
       const nearIds = new Set<string>();
-      graphLinks.forEach(({ el, from, to }) => {
+      graphLinks.forEach(({ el, from, to, trace }) => {
         const active = Boolean(activeId) && (from === activeId || to === activeId);
         el.toggleAttribute('data-active', active);
+        trace?.toggleAttribute('data-active', active);
         if (active) nearIds.add(from === activeId ? to : from);
       });
       networkStage?.toggleAttribute('data-connection-active', Boolean(activeId));
