@@ -8,11 +8,10 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
-  canonicalPath?: string;
 }
 
-const { locale, title, description, ogImage = '/images/profile.png', canonicalPath = localePath(Astro.props.locale) } = Astro.props;
-const canonicalUrl = new URL(canonicalPath, Astro.site);
+const { locale, title, description, ogImage = '/images/profile.png' } = Astro.props;
+const canonicalUrl = new URL(localePath(locale), Astro.site);
 const labels = uiLabels[locale];
 ---
 

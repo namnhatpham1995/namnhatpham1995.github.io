@@ -1,17 +1,21 @@
 @import '@fontsource-variable/jetbrains-mono';
 
 :root {
-  --color-bg: #0d1117;
-  --color-surface: #161b22;
-  --color-border: #30363d;
-  --color-text: #e6edf3;
-  --color-text-muted: #8b949e;
-  --color-accent-green: #3fb950;
-  --color-accent-amber: #d29922;
-  --color-accent-red: #f85149;
+  --color-bg: #061612;
+  --color-surface: #10241e;
+  --color-border: #355047;
+  --color-text: #eaf0e7;
+  --color-text-muted: #a1b4a9;
+  --color-accent-green: #91bc9d;
+  --color-accent-amber: #d4b879;
+  --color-accent-red: #ed9588;
   /* Voice: green speaks for the visitor, cyan for the assistant, so the
      call meters and transcript identify a speaker by color alone. */
-  --color-accent-cyan: #39d0d8;
+  --color-accent-cyan: #88c9bd;
+
+  /* Banner-inspired highlights, independent of the semantic status colors. */
+  --color-accent-gold: #d4b879;
+  --surface-sheen: linear-gradient(115deg, #18362b, var(--color-surface) 58%, #17281e);
 
   --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
@@ -23,7 +27,7 @@
   --space-6: 3rem;
 
   --radius: 6px;
-  /* Gradient "glass" edge: green/cyan glows in opposite corners. A host shows it
+  /* Gradient "glass" edge: emerald/gold glows in opposite corners. A host shows it
      through a transparent border, under an opaque fill clipped to the padding box:
        border: 1px solid transparent;
        background: linear-gradient(<fill> 0 0) padding-box, var(--glass-edge-glow), var(--color-border);
@@ -32,7 +36,7 @@
      costly enough to delay frames right after the network intro closes. */
   --glass-edge-glow:
     radial-gradient(circle 14rem at 0 0, var(--color-accent-green), transparent) left top / 14rem 14rem no-repeat border-box,
-    radial-gradient(circle 14rem at 100% 100%, var(--color-accent-cyan), transparent) right bottom / 14rem 14rem no-repeat border-box;
+    radial-gradient(circle 14rem at 100% 100%, var(--color-accent-gold), transparent) right bottom / 14rem 14rem no-repeat border-box;
   --max-width: 860px;
 }
 
@@ -56,19 +60,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Faint dev-grid backdrop. Fixed so it stays put while content scrolls, and faded
-   toward the bottom of the viewport so it never competes with text. */
+/* Static emerald circuitry and warm gold light, inspired by the banner.
+   Keep decoration behind the original content and navigation. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--color-text) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--color-text) 5%, transparent) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, #000, transparent 85%);
+  background:
+    radial-gradient(ellipse at 12% 0%, rgb(174 198 167 / 9%), transparent 45%),
+    radial-gradient(ellipse at 90% 25%, rgb(48 103 74 / 19%), transparent 55%),
+    radial-gradient(ellipse at 48% 80%, rgb(212 184 121 / 5%), transparent 48%),
+    repeating-linear-gradient(30deg, transparent 0 79px, rgb(145 188 157 / 4%) 80px, transparent 81px),
+    repeating-linear-gradient(150deg, transparent 0 79px, rgb(145 188 157 / 4%) 80px, transparent 81px);
+  mask-image: linear-gradient(to bottom, #000, rgb(0 0 0 / 35%));
 }
 
 img {
@@ -77,8 +83,8 @@ img {
 }
 
 a {
-  color: var(--color-accent-green);
-  text-decoration-color: color-mix(in srgb, var(--color-accent-green) 50%, transparent);
+  color: var(--color-accent-gold);
+  text-decoration-color: color-mix(in srgb, var(--color-accent-gold) 50%, transparent);
 }
 
 a:hover,
@@ -126,4 +132,15 @@ kbd {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Purely visual treatments: existing component geometry and behavior are retained. */
+.hero__name,
+.section-heading__command,
+.section-heading__prompt {
+  color: var(--color-accent-gold);
+}
+
+.hero__photo {
+  box-shadow: 0 0 24px rgb(145 188 157 / 12%);
 }
