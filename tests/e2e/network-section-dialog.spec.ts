@@ -13,7 +13,7 @@ const sectionIds = [
 
 const localeCases = [
   {
-    path: '/',
+    path: '/profile/',
     experience: 'experience',
     hint: 'Select a node to open that section',
     close: 'Close section window',
@@ -47,7 +47,7 @@ async function chooseLanguage(switcher: Locator, locale: 'en' | 'de' | 'vi') {
 }
 
 test('every network node opens its section and returns to the map', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   const dialog = page.locator('#network-section-dialog');
@@ -75,7 +75,7 @@ test('every network node opens its section and returns to the map', async ({ pag
 });
 
 test('outside click and Escape close only the section window', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   const dialog = page.locator('#network-section-dialog');
@@ -96,7 +96,7 @@ test('outside click and Escape close only the section window', async ({ page }) 
 });
 
 test('view full page actually hides the network overlay', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   await overlay.locator('[data-network-skip]').click();
@@ -105,7 +105,7 @@ test('view full page actually hides the network overlay', async ({ page }) => {
 });
 
 test('typewriter waits until the network overlay closes', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   const typewriter = page.locator('[data-typewriter]');
@@ -126,7 +126,7 @@ test('typewriter waits until the network overlay closes', async ({ page }) => {
 test('summary emphasizes the strongest CV proof points in every language', async ({ page }) => {
   const summaries = [
     {
-      path: '/',
+      path: '/profile/',
       highlights: ['5+ years', 'Java/Spring Boot', 'B2B', 'microservice-deployer', 'CI/CD automation'],
     },
     {
@@ -157,7 +157,7 @@ test('view full page control stays centered without overlapping the network', as
 
   for (const viewport of viewports) {
     await page.setViewportSize(viewport);
-    await page.goto('/');
+    await page.goto('/profile/');
 
     const overlay = page.locator('#network-intro');
     const control = overlay.locator('[data-network-skip]');
@@ -230,7 +230,7 @@ test('nodes stay clear of each other and the overlay controls on cramped screens
 });
 
 test('network links form a curved graph that reaches every node', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const links = page.locator('[data-network-link]');
   await expect
@@ -257,7 +257,7 @@ test('links start and end on the orbs they join', async ({ page }) => {
     { width: 390, height: 844 },
   ]) {
     await page.setViewportSize(viewport);
-    await page.goto('/');
+    await page.goto('/profile/');
     // Let the entry animations settle so the rendered orbs are at rest.
     await page.waitForTimeout(1_200);
 
@@ -282,7 +282,7 @@ test('links start and end on the orbs they join', async ({ page }) => {
 });
 
 test('hover, focus, and touch light up the selected node and its neighbours', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const stage = page.locator('.network-intro__stage');
   const projectsNode = page.locator('[data-network-node="projects"]');
@@ -320,7 +320,7 @@ test('hover, focus, and touch light up the selected node and its neighbours', as
 
 test('mouse parallax drifts the nodes and then stops', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 720 });
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const node = page.locator('[data-network-node="experience"]');
   await page.mouse.move(1200, 650);
@@ -342,7 +342,7 @@ test('mouse parallax drifts the nodes and then stops', async ({ page }) => {
 
 test('reduced motion keeps a static highlighted connection', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const node = page.locator('[data-network-node="experience"]');
   const link = page.locator('[data-network-link][data-from="intro"][data-to="experience"]');
@@ -402,7 +402,7 @@ for (const localeCase of localeCases) {
 }
 
 test('switching language from the network keeps the network open', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   await chooseLanguage(overlay.locator('[data-language-context="network"]'), 'de');
@@ -430,7 +430,7 @@ test('switching language from a section window reopens the translated section', 
 });
 
 test('switching language from the full page stays on the full page', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   await overlay.locator('[data-network-skip]').click();
@@ -443,7 +443,7 @@ test('switching language from the full page stays on the full page', async ({ pa
 });
 
 test('desktop menu gives a strong helper without moving the main content', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
   await page.locator('[data-network-skip]').click();
 
   const main = page.locator('#main');
@@ -478,7 +478,7 @@ test('desktop menu gives a strong helper without moving the main content', async
 
 test('mobile long press shows helper above the compact menu', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/profile/');
   await page.locator('[data-network-skip]').click();
   await expect(page.locator('#network-intro')).toBeHidden();
 
@@ -514,7 +514,7 @@ test('mobile long press shows helper above the compact menu', async ({ page }) =
 });
 
 test('Escape closes language menus before closing their network layer', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/profile/');
 
   const overlay = page.locator('#network-intro');
   const networkSwitcher = overlay.locator('[data-language-context="network"]');
@@ -534,7 +534,7 @@ test('Escape closes language menus before closing their network layer', async ({
 
 test('long content scrolls inside the dialog on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });
-  await page.goto('/');
+  await page.goto('/profile/');
 
   await page.locator('[data-network-node="experience"]').click();
   const dialog = page.locator('#network-section-dialog');

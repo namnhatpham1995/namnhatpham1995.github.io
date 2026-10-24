@@ -6,22 +6,15 @@ async function mockChatResponse(page: Page, body: string) {
   });
 }
 
-test('ask my assistant opens the chat dialog on top of the still-open network overlay', async ({ page }) => {
+test('homepage assistant opens above the redesign and restores focus when closed', async ({ page }) => {
   await page.goto('/');
-
-  const overlay = page.locator('#network-intro');
   const dialog = page.locator('#assistant-dialog');
-  const trigger = overlay.locator('[data-network-assistant]');
-  await expect(overlay).toBeVisible();
-
+  const trigger = page.locator('[data-network-assistant]');
   await trigger.click();
-  await expect(overlay).toBeVisible();
   await expect(dialog).toBeVisible();
   await expect(dialog.getByText('Conversations are saved for quality review')).toBeVisible();
-
   await dialog.locator('[data-assistant-dialog-close]').click();
   await expect(dialog).toBeHidden();
-  await expect(overlay).toBeVisible();
   await expect(trigger).toBeFocused();
 });
 
@@ -110,7 +103,7 @@ test('voice mode stays disabled for Vietnamese regardless of backend availabilit
 });
 
 const localeCases = [
-  { path: '/', button: 'ask --assistant', placeholder: 'Type a message…' },
+  { path: '/', button: 'Ask my AI assistant', placeholder: 'Type a message…' },
   { path: '/de/', button: 'ask --assistant // KI-Assistent', placeholder: 'Nachricht eingeben…' },
   { path: '/vi/', button: 'ask --assistant // Trợ lý AI', placeholder: 'Nhập tin nhắn…' },
 ];
