@@ -113,7 +113,7 @@ const navItems = [
 <main id="main" tabindex="-1">
   <TerminalWindow promptUser={labels.promptUser}>
     <section id="intro" aria-labelledby="intro-heading">
-      <SectionHeading id="intro-heading" command="$ whoami" label={content.nav.intro} />
+      <SectionHeading id="intro-heading" command="whoami" label={content.nav.intro} />
       <div class="hero">
         <img class="hero__photo" src={profileImageUrl} alt={content.hero.name} width="120" height="120" loading="eager" />
         <div>
@@ -138,7 +138,7 @@ const navItems = [
 
     <section id="experience" aria-labelledby="experience-heading">
       <SectionHeading id="experience-heading" command={content.experience.heading} label={content.nav.experience} />
-      {content.experience.entries.map((entry) => <ExperienceEntry entry={entry} />)}
+      {content.experience.entries.map((entry) => <ExperienceEntry entry={entry} technicalDetailsLabel={labels.technicalDetailsLabel} />)}
     </section>
 
     <section id="education" aria-labelledby="education-heading">
@@ -161,7 +161,7 @@ const navItems = [
       <SectionHeading id="projects-heading" command={content.projects.heading} label={content.nav.projects} />
       {
         content.projects.entries.map((entry) => (
-          <ProjectCard entry={entry} technologiesLabel={labels.technologiesLabel} />
+          <ProjectCard entry={entry} technologiesLabel={labels.technologiesLabel} technicalDetailsLabel={labels.technicalDetailsLabel} />
         ))
       }
     </section>

@@ -39,6 +39,8 @@ CV content lives in `src/i18n/content/{en,de,vi}.ts`, typed against a shared `Cv
 interface (`src/i18n/content/types.ts`) so a missing locale key fails the build. German and
 Vietnamese strings translated from the 2026 CV are flagged `// TODO: native review`.
 
+See the [portfolio writing guide](docs/portfolio-writing.md) for concise copy, German capitalization, emphasis, and technical-detail disclosures.
+
 ## Deploy
 
 `.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `main`

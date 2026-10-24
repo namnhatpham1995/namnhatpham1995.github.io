@@ -219,7 +219,7 @@ test('denying microphone access shows the mic-denied message', async ({ page }) 
 
 for (const locale of [
   { path: '/', note: 'Keep talking naturally — press “end call” only when you want to end the conversation.' },
-  { path: '/de/', note: 'Sprechen Sie einfach weiter — drücken Sie „Anruf beenden“ nur, wenn Sie das Gespräch beenden möchten.' },
+  { path: '/de/', note: 'Sprich einfach weiter — drücke „Anruf beenden“ nur, wenn du das Gespräch beenden möchtest.' },
 ]) {
   test(`live call explains the end button and keeps the note readable on mobile at ${locale.path}`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });

@@ -144,3 +144,47 @@ kbd {
 .hero__photo {
   box-shadow: 0 0 24px rgb(145 188 157 / 12%);
 }
+
+/* Short proof points first; the original sections retain optional technical depth. */
+:is(.experience-entry__bullets, .project-card__description) strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+:is(.experience-entry__bullets, .project-card__description) li {
+  line-height: 1.7;
+}
+.project-card__links a,
+.hero__links a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .22em;
+}
+.technical-details {
+  margin-top: .75rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 65%, transparent);
+  padding-top: .6rem;
+  color: var(--color-text-muted);
+  font-size: .875rem;
+}
+.technical-details summary {
+  display: flex;
+  gap: .45rem;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  color: var(--color-accent-gold);
+  cursor: pointer;
+  list-style: none;
+}
+.technical-details summary::-webkit-details-marker { display: none; }
+.technical-details summary svg {
+  flex: 0 0 .8rem;
+  width: .8rem;
+  height: .8rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 160ms ease;
+}
+.technical-details[open] summary svg { transform: rotate(90deg); }
+.technical-details[open] summary { margin-bottom: .75rem; }

@@ -19,6 +19,8 @@ export interface ExperienceEntry {
   company: string;
   dates: string;
   bullets: string[];
+  /** Short phrases to emphasize without embedding markup in assistant data. */
+  emphasis?: string[];
 }
 
 export interface EducationEntry {
@@ -37,6 +39,8 @@ export interface ProjectEntry {
   title: string;
   dates?: string;
   description: string[];
+  emphasis?: string[];
+  roleNote?: string;
   tech: string[];
   links: ProjectLink[];
 }

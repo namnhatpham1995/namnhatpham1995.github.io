@@ -1,0 +1,11 @@
+---
+interface Props {
+  text: string;
+  phrases?: string[];
+}
+const { text, phrases = [] } = Astro.props;
+const escaped = phrases.filter(Boolean).map(phrase => phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+const parts = escaped.length ? text.split(new RegExp(`(${escaped.join('|')})`, 'g')) : [text];
+const highlighted = new Set(phrases);
+---
+{parts.map(part => highlighted.has(part) ? <strong>{part}</strong> : part)}

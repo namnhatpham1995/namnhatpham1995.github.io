@@ -1,12 +1,14 @@
 ---
 import type { ProjectEntry } from '../i18n/content/types';
+import EmphasizedText from './emphasized-text.astro';
 
 interface Props {
   entry: ProjectEntry;
   technologiesLabel: string;
+  technicalDetailsLabel: string;
 }
 
-const { entry, technologiesLabel } = Astro.props;
+const { entry, technologiesLabel, technicalDetailsLabel } = Astro.props;
 ---
 
 <article class="project-card">
@@ -14,12 +16,13 @@ const { entry, technologiesLabel } = Astro.props;
     <h3 class="project-card__title">{entry.title}</h3>
     {entry.dates && <span class="project-card__dates">{entry.dates}</span>}
   </header>
+  {entry.roleNote && <p class="project-card__role-note"><em>{entry.roleNote}</em></p>}
   <ul class="project-card__description">
-    {entry.description.map((line) => <li>{line}</li>)}
+    {entry.description.slice(0, 2).map((line) => <li><EmphasizedText text={line} phrases={entry.emphasis} /></li>)}
   </ul>
   <ul class="project-card__tech" aria-label={technologiesLabel}>
     {
-      entry.tech.map((tech) => (
+      entry.tech.slice(0, 4).map((tech) => (
         <li>
           <span aria-hidden="true">#</span>
           {tech}
@@ -39,6 +42,17 @@ const { entry, technologiesLabel } = Astro.props;
       ))
     }
   </p>
+  {(entry.description.length > 2 || entry.tech.length > 4) && (
+    <details class="technical-details">
+      <summary><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 5 5-5 5" /></svg>{technicalDetailsLabel}</summary>
+      <ul class="project-card__description">
+        {entry.description.slice(2).map(line => <li>{line}</li>)}
+      </ul>
+      <ul class="project-card__tech" aria-label={technologiesLabel}>
+        {entry.tech.slice(4).map(tech => <li><span aria-hidden="true">#</span>{tech}</li>)}
+      </ul>
+    </details>
+  )}
 </article>
 
 <style>
@@ -60,6 +74,13 @@ const { entry, technologiesLabel } = Astro.props;
   .project-card__title {
     margin: 0;
     font-size: 1rem;
+  }
+
+  .project-card__role-note {
+    color: var(--color-text-muted);
+    font-size: .8125rem;
+    margin: 0 0 var(--space-2);
+    line-height: 1.6;
   }
 
   .project-card__dates {
