@@ -23,7 +23,7 @@ const localeCases = [
   },
   {
     path: '/de/',
-    experience: 'berufserfahrung',
+    experience: 'Berufserfahrung',
     hint: 'Wähle einen Knoten, um den Abschnitt zu öffnen',
     close: 'Abschnittsfenster schließen',
     skip: 'Zum Inhalt springen',
@@ -104,7 +104,7 @@ test('view full page actually hides the network overlay', async ({ page }) => {
   await expect(page.locator('#main')).toBeVisible();
 });
 
-test('typewriter waits until the network overlay closes', async ({ page }) => {
+test('short summary stays readable immediately when the network overlay closes', async ({ page }) => {
   await page.goto('/');
 
   const overlay = page.locator('#network-intro');
@@ -118,24 +118,22 @@ test('typewriter waits until the network overlay closes', async ({ page }) => {
 
   await overlay.locator('[data-network-skip]').click();
   await expect(overlay).toBeHidden({ timeout: 1_000 });
-  await expect
-    .poll(() => text.textContent().then((value) => value?.length ?? 0))
-    .toBeLessThan(fullText!.length);
+  await expect(text).toHaveText(fullText!);
 });
 
 test('summary emphasizes the strongest CV proof points in every language', async ({ page }) => {
   const summaries = [
     {
       path: '/',
-      highlights: ['5+ years', 'Java/Spring Boot', 'B2B', 'microservice-deployer', 'CI/CD automation'],
+      highlights: ['5+ years', 'Java/Spring Boot', 'microservice-deployer', 'nearly half of the OEE REST API'],
     },
     {
       path: '/de/',
-      highlights: ['über 5 Jahren', 'Java/Spring-Boot', 'microservice-deployer', 'CI/CD-Automatisierung'],
+      highlights: ['Über 5 Jahre', 'Java/Spring Boot', 'microservice-deployer', 'Fast die Hälfte der OEE-REST-API'],
     },
     {
       path: '/vi/',
-      highlights: ['hơn 5 năm', 'Java/Spring Boot', 'microservice-deployer', 'tự động hóa CI/CD'],
+      highlights: ['Hơn 5 năm', 'Java/Spring Boot', 'microservice-deployer', 'gần một nửa REST API của OEE'],
     },
   ];
 
@@ -413,7 +411,7 @@ test('switching language from the network keeps the network open', async ({ page
 
   await expect(page).toHaveURL(/\/de\/$/);
   await expect(overlay).toBeVisible();
-  await expect(overlay.locator('[data-network-node="skills"]')).toContainText('fähigkeiten');
+  await expect(overlay.locator('[data-network-node="skills"]')).toContainText('Fähigkeiten');
 });
 
 test('switching language from a section window reopens the translated section', async ({ page }) => {

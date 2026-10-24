@@ -1,11 +1,13 @@
 ---
 import type { ExperienceEntry } from '../i18n/content/types';
+import EmphasizedText from './emphasized-text.astro';
 
 interface Props {
   entry: ExperienceEntry;
+  technicalDetailsLabel: string;
 }
 
-const { entry } = Astro.props;
+const { entry, technicalDetailsLabel } = Astro.props;
 
 function shortHash(input: string): string {
   let hash = 0;
@@ -30,8 +32,16 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
     </header>
     <p class="experience-entry__meta">{entry.company}</p>
     <ul class="experience-entry__bullets">
-      {entry.bullets.map((bullet) => <li>{bullet}</li>)}
+      {entry.bullets.slice(0, 3).map((bullet) => <li><EmphasizedText text={bullet} phrases={entry.emphasis} /></li>)}
     </ul>
+    {entry.bullets.length > 3 && (
+      <details class="technical-details">
+        <summary><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 5 5-5 5" /></svg>{technicalDetailsLabel}</summary>
+        <ul class="experience-entry__bullets">
+          {entry.bullets.slice(3).map(bullet => <li>{bullet}</li>)}
+        </ul>
+      </details>
+    )}
   </div>
 </article>
 
@@ -41,6 +51,11 @@ const hash = shortHash(entry.role + entry.company + entry.dates);
     grid-template-columns: auto 1fr;
     gap: var(--space-3);
     margin-bottom: var(--space-5);
+  }
+
+  .experience-entry__content {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .experience-entry__marker {

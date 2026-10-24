@@ -218,6 +218,6 @@ test('the assistant greets the visitor as soon as the dialog opens', async ({ pa
 
   await expect(greeting).toBeVisible();
   await expect(greeting).toHaveText(
-    "Hi — I'm Nam's assistant. Ask me about his work, experience, or availability and I'll share what I know."
+    "Hi, I'm Nam's AI assistant. Ask about his experience, projects, or availability."
   );
 });

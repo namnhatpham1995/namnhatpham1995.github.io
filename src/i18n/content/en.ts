@@ -2,251 +2,516 @@ import type { CvContent } from './types';
 
 export const en: CvContent = {
   meta: {
-    title: 'Nam Nhat Pham — Software Engineer',
-    description:
-      'Software Engineer with 5+ years delivering production backend services, REST APIs, and microservices on an enterprise IoT platform connecting millions of assets and devices.',
+    title: "Nam Nhat Pham — Software Engineer",
+    description: "Backend engineer with 5+ years in Java/Spring Boot, B2B IoT, deployment tooling, and API migration. Based in Sindelfingen, Germany."
   },
   nav: {
-    intro: 'whoami',
-    skills: 'skills',
-    experience: 'experience',
-    education: 'education',
-    projects: 'projects',
-    certificates: 'certificates',
-    languages: 'languages',
-    hobbies: 'hobbies',
+    intro: "whoami",
+    skills: "skills",
+    experience: "experience",
+    education: "education",
+    projects: "projects",
+    certificates: "certificates",
+    languages: "languages",
+    hobbies: "hobbies"
   },
   hero: {
-    name: 'Nam Nhat Pham',
-    role: 'Software Engineer',
-    location: 'Sindelfingen, Germany',
-    email: 'nam95.pn@gmail.com',
-    linkedin: 'https://www.linkedin.com/in/namnhatpham1995',
-    github: 'https://github.com/namnhatpham1995',
+    name: "Nam Nhat Pham",
+    role: "Software Engineer",
+    location: "Sindelfingen, Germany",
+    email: "nam95.pn@gmail.com",
+    linkedin: "https://www.linkedin.com/in/namnhatpham1995",
+    github: "https://github.com/namnhatpham1995",
     summary: [
-      { text: "Software Engineer with " },
-      { text: "5+ years", strong: true },
-      { text: " of experience, focused on " },
-      { text: "Java/Spring Boot", strong: true },
-      { text: " backend services, REST APIs, and microservices for " },
-      { text: "B2B", strong: true },
-      { text: " customers on an IoT platform connecting millions of assets and devices. Built " },
-      { text: "microservice-deployer", strong: true },
-      { text: ", adopted across company teams as an official internal product, and contributed to the OEE migration from Python to Spring Boot. Experience in " },
-      { text: "CI/CD automation", strong: true },
-      { text: ", integration testing, Docker, and Kubernetes." },
-    ],
+      {
+        text: "5+ years",
+        strong: true
+      },
+      {
+        text: " building "
+      },
+      {
+        text: "Java/Spring Boot",
+        strong: true
+      },
+      {
+        text: " services for B2B IoT. Built "
+      },
+      {
+        text: "microservice-deployer",
+        strong: true
+      },
+      {
+        text: ", adopted across company teams. Migrated "
+      },
+      {
+        text: "nearly half of the OEE REST API",
+        strong: true
+      },
+      {
+        text: " from Python to Java."
+      }
+    ]
   },
   workLocation: {
-    base: 'Sindelfingen, Germany',
+    base: "Sindelfingen, Germany",
     remote: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Remote work: yes, worldwide, including Vietnam. Working from any city in Vietnam is possible, but it must be discussed further with Nam and is not automatic.',
+      rule: "Remote work: yes, worldwide, including Vietnam. Working from any city in Vietnam is possible, but it must be discussed further with Nam and is not automatic.",
       vietnam: {
         possible: true,
         automatic: false,
         requiresFurtherDiscussion: true,
-        examples: ['Hanoi', 'Ho Chi Minh City'],
-        rule: 'Remote work from any city in Vietnam is possible, including Hanoi and Ho Chi Minh City, but requires further discussion with Nam and is not automatically agreed.',
-      },
+        examples: [
+          "Hanoi",
+          "Ho Chi Minh City"
+        ],
+        rule: "Remote work from any city in Vietnam is possible, including Hanoi and Ho Chi Minh City, but requires further discussion with Nam and is not automatically agreed."
+      }
     },
     hybrid: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'Hybrid work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad.',
+      rule: "Hybrid work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad."
     },
     onSite: {
       available: true,
       maximumDistanceKm: null,
-      rule: 'On-site work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad.',
+      rule: "On-site work: yes, with no distance limit. Nam is open to relocation, in Germany or abroad."
     },
-    guidance:
-      'Nam is based in Sindelfingen, Germany, and is open to relocation and to remote work worldwide, so hybrid and on-site roles are not limited to a radius around Sindelfingen. Nam holds German permanent residency, which covers work in Germany only: for a role based outside Germany, say that work authorization must be confirmed with the employer rather than assuming it. For remote work from Vietnam, answer that it is possible from any Vietnamese city but requires further discussion with Nam and is not automatic.',
+    guidance: "Nam is based in Sindelfingen, Germany, and is open to relocation and to remote work worldwide, so hybrid and on-site roles are not limited to a radius around Sindelfingen. Nam holds German permanent residency, which covers work in Germany only: for a role based outside Germany, say that work authorization must be confirmed with the employer rather than assuming it. For remote work from Vietnam, answer that it is possible from any Vietnamese city but requires further discussion with Nam and is not automatic."
   },
   skills: {
-    heading: 'ls skills/',
+    heading: "ls skills/",
     groups: [
-      { title: 'Languages', items: ['Java', 'Python', 'TypeScript', 'JavaScript', 'Go', 'Bash'] },
       {
-        title: 'Backend & Frontend',
-        items: ['Spring Boot', 'Spring Security', 'REST APIs', 'OpenAPI/Swagger', 'Next.js', 'React', 'Angular', 'Tailwind CSS', 'TanStack Query', 'Flask'],
+        title: "Languages",
+        items: [
+          "Java",
+          "Python",
+          "TypeScript",
+          "JavaScript",
+          "Go",
+          "Bash"
+        ]
       },
-      { title: 'Cloud, DevOps & Tools', items: ['AWS', 'GitHub Actions', 'Docker', 'Kubernetes', 'Linux', 'Helm', 'Chef'] },
-      { title: 'Testing', items: ['JUnit', 'Mockito', 'Testcontainers', 'Cypress', 'Python testing'] },
-      { title: 'Databases', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Flyway'] },
-      { title: 'Data & Machine Learning', items: ['pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'PCA', 'K-Means'] },
-      { title: 'Practices', items: ['Agile/Scrum', 'CI/CD', 'Domain-Driven Design (DDD)', 'Spec-Driven Development (SDD)'] },
-    ],
+      {
+        title: "Backend & Frontend",
+        items: [
+          "Spring Boot",
+          "Spring Security",
+          "REST APIs",
+          "OpenAPI/Swagger",
+          "Next.js",
+          "React",
+          "Angular",
+          "Tailwind CSS",
+          "TanStack Query",
+          "Flask"
+        ]
+      },
+      {
+        title: "Cloud, DevOps & Tools",
+        items: [
+          "AWS",
+          "GitHub Actions",
+          "Docker",
+          "Kubernetes",
+          "Linux",
+          "Helm",
+          "Chef"
+        ]
+      },
+      {
+        title: "Testing",
+        items: [
+          "JUnit",
+          "Mockito",
+          "Testcontainers",
+          "Cypress",
+          "Python testing"
+        ]
+      },
+      {
+        title: "Databases",
+        items: [
+          "PostgreSQL",
+          "MySQL",
+          "MongoDB",
+          "Redis",
+          "Flyway"
+        ]
+      },
+      {
+        title: "Data & Machine Learning",
+        items: [
+          "pandas",
+          "NumPy",
+          "scikit-learn",
+          "TensorFlow",
+          "Keras",
+          "PCA",
+          "K-Means"
+        ]
+      },
+      {
+        title: "Practices",
+        items: [
+          "Agile/Scrum",
+          "CI/CD",
+          "Domain-Driven Design (DDD)",
+          "Spec-Driven Development (SDD)"
+        ]
+      }
+    ]
   },
   experience: {
-    heading: 'git log --experience',
+    heading: "git log --experience",
     entries: [
       {
-        role: 'Software Engineer in R&D',
-        company: 'Cumulocity GmbH (formerly Software AG) — Digital Twin Management team',
+        role: "Software Engineer in R&D",
+        company: "Cumulocity GmbH (formerly Software AG) — Digital Twin Management team",
         dates: "October 2022 - September 2026",
         bullets: [
-          "Built microservice-deployer to resolve version conflicts and package-naming issues during Cumulocity deployments. Written in Bash around c8y-cli, it grew from a team tool into an official internal product adopted across company teams.",
-          "Migrated nearly half of the OEE REST API from Python to Java/Spring Boot, contributing to the team's completed migration. Refactored shared pagination and migration workflows using Builder, Factory Method, and Template Method patterns. This reduced duplication and improved testability. Reviewed existing logic and improved or introduced logic where needed.",
-          "Collaborated with senior teammates to document B2B requirements and agree on schema, model, REST API changes, and bug fixes for the Digital Twin Management microservice.",
-          "Owned delivery from implementation through pre-production deployment: developed the agreed Java/Spring Boot changes, wrote unit and Cypress integration tests, and improved GitHub Actions CI/CD to automate validation and regression checks. Verified microservice-to-Cumulocity integration and deployed working functionality for business customer demos.",
-          "Supported Angular frontend updates following backend API changes, debugging and fixing integration issues to keep frontend and backend behavior consistent.",
-          "Automated API documentation through Swagger/OpenAPI configuration on every microservice build, keeping the specification current with minimal manual effort.",
-          "Developed Python simulation scripts for stress and integration testing of the OEE application.",
-          "Used GitHub Copilot and Claude Code across the ticket lifecycle, from requirements analysis and implementation to debugging and testing.",
+          "Built microservice-deployer in Bash; adopted across teams as an official Cumulocity deployment tool.",
+          "Migrated nearly half of the OEE REST API from Python to Java/Spring Boot.",
+          "Delivered backend changes through pre-production, with unit tests, Cypress integration tests, and GitHub Actions CI/CD.",
+          "Refactored pagination and migration flows with Builder, Factory Method, and Template Method patterns to reduce duplication and improve testability.",
+          "Agreed B2B requirements and schema/API changes with senior teammates; fixed Angular integration after backend changes.",
+          "Generated Swagger/OpenAPI documentation on each build and wrote Python simulations for stress and integration tests.",
+          "Verified microservice integration with Cumulocity and prepared demos for business customers.",
+          "Used GitHub Copilot and Claude Code for analysis, coding, debugging, and testing."
         ],
+        emphasis: [
+          "microservice-deployer",
+          "adopted across teams",
+          "nearly half",
+          "Java/Spring Boot",
+          "pre-production"
+        ]
       },
       {
-        role: 'Software Engineer in R&D',
-        company: 'Software AG — Cumulocity Platform Core team',
+        role: "Software Engineer in R&D",
+        company: "Software AG — Cumulocity Platform Core team",
         dates: "October 2021 - October 2022",
         bullets: [
-          "Restored Kubernetes cluster creation by analyzing logs and identifying a configuration conflict following Cumulocity core updates. Reported the issue and updated the affected settings.",
-          "Investigated and helped resolve Kubernetes cluster failures during provisioning and runtime, performing root-cause analysis across the Cumulocity core platform.",
-          "Maintained and improved Chef cookbooks and Helm-based Kubernetes automation for Linux-based Cumulocity environments, contributing fixes to provisioning bottlenecks.",
-          "Automated AWS cluster provisioning with Bash and AWS CLI scripts, reducing manual setup work and shortening provisioning time.",
+          "Restored Kubernetes cluster creation by tracing a provisioning failure to a configuration conflict after a Cumulocity core update.",
+          "Maintained Chef and Helm automation for Linux-based Cumulocity clusters.",
+          "Automated AWS cluster provisioning with Bash and AWS CLI, reducing manual setup.",
+          "Investigated provisioning and runtime failures across the Cumulocity core platform."
         ],
+        emphasis: [
+          "Kubernetes",
+          "AWS cluster provisioning"
+        ]
       },
       {
-        role: 'Software Developer / Team Lead',
-        company: 'VGU Forex Club',
+        role: "Software Developer / Team Lead",
+        company: "VGU Forex Club",
         dates: "April 2018 - March 2019",
         bullets: [
-          "Converted manual trading strategies into MetaTrader 4 and 5 Expert Advisors and custom indicators, then backtested them against historical market data.",
-          "Led the development team through task delegation and mentoring. Helped members become independent in analyzing customer needs, defining requirements, planning development, and implementing, testing, and delivering MetaTrader trading tools.",
+          "Built and backtested MetaTrader 4/5 Expert Advisors and custom indicators from manual trading strategies.",
+          "Led task planning and mentoring; helped teammates deliver trading tools from requirements through testing."
         ],
-      },
-    ],
+        emphasis: [
+          "MetaTrader 4/5",
+          "Led task planning and mentoring"
+        ]
+      }
+    ]
   },
   education: {
-    heading: 'cat education.md',
+    heading: "cat education.md",
     entries: [
       {
-        degree: 'M.Sc. High Integrity Systems',
-        institution: 'Frankfurt University of Applied Sciences',
-        dates: 'Apr 2019 – Sep 2021',
-        description: 'Safety-critical systems, formal verification, distributed systems.',
+        degree: "M.Sc. High Integrity Systems",
+        institution: "Frankfurt University of Applied Sciences",
+        dates: "Apr 2019 – Sep 2021",
+        description: "Safety-critical systems, formal verification, distributed systems."
       },
       {
-        degree: 'B.Eng. Electrical Engineering & IT',
-        institution: 'Frankfurt University of Applied Sciences & Vietnamese-German University (VGU)',
-        dates: 'Oct 2013 – Jul 2018',
-        description: 'Dual-degree program: embedded systems, software engineering, signal processing.',
-      },
-    ],
+        degree: "B.Eng. Electrical Engineering & IT",
+        institution: "Frankfurt University of Applied Sciences & Vietnamese-German University (VGU)",
+        dates: "Oct 2013 – Jul 2018",
+        description: "Dual-degree program: embedded systems, software engineering, signal processing."
+      }
+    ]
   },
   projects: {
-    heading: 'ls projects/',
+    heading: "ls projects/",
     entries: [
       {
-        title: 'Portfolio AI Assistant — Grounded Voice & Text Chat Backend',
-        dates: 'Sep 2026 – present',
+        title: "Portfolio AI assistant",
+        dates: "Sep 2026 – present",
         description: [
-          "Powers the AI assistant on this very site: a FastAPI backend serving both a streamed text-chat endpoint and a live, real-time voice call over WebSocket, grounded strictly in this portfolio's own bio data so it never fabricates.",
-          'Voice mode uses Google\'s Agent Development Kit (ADK) against the Gemini Live API for bidirectional audio streaming, with a scripted spoken greeting on connect, session resumption with automatic reconnect on a dropped connection, and a 10-minute session cap with a daily call quota.',
-          'Sensitive questions (salary, notice period, etc.) are intercepted via tool-calling and answered with pre-approved scripted text verbatim in both text and voice mode instead of letting the model improvise; near-duplicate questions hit an embedding-based answer cache instead of a fresh model call.',
-          'Automatic fallback between two Gemini API keys on quota exhaustion, PII redaction and a 90-day auto-purge on stored conversation logs, and origin/rate-limit guards; deployed on Railway with the full backend driven by a pytest suite.',
+          "Built this portfolio’s voice and text assistant with FastAPI, Gemini Live, and WebSockets.",
+          "Uses portfolio data and pre-approved answers for salary and availability questions.",
+          "Google ADK handles two-way audio, scripted greetings, session resumption, and automatic reconnects.",
+          "Embedding-based caching and fallback between two API keys reduce repeated calls and quota interruptions.",
+          "Ten-minute sessions, daily quotas, origin/rate limits, PII redaction, and 90-day log deletion. Hosted on Railway; tested with pytest."
         ],
-        tech: ['Python', 'FastAPI', 'Google ADK', 'Gemini API', 'Gemini Live API', 'WebSockets', 'PostgreSQL', 'Railway', 'pytest'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/portfolio-voice-agent' }],
-      },
-      {
-        title: 'FinTrack — Personal Finance Management App',
-        dates: 'Jun 2026 – present',
-        description: [
-          'Architect and product owner directing Claude Code across bounded contexts (accounts, transactions, budgets, analytics).',
-          'Next.js 14 (TypeScript, Tailwind) frontend with a Java 21 / Spring Boot 3 REST API.',
-          'JWT auth with rotating refresh tokens, per-user data isolation, Flyway-managed PostgreSQL schema, recurring-transaction scheduling.',
-          'Recharts-based analytics dashboard; JUnit 5 + Mockito test coverage; Docker Compose + GitHub Actions for CI/CD.',
+        tech: [
+          "Python",
+          "FastAPI",
+          "Gemini Live API",
+          "WebSockets",
+          "Google ADK",
+          "Gemini API",
+          "PostgreSQL",
+          "Railway",
+          "pytest"
         ],
-        tech: ['Next.js', 'TypeScript', 'Java 21', 'Spring Boot 3', 'PostgreSQL', 'Flyway', 'Docker', 'GitHub Actions'],
         links: [
-          { label: 'Repository', url: 'https://github.com/namnhatpham1995/personal-financial-management' },
-          { label: 'Live demo', url: 'https://fintrack-three-wine.vercel.app/' },
-        ],
-      },
-      {
-        title: 'Storyboard — OpenSpec Project Board',
-        dates: 'Jul 2026 – present',
-        description: [
-          'Self-initiated project to learn Go and to manage this system’s own development via OpenSpec proposals and tasks, Jira-style.',
-          'Go backend (net/http, fsnotify) parsing OpenSpec markdown on disk into Draft/In Progress/Complete/Archived board columns with byte-preserving, atomic edits.',
-          'Optimistic-concurrency writes carrying file modification time + SHA-256 hash; rejects stale writes instead of silently overwriting newer work.',
-          'React/TypeScript/Vite/TanStack Query frontend embedded into the Go binary via go:embed for single-binary distribution across Windows/Mac/Linux.',
-        ],
-        tech: ['Go', 'net/http', 'fsnotify', 'React', 'TypeScript', 'Vite', 'TanStack Query'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Openspec-storyboard' }],
-      },
-      {
-        title: 'Hootden — Collaborative Personal Workspace',
-        dates: 'Aug 2026 – present',
-        description: [
-          'A cozy personal workspace: keep your own den for solo notes and planning, or open a shared nest to collaborate with others — self-initiated to learn Go in a production-shaped project.',
-          'Go 1.26 backend organized package-by-domain (auth, workspace, httpapi, migrations) with a Next.js/TypeScript frontend and PostgreSQL via pgx.',
-          'Email/password and Google OAuth sign-in with opaque, HttpOnly session tokens, including a COOKIE_DOMAIN-based cookie shared across the apex and API subdomain for the managed Railway + Vercel deployment.',
-          'Shipped every feature as an OpenSpec spec-driven proposal executed with AI coding agents, verified by a Go test suite and a GitHub Actions end-to-end pipeline.',
-        ],
-        tech: ['Go', 'PostgreSQL', 'pgx', 'goose', 'OAuth2', 'Next.js', 'TypeScript', 'Docker', 'GitHub Actions'],
-        links: [{ label: 'Repository', url: 'https://github.com/namnhatpham1995/Hootden' }],
-      },
-      {
-        title: 'M.Sc. Thesis: Remote Desktop Control from a SaaS Application',
-        dates: 'Feb – Aug 2021',
-        description: [
-          'Delivered a web-based remote desktop control solution accessible through common web browsers.',
-          'Upgraded RemotePy, an existing open-source Python Flask remote-control project, adding browser-driven mouse, keyboard, and touch-screen control plus live screen streaming, served via a Werkzeug/Gunicorn backend with a custom CLI for worker and thread concurrency.',
-          'Designed the browser-facing frontend with HTML, CSS, and JavaScript templates to drive real-time remote-control interactions.',
-          'MySQL-backed authentication; containerized the server environment with Docker and Apache.',
-        ],
-        tech: ['Python', 'Flask', 'Werkzeug', 'Gunicorn', 'HTML', 'CSS', 'JavaScript', 'Docker', 'MySQL'],
-        links: [
-          { label: 'Repository', url: 'https://github.com/namnhatpham1995/Master-Thesis' },
-          { label: 'RemotePy module', url: 'https://github.com/namnhatpham1995/Master-Thesis/tree/main/RemotePy' },
-        ],
-      },
-      {
-        title: 'Udacity: Intro to Machine Learning with TensorFlow',
-        dates: '2020',
-        description: [
-          'Built and benchmarked three supervised learning classifiers (Random Forest, Gaussian Naive Bayes, AdaBoost) on U.S. Census income data (45K records) using log-transform, MinMax scaling, and one-hot encoding, benchmarked against a naive baseline.',
-          'Built a customer segmentation analysis on German demographic data (Arvato/AZ Direct, ~891K records, 85 features), applying PCA (28 components, ~87% variance explained) and K-Means clustering to identify over- and under-represented segments.',
-          'Built a TensorFlow/Keras image classifier via MobileNet transfer learning to recognize 102 flower species (Oxford Flowers dataset), reaching 71% test accuracy, packaged into a Python CLI tool for inference.',
-        ],
-        tech: ['Python', 'pandas', 'NumPy', 'scikit-learn', 'TensorFlow', 'Keras', 'TensorFlow Hub', 'Matplotlib', 'Seaborn'],
-        links: [
-          { label: 'Finding Donors for CharityML', url: 'https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML' },
           {
-            label: 'Creating Customer Segments with Arvato',
-            url: 'https://github.com/namnhatpham1995/Udacity-Creating-Customer-Segments-with-Arvato',
-          },
-          { label: 'Image Classifier with Deep Learning', url: 'https://github.com/namnhatpham1995/Udacity-Image-Classifier-TensorFlow' },
-          { label: 'Degree confirmation', url: 'https://confirm.udacity.com/G9GHDGQU' },
+            label: "Repository",
+            url: "https://github.com/namnhatpham1995/portfolio-voice-agent"
+          }
         ],
+        emphasis: [
+          "voice and text assistant",
+          "pre-approved answers"
+        ]
       },
-    ],
+      {
+        title: "FinTrack — Personal finance",
+        dates: "Jun 2026 – present",
+        description: [
+          "Personal finance app with a Java 21/Spring Boot API and Next.js frontend.",
+          "Accounts, budgets, transactions, and analytics; JWT authentication with rotating refresh tokens.",
+          "Architect and product owner; directed Claude Code implementation across accounts, transactions, budgets, and analytics.",
+          "PostgreSQL with per-user data isolation, Flyway migrations, and recurring-transaction scheduling.",
+          "Recharts dashboards, JUnit 5/Mockito tests, Docker Compose, and GitHub Actions CI/CD."
+        ],
+        tech: [
+          "Java 21",
+          "Spring Boot 3",
+          "PostgreSQL",
+          "Next.js",
+          "TypeScript",
+          "Flyway",
+          "Docker",
+          "GitHub Actions"
+        ],
+        links: [
+          {
+            label: "Repository",
+            url: "https://github.com/namnhatpham1995/personal-financial-management"
+          },
+          {
+            label: "Live demo",
+            url: "https://fintrack-three-wine.vercel.app/"
+          }
+        ],
+        emphasis: [
+          "Java 21/Spring Boot",
+          "JWT authentication"
+        ],
+        roleNote: "Architecture and product ownership; implementation with Claude Code."
+      },
+      {
+        title: "Storyboard — OpenSpec board",
+        dates: "Jul 2026 – present",
+        description: [
+          "Turns OpenSpec markdown proposals into a project board with a Go backend and React frontend.",
+          "Ships as a single executable for Windows, macOS, and Linux.",
+          "Uses net/http and fsnotify to map files to Draft, In Progress, Complete, and Archived columns.",
+          "Atomic, byte-preserving edits; modification-time and SHA-256 checks reject stale writes.",
+          "Embeds the TypeScript/Vite/TanStack Query frontend with go:embed."
+        ],
+        tech: [
+          "Go",
+          "React",
+          "TypeScript",
+          "TanStack Query",
+          "net/http",
+          "fsnotify",
+          "Vite"
+        ],
+        links: [
+          {
+            label: "Repository",
+            url: "https://github.com/namnhatpham1995/Openspec-storyboard"
+          }
+        ],
+        emphasis: [
+          "project board",
+          "single executable"
+        ],
+        roleNote: "Personal project to learn Go."
+      },
+      {
+        title: "Hootden — Shared workspace",
+        dates: "Aug 2026 – present",
+        description: [
+          "Notes and planning for solo work or shared workspaces, built with Go, Next.js, and PostgreSQL.",
+          "Email/password and Google OAuth login with HttpOnly session tokens.",
+          "Go 1.26 packages organized by domain; PostgreSQL access through pgx.",
+          "COOKIE_DOMAIN shares the session cookie across the main domain and API subdomain on Railway and Vercel.",
+          "Features planned in OpenSpec and implemented with AI coding agents; checked by Go tests and GitHub Actions end-to-end tests."
+        ],
+        tech: [
+          "Go",
+          "Next.js",
+          "PostgreSQL",
+          "TypeScript",
+          "pgx",
+          "goose",
+          "OAuth2",
+          "Docker",
+          "GitHub Actions"
+        ],
+        links: [
+          {
+            label: "Repository",
+            url: "https://github.com/namnhatpham1995/Hootden"
+          }
+        ],
+        emphasis: [
+          "shared workspaces",
+          "HttpOnly session tokens"
+        ],
+        roleNote: "Personal Go project; implementation with AI coding agents."
+      },
+      {
+        title: "Master’s thesis — Browser remote desktop",
+        dates: "Feb – Aug 2021",
+        description: [
+          "Extended RemotePy so users can control a remote computer from a web browser.",
+          "Added live screen streaming and mouse, keyboard, and touch input.",
+          "Python/Flask backend with Werkzeug/Gunicorn and a custom CLI for worker and thread configuration.",
+          "HTML/CSS/JavaScript frontend, MySQL authentication, and Docker/Apache server setup."
+        ],
+        tech: [
+          "Python",
+          "Flask",
+          "Docker",
+          "MySQL",
+          "Werkzeug",
+          "Gunicorn",
+          "HTML",
+          "CSS",
+          "JavaScript"
+        ],
+        links: [
+          {
+            label: "Repository",
+            url: "https://github.com/namnhatpham1995/Master-Thesis"
+          },
+          {
+            label: "RemotePy module",
+            url: "https://github.com/namnhatpham1995/Master-Thesis/tree/main/RemotePy"
+          }
+        ],
+        emphasis: [
+          "remote computer",
+          "live screen streaming"
+        ]
+      },
+      {
+        title: "Udacity — Machine learning projects",
+        dates: "2020",
+        description: [
+          "Compared three classifiers on 45,000 US Census records.",
+          "Built a 102-species flower classifier with MobileNet; 71% test accuracy.",
+          "Income prediction: Random Forest, Gaussian Naive Bayes, and AdaBoost, with log transforms, MinMax scaling, and one-hot encoding.",
+          "Customer segmentation: about 891,000 records and 85 features; PCA reduced these to 28 components explaining about 87% of variance, followed by K-Means.",
+          "Flower classification: TensorFlow/Keras transfer learning on Oxford Flowers, packaged as a Python inference CLI."
+        ],
+        tech: [
+          "Python",
+          "TensorFlow",
+          "scikit-learn",
+          "pandas",
+          "NumPy",
+          "Keras",
+          "TensorFlow Hub",
+          "Matplotlib",
+          "Seaborn"
+        ],
+        links: [
+          {
+            label: "Finding Donors for CharityML",
+            url: "https://github.com/namnhatpham1995/Udacity-Finding-Donors-for-CharityML"
+          },
+          {
+            label: "Creating Customer Segments with Arvato",
+            url: "https://github.com/namnhatpham1995/Udacity-Creating-Customer-Segments-with-Arvato"
+          },
+          {
+            label: "Image Classifier with Deep Learning",
+            url: "https://github.com/namnhatpham1995/Udacity-Image-Classifier-TensorFlow"
+          },
+          {
+            label: "Degree confirmation",
+            url: "https://confirm.udacity.com/G9GHDGQU"
+          }
+        ],
+        emphasis: [
+          "45,000",
+          "102-species",
+          "71% test accuracy"
+        ]
+      }
+    ]
   },
   certificates: {
-    heading: 'ls certificates/',
+    heading: "ls certificates/",
     entries: [
-      { title: 'Software AG Leadership Essentials Professional', date: 'Nov 2023' },
-      { title: 'AWS Certified Developer – Associate', date: 'Aug 2023', issuer: 'AWS' },
-      { title: 'AWS Certified Cloud Practitioner', date: 'Aug 2023', issuer: 'AWS' },
-      { title: 'Lean Six Sigma White Belt', date: 'Mar 2022' },
-      { title: 'Building Scalable Java Microservices with Spring Boot & Spring Cloud', date: 'Sep 2021', issuer: 'Coursera' },
-      { title: 'Intro to Machine Learning with TensorFlow', date: 'Jun 2020', issuer: 'Udacity Nanodegree Program' },
-    ],
+      {
+        title: "Software AG Leadership Essentials Professional",
+        date: "Nov 2023"
+      },
+      {
+        title: "AWS Certified Developer – Associate",
+        date: "Aug 2023",
+        issuer: "AWS"
+      },
+      {
+        title: "AWS Certified Cloud Practitioner",
+        date: "Aug 2023",
+        issuer: "AWS"
+      },
+      {
+        title: "Lean Six Sigma White Belt",
+        date: "Mar 2022"
+      },
+      {
+        title: "Building Scalable Java Microservices with Spring Boot & Spring Cloud",
+        date: "Sep 2021",
+        issuer: "Coursera"
+      },
+      {
+        title: "Intro to Machine Learning with TensorFlow",
+        date: "Jun 2020",
+        issuer: "Udacity Nanodegree Program"
+      }
+    ]
   },
   languages: {
-    heading: 'locale -a',
+    heading: "locale -a",
     entries: [
-      { name: 'Vietnamese', level: 'Native' },
-      { name: 'English', level: 'Fluent (C1)' },
-      { name: 'German', level: 'Intermediate (B1)' },
-    ],
+      {
+        name: "Vietnamese",
+        level: "Native"
+      },
+      {
+        name: "English",
+        level: "Fluent (C1)"
+      },
+      {
+        name: "German",
+        level: "Intermediate (B1)"
+      }
+    ]
   },
   hobbies: {
-    heading: 'cat hobbies.txt',
-    items: ['Workout', 'Traveling & hiking', 'Cooking', 'Gaming / hanging out with friends'],
-  },
+    heading: "cat hobbies.txt",
+    items: [
+      "Workout",
+      "Traveling & hiking",
+      "Cooking",
+      "Gaming / hanging out with friends"
+    ]
+  }
 };

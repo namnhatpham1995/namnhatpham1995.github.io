@@ -14,6 +14,7 @@ export interface UiLabels {
   networkSectionClose: string;
   sectionNavigationLabel: string;
   technologiesLabel: string;
+  technicalDetailsLabel: string;
   assistantButton: string;
   assistantDialogLabel: string;
   assistantClose: string;
@@ -75,13 +76,14 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkSectionClose: 'Close section window',
     sectionNavigationLabel: 'Section navigation',
     technologiesLabel: 'Technologies',
+    technicalDetailsLabel: 'Technical details',
     assistantButton: 'ask --assistant',
     assistantDialogLabel: 'AI assistant',
     assistantClose: 'Close assistant window',
     assistantDisclosure:
       "Conversations are saved for quality review and processed by Google's Gemini API.",
     assistantGreeting:
-      "Hi — I'm Nam's assistant. Ask me about his work, experience, or availability and I'll share what I know.",
+      "Hi, I'm Nam's AI assistant. Ask about his experience, projects, or availability.",
     assistantPlaceholder: 'Type a message…',
     assistantSend: 'Send',
     assistantSuggestedLabel: 'Try asking:',
@@ -151,13 +153,14 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkSectionClose: 'Abschnittsfenster schließen',
     sectionNavigationLabel: 'Abschnittsnavigation',
     technologiesLabel: 'Technologien',
+    technicalDetailsLabel: 'Technische Details',
     assistantButton: 'ask --assistant // KI-Assistent',
     assistantDialogLabel: 'KI-Assistent',
     assistantClose: 'Assistentenfenster schließen',
     assistantDisclosure:
       'Unterhaltungen werden zur Qualitätsprüfung gespeichert und über die Gemini-API von Google verarbeitet.',
     assistantGreeting:
-      'Hallo — ich bin Nams Assistent. Frag mich nach seiner Arbeit, seiner Erfahrung oder seiner Verfügbarkeit, und ich teile, was ich weiß.',
+      'Hallo, ich bin Nams KI-Assistent. Frag mich nach seiner Erfahrung, seinen Projekten oder seiner Verfügbarkeit.',
     assistantPlaceholder: 'Nachricht eingeben…',
     assistantSend: 'Senden',
     assistantSuggestedLabel: 'Frag zum Beispiel:',
@@ -206,10 +209,10 @@ export const uiLabels: Record<Locale, UiLabels> = {
     assistantCallAiNotice: 'Du sprichst mit einem KI-Assistenten, nicht mit Nam.',
     assistantCallStart: 'Anruf starten',
     assistantCallEnd: 'Anruf beenden',
-    assistantCallEndNote: 'Sprechen Sie einfach weiter — drücken Sie „Anruf beenden“ nur, wenn Sie das Gespräch beenden möchten.',
-    assistantCallBack: 'zurück zum Chat',
-    assistantCallYou: 'du',
-    assistantCallAssistant: 'assistent',
+    assistantCallEndNote: 'Sprich einfach weiter — drücke „Anruf beenden“ nur, wenn du das Gespräch beenden möchtest.',
+    assistantCallBack: 'Zurück zum Chat',
+    assistantCallYou: 'Du',
+    assistantCallAssistant: 'Assistent',
     assistantCallYourTurn: 'Du bist dran',
     assistantCallSpeaking: 'Assistent spricht',
     assistantCallSilenceEnded: 'Anruf nach einer Minute Stille beendet.',
@@ -229,6 +232,7 @@ export const uiLabels: Record<Locale, UiLabels> = {
     networkSectionClose: 'Đóng cửa sổ nội dung',
     sectionNavigationLabel: 'Điều hướng các mục',
     technologiesLabel: 'Công nghệ',
+    technicalDetailsLabel: 'Chi tiết kỹ thuật',
     assistantButton: 'ask --assistant // Trợ lý AI',
     assistantDialogLabel: 'Trợ lý AI',
     assistantClose: 'Đóng cửa sổ trợ lý',
