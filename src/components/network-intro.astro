@@ -423,9 +423,11 @@ const sparks = [
     place-items: center;
     width: var(--orb);
     height: var(--orb);
-    border-radius: 50%;
+    position: relative;
+    isolation: isolate;
+    border-radius: 12px;
     border: 1px solid var(--color-border);
-    background: linear-gradient(140deg, #1b3b2c, var(--color-surface) 76%);
+    background: linear-gradient(140deg, #294b38, #10271f 55%, #091c16);
     color: var(--color-text-muted);
     box-shadow: inset 0 1px 0 rgb(220 231 209 / 8%), 0 8px 24px rgb(0 0 0 / 20%);
     transition:
@@ -433,6 +435,39 @@ const sparks = [
       color 160ms ease,
       box-shadow 160ms ease,
       transform 160ms ease;
+  }
+
+  .network-intro__node-circle::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgb(194 222 190 / 12%);
+    border-radius: 8px;
+    pointer-events: none;
+  }
+
+  .network-intro__node-circle::after {
+    content: '';
+    position: absolute;
+    inset: auto -1px -6px;
+    height: 12px;
+    z-index: -1;
+    border: 1px solid rgb(145 188 157 / 20%);
+    border-top: 0;
+    border-radius: 12px;
+    background: linear-gradient(#183b2a, #081b14);
+    pointer-events: none;
+  }
+
+  .network-intro__node[data-selected] .network-intro__node-circle {
+    border-color: var(--color-accent-gold);
+    color: var(--color-accent-gold);
+    box-shadow: 0 0 30px rgb(212 184 121 / 24%);
+  }
+
+  .network-intro__link[data-energized] {
+    stroke: var(--color-accent-gold);
+    filter: drop-shadow(0 0 3px rgb(212 184 121 / 45%));
   }
 
   .network-intro__node-circle svg {
@@ -817,6 +852,8 @@ const sparks = [
 </style>
 
 <script>
+  import { activateNetworkNode, revealWindowContent } from '../scripts/interface-effects';
+
   const SEEN_KEY = 'network-intro-seen';
   const PENDING_NETWORK_KEY = 'network-intro-pending';
   const PENDING_SECTION_KEY = 'network-intro-pending-section';
@@ -831,11 +868,16 @@ const sparks = [
   let sourceNode: HTMLElement | null = null;
   let dialogAnimation: Animation | null = null;
   let dialogClosing = false;
+  let contentAnimations: Animation[] = [];
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   const restoreSection = () => {
     const focusTarget = sourceNode;
+    contentAnimations.forEach(animation => animation.cancel());
+    contentAnimations = [];
+    sourceNode?.removeAttribute('data-selected');
+    overlay?.querySelectorAll('[data-energized]').forEach(link => link.removeAttribute('data-energized'));
 
     if (activeSection && activeSectionAnchor?.parentNode) {
       activeSectionAnchor.parentNode.insertBefore(activeSection, activeSectionAnchor);
@@ -872,10 +914,11 @@ const sparks = [
       transform: `translate(${offsetX}px, ${offsetY}px) scale(0.18)`,
     };
     const atCenter = { opacity: 1, transform: 'translate(0, 0) scale(1)' };
+    const settle = { opacity: 1, transform: 'translate(0, 0) scale(1.015)', offset: .78 };
 
     dialogAnimation?.cancel();
-    const animation = sectionDialog.animate(opening ? [atNode, atCenter] : [atCenter, atNode], {
-      duration: opening ? 280 : 210,
+    const animation = sectionDialog.animate(opening ? [atNode, settle, atCenter] : [atCenter, atNode], {
+      duration: opening ? 360 : 210,
       easing: opening ? 'cubic-bezier(0.16, 1, 0.3, 1)' : 'ease-in',
       fill: 'both',
     });
@@ -910,6 +953,12 @@ const sparks = [
     activeSectionAnchor = document.createComment(`network-section:${targetId}`);
     activeSectionTabindex = target.getAttribute('tabindex');
     sourceNode = node;
+    node.setAttribute('data-selected', '');
+    activateNetworkNode(node);
+    overlay?.querySelectorAll<SVGPathElement>('[data-network-link]').forEach(link => {
+      const connected = link.dataset.from === targetId || link.dataset.to === targetId;
+      link.toggleAttribute('data-energized', connected);
+    });
     target.parentNode.insertBefore(activeSectionAnchor, target);
     target.classList.add('is-network-dialog-section');
     target.setAttribute('tabindex', '-1');
@@ -922,6 +971,7 @@ const sparks = [
 
     sectionDialog.showModal();
     void runDialogAnimation(true);
+    contentAnimations = revealWindowContent(target);
     target.focus({ preventScroll: true });
   };
 

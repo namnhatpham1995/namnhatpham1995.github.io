@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/futuristic.css';
 import { locales, defaultLocale, localePath, type Locale } from '../i18n/locale-utils';
 import { uiLabels } from '../i18n/ui-labels';
 
@@ -39,5 +40,8 @@ const labels = uiLabels[locale];
   <body>
     <a class="skip-link" href="#main">{labels.skipToContent}</a>
     <slot />
+    <script>
+      import '../scripts/interface-effects';
+    </script>
   </body>
 </html>

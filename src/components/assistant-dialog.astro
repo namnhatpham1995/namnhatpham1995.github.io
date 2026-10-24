@@ -57,6 +57,7 @@ interface Props {
     callAiNotice: string;
     callStart: string;
     callEnd: string;
+    callEndNote: string;
     callBack: string;
     callYou: string;
     callAssistant: string;
@@ -198,9 +199,10 @@ const identityLabels = {
         <p class="assistant-call__status" data-call-status></p>
         <div class="assistant-call__transcript" data-call-transcript role="log" aria-live="polite"></div>
         <div class="assistant-call__actions">
-          <button type="button" class="assistant-call__action assistant-call__action--end" data-call-end>
+          <button type="button" class="assistant-call__action assistant-call__action--end" data-call-end aria-describedby="assistant-call-end-note">
             {labels.callEnd}
           </button>
+          <p class="assistant-call__end-note" id="assistant-call-end-note" data-call-end-note>{labels.callEndNote}</p>
         </div>
       </div>
     </div>
@@ -897,6 +899,17 @@ const identityLabels = {
     flex: 0 0 auto;
     flex-wrap: wrap;
     gap: var(--space-2);
+  }
+
+  .assistant-call__end-note {
+    flex: 1 1 15rem;
+    align-self: center;
+    max-width: 42rem;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: .75rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
   }
 
   .assistant-call__action {

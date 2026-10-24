@@ -216,3 +216,32 @@ test('denying microphone access shows the mic-denied message', async ({ page }) 
   );
   await expect(dialog.locator('[data-call-pre]')).toBeVisible();
 });
+
+for (const locale of [
+  { path: '/', note: 'Keep talking naturally — press “end call” only when you want to end the conversation.' },
+  { path: '/de/', note: 'Sprechen Sie einfach weiter — drücken Sie „Anruf beenden“ nur, wenn Sie das Gespräch beenden möchten.' },
+]) {
+  test(`live call explains the end button and keeps the note readable on mobile at ${locale.path}`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await mockVoiceSocket(page).registered;
+    await page.goto(locale.path);
+    await page.locator('[data-network-assistant]').click();
+    const dialog = page.locator('#assistant-dialog');
+    await expect(dialog.locator('[data-call-end-note]')).toBeHidden();
+    await dialog.locator('[data-assistant-voice-toggle]').click();
+    await dialog.locator('[data-call-start]').click();
+    const end = dialog.locator('[data-call-end]');
+    const note = dialog.locator('[data-call-end-note]');
+    await expect(note).toBeVisible();
+    await expect(note).toHaveText(locale.note);
+    await expect(end).toHaveAttribute('aria-describedby', 'assistant-call-end-note');
+    const bounds = await note.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(844);
+    await end.click();
+    await expect(dialog.locator('[data-call-pre]')).toBeVisible();
+    await expect(note).toBeHidden();
+  });
+}
