@@ -241,6 +241,45 @@ export const de: CvContent = {
   projects: {
     heading: "ls projects/",
     entries: [
+      // TODO: native review
+      {
+        title: "Global Trade Network (GTN)",
+        dates: "Sep 2026 – heute",
+        description: [
+          "Grenzüberschreitende B2B-Networking-Plattform für TradeComply, live in Produktion, mit Seiten auf Englisch, Deutsch und Vietnamesisch.",
+          "Matching-Engine bewertet die Passung von Angeboten und Bedarfen zwischen Event-Teilnehmenden und erklärt jeden Treffer.",
+          "TypeScript-Monorepo mit Next.js 16/React 19, typisierter Hono-RPC-API und PostgreSQL über Drizzle (40+ Tabellen, 100+ Migrationen).",
+          "Modellagnostische LLM-Schicht mit austauschbaren Modellen klassifiziert Angebote und Bedarfe; PII wird vor jedem Modellaufruf entfernt.",
+          "Better Auth mit genau einer Zugriffsstufe pro API-Route; Privacy by Design mit vollständiger Kontolöschung, anonymisierter Analyse und Aufbewahrungsjobs.",
+          "Vitest gegen echtes PostgreSQL, Playwright-E2E-Tests, GitHub Actions und Hosting auf Railway mit nächtlichen Backups."
+        ],
+        tech: [
+          "TypeScript",
+          "Next.js",
+          "Hono",
+          "PostgreSQL",
+          "React",
+          "Drizzle ORM",
+          "Better Auth",
+          "Zod",
+          "Vitest",
+          "Playwright",
+          "GitHub Actions",
+          "Railway",
+          "LLM APIs"
+        ],
+        links: [
+          {
+            label: "Live-Vorschau",
+            url: "https://frontend-pre-prod-3a07.up.railway.app/en" // TODO: swap pre-prod preview for production URL
+          }
+        ],
+        emphasis: [
+          "live in Produktion",
+          "Matching-Engine"
+        ],
+        roleNote: "Kundenprojekt für TradeComply; Features als OpenSpec-Spezifikationen geliefert und von KI-Coding-Agenten (Claude Code, Codex) umgesetzt, die ich gesteuert und geprüft habe."
+      },
       {
         title: "Portfolio-KI-Assistent",
         dates: "Sep 2026 – heute",

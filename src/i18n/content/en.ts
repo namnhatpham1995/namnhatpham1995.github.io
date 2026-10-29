@@ -242,6 +242,44 @@ export const en: CvContent = {
     heading: "ls projects/",
     entries: [
       {
+        title: "Global Trade Network (GTN)",
+        dates: "Sep 2026 – present",
+        description: [
+          "Cross-border business networking platform for TradeComply, live in production, with pages in English, German, and Vietnamese.",
+          "Matching engine ranks offer and need fit between event participants and explains each match.",
+          "TypeScript monorepo with Next.js 16/React 19, a typed Hono RPC API, and PostgreSQL via Drizzle (40+ tables, 100+ migrations).",
+          "Model-agnostic LLM layer with interchangeable models classifies offers and needs; PII is scrubbed before any model call.",
+          "Better Auth with exactly one access level per API route; privacy by design with full account deletion, anonymized analytics, and retention jobs.",
+          "Vitest against real PostgreSQL, Playwright end-to-end tests, GitHub Actions, and Railway hosting with nightly backups."
+        ],
+        tech: [
+          "TypeScript",
+          "Next.js",
+          "Hono",
+          "PostgreSQL",
+          "React",
+          "Drizzle ORM",
+          "Better Auth",
+          "Zod",
+          "Vitest",
+          "Playwright",
+          "GitHub Actions",
+          "Railway",
+          "LLM APIs"
+        ],
+        links: [
+          {
+            label: "Live preview",
+            url: "https://frontend-pre-prod-3a07.up.railway.app/en" // TODO: swap pre-prod preview for production URL
+          }
+        ],
+        emphasis: [
+          "live in production",
+          "Matching engine"
+        ],
+        roleNote: "Client project for TradeComply; features shipped as OpenSpec spec-driven proposals executed by AI coding agents (Claude Code, Codex) that I directed and reviewed."
+      },
+      {
         title: "Portfolio AI assistant",
         dates: "Sep 2026 – present",
         description: [
