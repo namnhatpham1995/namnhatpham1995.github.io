@@ -241,6 +241,45 @@ export const vi: CvContent = {
   projects: {
     heading: "ls projects/",
     entries: [
+      // TODO: native review
+      {
+        title: "Global Trade Network (GTN)",
+        dates: "Th9 2026 – hiện tại",
+        description: [
+          "Nền tảng kết nối doanh nghiệp xuyên biên giới cho TradeComply, đang chạy production, có trang tiếng Anh, tiếng Đức và tiếng Việt.",
+          "Công cụ matching xếp hạng mức phù hợp giữa nhu cầu và đề xuất của người tham dự sự kiện, kèm giải thích cho từng kết quả.",
+          "Monorepo TypeScript gồm Next.js 16/React 19, API Hono với RPC có kiểu và PostgreSQL qua Drizzle (40+ bảng, 100+ migration).",
+          "Lớp LLM không phụ thuộc mô hình, các mô hình thay thế được cho nhau, phân loại đề xuất và nhu cầu; dữ liệu cá nhân được loại bỏ trước mỗi lần gọi mô hình.",
+          "Better Auth, mỗi API route khai báo đúng một mức truy cập; bảo vệ quyền riêng tư từ khâu thiết kế: xóa toàn bộ dữ liệu tài khoản, thống kê ẩn danh và job dọn dữ liệu định kỳ.",
+          "Vitest trên PostgreSQL thật, kiểm thử end-to-end bằng Playwright, GitHub Actions, triển khai trên Railway với backup hằng đêm."
+        ],
+        tech: [
+          "TypeScript",
+          "Next.js",
+          "Hono",
+          "PostgreSQL",
+          "React",
+          "Drizzle ORM",
+          "Better Auth",
+          "Zod",
+          "Vitest",
+          "Playwright",
+          "GitHub Actions",
+          "Railway",
+          "LLM APIs"
+        ],
+        links: [
+          {
+            label: "Bản xem trước",
+            url: "https://frontend-pre-prod-3a07.up.railway.app/en" // TODO: swap pre-prod preview for production URL
+          }
+        ],
+        emphasis: [
+          "đang chạy production",
+          "Công cụ matching"
+        ],
+        roleNote: "Dự án khách hàng cho TradeComply; tính năng được triển khai qua đề xuất OpenSpec, do AI coding agent (Claude Code, Codex) thực hiện dưới sự chỉ đạo và review của tôi."
+      },
       {
         title: "Trợ lý AI của portfolio",
         dates: "Th9 2026 – hiện tại",
