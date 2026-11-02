@@ -18,6 +18,7 @@ export const en: CvContent = {
   hero: {
     name: "Nam Nhat Pham",
     role: "Software Engineer",
+    degree: "Master of Computer Science",
     location: "Sindelfingen, Germany",
     email: "nam95.pn@gmail.com",
     linkedin: "https://www.linkedin.com/in/namnhatpham1995",
@@ -84,24 +85,56 @@ export const en: CvContent = {
   },
   skills: {
     heading: "ls skills/",
+    core: {
+      title: "Core stack",
+      groups: [
+        {
+          title: "Backend",
+          items: [
+            "Java",
+            "Spring Boot",
+            "REST APIs",
+            "PostgreSQL"
+          ]
+        },
+        {
+          title: "Languages & scripting",
+          items: [
+            "Python",
+            "TypeScript",
+            "Bash"
+          ]
+        },
+        {
+          title: "DevOps & delivery",
+          items: [
+            "Docker",
+            "GitHub Actions",
+            "CI/CD"
+          ]
+        },
+        {
+          title: "Ways of working",
+          items: [
+            "Agile/Scrum",
+            "Spec-Driven Development (SDD)",
+            "AI-assisted development"
+          ]
+        }
+      ]
+    },
     groups: [
       {
         title: "Languages",
         items: [
-          "Java",
-          "Python",
-          "TypeScript",
           "JavaScript",
-          "Go",
-          "Bash"
+          "Go"
         ]
       },
       {
         title: "Backend & Frontend",
         items: [
-          "Spring Boot",
           "Spring Security",
-          "REST APIs",
           "OpenAPI/Swagger",
           "Next.js",
           "React",
@@ -115,8 +148,6 @@ export const en: CvContent = {
         title: "Cloud, DevOps & Tools",
         items: [
           "AWS",
-          "GitHub Actions",
-          "Docker",
           "Kubernetes",
           "Linux",
           "Helm",
@@ -136,7 +167,6 @@ export const en: CvContent = {
       {
         title: "Databases",
         items: [
-          "PostgreSQL",
           "MySQL",
           "MongoDB",
           "Redis",
@@ -158,10 +188,7 @@ export const en: CvContent = {
       {
         title: "Practices",
         items: [
-          "Agile/Scrum",
-          "CI/CD",
-          "Domain-Driven Design (DDD)",
-          "Spec-Driven Development (SDD)"
+          "Domain-Driven Design (DDD)"
         ]
       }
     ]
@@ -226,6 +253,7 @@ export const en: CvContent = {
     entries: [
       {
         degree: "M.Sc. High Integrity Systems",
+        highlight: true,
         institution: "Frankfurt University of Applied Sciences",
         dates: "Apr 2019 – Sep 2021",
         description: "Safety-critical systems, formal verification, distributed systems."
@@ -508,10 +536,10 @@ export const en: CvContent = {
   hobbies: {
     heading: "cat hobbies.txt",
     items: [
-      "Workout",
-      "Traveling & hiking",
-      "Cooking",
-      "Gaming / hanging out with friends"
+      "Side projects to learn new stacks (Go, Next.js)",
+      "Building with AI coding agents (Claude Code)",
+      "Online courses & certifications (Udacity, AWS)",
+      "Workout & hiking"
     ]
   }
 };

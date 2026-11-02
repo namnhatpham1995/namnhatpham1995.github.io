@@ -18,6 +18,7 @@ export const vi: CvContent = {
   hero: {
     name: "Nam Nhat Pham",
     role: "Kỹ sư phần mềm",
+    degree: "Thạc sĩ Khoa học Máy tính", // TODO: native review
     location: "Sindelfingen, Đức",
     email: "nam95.pn@gmail.com",
     linkedin: "https://www.linkedin.com/in/namnhatpham1995",
@@ -84,24 +85,56 @@ export const vi: CvContent = {
   },
   skills: {
     heading: "ls skills/",
+    core: {
+      title: "Kỹ năng chính", // TODO: native review
+      groups: [
+        {
+          title: "Backend",
+          items: [
+            "Java",
+            "Spring Boot",
+            "REST APIs",
+            "PostgreSQL"
+          ]
+        },
+        {
+          title: "Ngôn ngữ & scripting", // TODO: native review
+          items: [
+            "Python",
+            "TypeScript",
+            "Bash"
+          ]
+        },
+        {
+          title: "DevOps & triển khai", // TODO: native review
+          items: [
+            "Docker",
+            "GitHub Actions",
+            "CI/CD"
+          ]
+        },
+        {
+          title: "Cách làm việc", // TODO: native review
+          items: [
+            "Agile/Scrum",
+            "Spec-Driven Development (SDD)",
+            "Phát triển phần mềm với AI"
+          ]
+        }
+      ]
+    },
     groups: [
       {
         title: "Ngôn ngữ lập trình",
         items: [
-          "Java",
-          "Python",
-          "TypeScript",
           "JavaScript",
-          "Go",
-          "Bash"
+          "Go"
         ]
       },
       {
         title: "Backend & Frontend",
         items: [
-          "Spring Boot",
           "Spring Security",
-          "REST APIs",
           "OpenAPI/Swagger",
           "Next.js",
           "React",
@@ -115,8 +148,6 @@ export const vi: CvContent = {
         title: "Cloud, DevOps & Công cụ",
         items: [
           "AWS",
-          "GitHub Actions",
-          "Docker",
           "Kubernetes",
           "Linux",
           "Helm",
@@ -136,7 +167,6 @@ export const vi: CvContent = {
       {
         title: "Cơ sở dữ liệu",
         items: [
-          "PostgreSQL",
           "MySQL",
           "MongoDB",
           "Redis",
@@ -158,10 +188,7 @@ export const vi: CvContent = {
       {
         title: "Phương pháp làm việc",
         items: [
-          "Agile/Scrum",
-          "CI/CD",
-          "Domain-Driven Design (DDD)",
-          "Spec-Driven Development (SDD)"
+          "Domain-Driven Design (DDD)"
         ]
       }
     ]
@@ -226,6 +253,7 @@ export const vi: CvContent = {
     entries: [
       {
         degree: "Thạc sĩ Khoa học | High Integrity Systems",
+        highlight: true,
         institution: "Đại học Khoa học Ứng dụng Frankfurt",
         dates: "Th4 2019 – Th9 2021",
         description: "Hệ thống an toàn cao, kiểm chứng hình thức, hệ thống phân tán."
@@ -507,11 +535,11 @@ export const vi: CvContent = {
   },
   hobbies: {
     heading: "cat hobbies.txt",
-    items: [
-      "Tập luyện thể thao",
-      "Du lịch & leo núi",
-      "Nấu ăn",
-      "Chơi game hoặc đi chơi với bạn bè"
+    items: [ // TODO: native review
+      "Làm dự án cá nhân để học công nghệ mới (Go, Next.js)",
+      "Phát triển phần mềm cùng AI coding agent (Claude Code)",
+      "Học khóa online & lấy chứng chỉ (Udacity, AWS)",
+      "Tập thể thao & leo núi"
     ]
   }
 };

@@ -114,7 +114,11 @@ const sparks = [
     <svg class="network-intro__lines" aria-hidden="true">
       {
         links.map((link, i) => (
-          <g class="network-intro__trace" data-network-trace style={`--line-delay: ${450 + i * 70}ms`}>
+          <g
+            class="network-intro__trace"
+            data-network-trace
+            style={`--line-delay: ${450 + i * 70}ms; --pulse-delay: ${((i * 7) % 11) * 0.42}s; --pulse-duration: ${2.6 + (i % 3) * 0.5}s`}
+          >
             <path class="network-intro__trace-halo" />
             <path class="network-intro__link" data-network-link data-from={link.from} data-to={link.to} />
             <path class="network-intro__trace-signal" pathLength="100" data-network-trace-signal />
@@ -337,11 +341,21 @@ const sparks = [
     transition: opacity 180ms ease;
   }
 
+  /* At rest, short sparks of current run along every trace, staggered so the
+     network hums rather than blinks in unison; hover speeds up the connected ones. */
   .network-intro__trace-signal {
     stroke: #fff0bd;
-    stroke-width: 2;
-    stroke-dasharray: 2 98;
+    stroke-width: 2.5;
+    stroke-dasharray: 6 94;
     opacity: 0;
+    animation: network-current var(--pulse-duration, 3s) linear calc(var(--line-delay) + 600ms + var(--pulse-delay, 0s)) infinite;
+  }
+
+  @keyframes network-current {
+    0% { stroke-dashoffset: 100; opacity: 0; }
+    8% { opacity: .9; }
+    55% { stroke-dashoffset: 0; opacity: .9; }
+    62%, 100% { stroke-dashoffset: 0; opacity: 0; }
   }
 
   .network-intro__junction {
@@ -374,7 +388,13 @@ const sparks = [
 
   .network-intro__trace:is([data-active], [data-energized]) .network-intro__trace-signal {
     opacity: 1;
+    stroke-dasharray: 2 98;
     animation: network-signal-flow 1600ms linear infinite;
+  }
+
+  .network-intro__stage[data-connection-active] .network-intro__trace:not([data-active], [data-energized]) .network-intro__trace-signal {
+    /* Animated opacity would win over a plain rule, so hide the idle sparks instead. */
+    visibility: hidden;
   }
 
   .network-intro__trace:is([data-active], [data-energized]) .network-intro__junction {

@@ -3,12 +3,14 @@ import type { SkillGroup } from '../i18n/content/types';
 
 interface Props {
   group: SkillGroup;
+  /** A group inside the core stack: boxed, with gold-edged chips. */
+  featured?: boolean;
 }
 
-const { group } = Astro.props;
+const { group, featured = false } = Astro.props;
 ---
 
-<div class="skill-group">
+<div class:list={['skill-group', { 'skill-group--featured': featured }]}>
   <h3 class="skill-group__title">{group.title}</h3>
   <ul class="skill-group__list">
     {
@@ -49,5 +51,30 @@ const { group } = Astro.props;
 
   .skill-group__chip span {
     color: var(--color-accent-amber);
+  }
+
+  /* One related group inside the core-stack box. */
+  .skill-group--featured {
+    padding: var(--space-3);
+    border: 1px solid color-mix(in srgb, var(--color-accent-gold) 30%, var(--color-border));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent-gold) 5%, var(--color-bg));
+  }
+
+  .skill-group--featured .skill-group__title {
+    color: var(--color-accent-gold);
+  }
+
+  .skill-group--featured .skill-group__list {
+    margin-bottom: 0;
+  }
+
+  .skill-group--featured .skill-group__chip {
+    padding: var(--space-1) var(--space-2);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
+    border-color: color-mix(in srgb, var(--color-accent-gold) 55%, var(--color-border));
+    background: color-mix(in srgb, var(--color-accent-gold) 10%, var(--color-surface));
   }
 </style>

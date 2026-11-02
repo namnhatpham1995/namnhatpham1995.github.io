@@ -25,6 +25,8 @@ export interface ExperienceEntry {
 
 export interface EducationEntry {
   degree: string;
+  /** Lightly set apart on the page (the master's degree). */
+  highlight?: boolean;
   institution: string;
   dates: string;
   description: string;
@@ -98,6 +100,8 @@ export interface CvContent {
   hero: {
     name: string;
     role: string;
+    /** Shown after the role in the page intro only; the map keeps the bare role. */
+    degree: string;
     location: string;
     email: string;
     linkedin: string;
@@ -107,6 +111,11 @@ export interface CvContent {
   workLocation: WorkLocationPolicy;
   skills: {
     heading: string;
+    /** The main stack, shown first in its own highlighted box, split into related groups. */
+    core: {
+      title: string;
+      groups: SkillGroup[];
+    };
     groups: SkillGroup[];
   };
   experience: {

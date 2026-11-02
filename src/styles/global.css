@@ -37,7 +37,8 @@
   --glass-edge-glow:
     radial-gradient(circle 14rem at 0 0, var(--color-accent-green), transparent) left top / 14rem 14rem no-repeat border-box,
     radial-gradient(circle 14rem at 100% 100%, var(--color-accent-gold), transparent) right bottom / 14rem 14rem no-repeat border-box;
-  --max-width: 860px;
+  /* The full-page window spreads across nearly the whole screen; main supplies the gutters. */
+  --max-width: 1600px;
 }
 
 *,

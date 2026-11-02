@@ -5,10 +5,10 @@
 }
 
 /* Four instrument-panel brackets, deliberately kept outside the reading area. */
-:is(.terminal-window, .assistant-dialog__window, .project-card) {
+:is(.terminal-window, .assistant-dialog__window, .project-card, .experience-entry, .core-stack) {
   position: relative;
 }
-:is(.terminal-window, .network-section-dialog, .assistant-dialog__window, .project-card)::before {
+:is(.terminal-window, .network-section-dialog, .assistant-dialog__window, .project-card, .experience-entry, .core-stack)::before {
   content: '';
   position: absolute;
   inset: 5px;

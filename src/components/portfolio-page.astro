@@ -26,8 +26,8 @@ const navItems = [
   { id: 'intro', label: content.nav.intro },
   { id: 'skills', label: content.nav.skills },
   { id: 'experience', label: content.nav.experience },
-  { id: 'education', label: content.nav.education },
   { id: 'projects', label: content.nav.projects },
+  { id: 'education', label: content.nav.education },
   { id: 'certificates', label: content.nav.certificates },
   { id: 'languages', label: content.nav.languages },
   { id: 'hobbies', label: content.nav.hobbies },
@@ -118,7 +118,10 @@ const navItems = [
         <img class="hero__photo" src={profileImageUrl} alt={content.hero.name} width="120" height="120" loading="eager" />
         <div>
           <h1 class="hero__name">{content.hero.name}</h1>
-          <p class="hero__role">{content.hero.role} · {content.hero.location}</p>
+          <p class="hero__role">
+            <span class="hero__highlight">{content.hero.role}</span>
+            <span class="hero__highlight">{content.hero.degree}</span>
+          </p>
           <Typewriter segments={content.hero.summary} />
           <p class="hero__links">
             <a href={`mailto:${content.hero.email}`}>{labels.emailLabel}</a>
@@ -133,19 +136,40 @@ const navItems = [
 
     <section id="skills" aria-labelledby="skills-heading">
       <SectionHeading id="skills-heading" command={content.skills.heading} label={content.nav.skills} />
-      {content.skills.groups.map((group) => <SkillGroup group={group} />)}
+      <div class="skills-grid">
+        <div class="core-stack">
+          <p class="core-stack__title">{content.skills.core.title}</p>
+          <div class="core-stack__groups">
+            {content.skills.core.groups.map((group) => <SkillGroup group={group} featured />)}
+          </div>
+        </div>
+        {content.skills.groups.map((group) => <SkillGroup group={group} />)}
+      </div>
     </section>
 
     <section id="experience" aria-labelledby="experience-heading">
       <SectionHeading id="experience-heading" command={content.experience.heading} label={content.nav.experience} />
-      {content.experience.entries.map((entry) => <ExperienceEntry entry={entry} technicalDetailsLabel={labels.technicalDetailsLabel} />)}
+      <div class="experience-list">
+        {content.experience.entries.map((entry) => <ExperienceEntry entry={entry} technicalDetailsLabel={labels.technicalDetailsLabel} />)}
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-heading">
+      <SectionHeading id="projects-heading" command={content.projects.heading} label={content.nav.projects} />
+      <div class="projects-grid">
+        {
+          content.projects.entries.map((entry) => (
+            <ProjectCard entry={entry} technologiesLabel={labels.technologiesLabel} technicalDetailsLabel={labels.technicalDetailsLabel} />
+          ))
+        }
+      </div>
     </section>
 
     <section id="education" aria-labelledby="education-heading">
       <SectionHeading id="education-heading" command={content.education.heading} label={content.nav.education} />
       {
         content.education.entries.map((entry) => (
-          <article class="education-entry">
+          <article class:list={['education-entry', { 'education-entry--highlight': entry.highlight }]}>
             <header class="education-entry__header">
               <h3 class="education-entry__degree">{entry.degree}</h3>
               <span class="education-entry__dates">{entry.dates}</span>
@@ -153,15 +177,6 @@ const navItems = [
             <p class="education-entry__meta">{entry.institution}</p>
             <p>{entry.description}</p>
           </article>
-        ))
-      }
-    </section>
-
-    <section id="projects" aria-labelledby="projects-heading">
-      <SectionHeading id="projects-heading" command={content.projects.heading} label={content.nav.projects} />
-      {
-        content.projects.entries.map((entry) => (
-          <ProjectCard entry={entry} technologiesLabel={labels.technologiesLabel} technicalDetailsLabel={labels.technicalDetailsLabel} />
         ))
       }
     </section>
@@ -208,7 +223,9 @@ const navItems = [
 
 <style>
   main {
-    padding: var(--space-4) var(--space-3) var(--space-6);
+    /* Clear the fixed section rail on the left and the language switcher above. */
+    padding: calc(var(--space-2) + 40px + var(--space-2)) var(--space-4) var(--space-6)
+      calc(var(--space-2) + 46px + var(--space-3));
   }
 
   .language-switcher-corner {
@@ -218,15 +235,10 @@ const navItems = [
     z-index: 20;
   }
 
-  @media (max-width: 1000px) {
-    main {
-      /* Clear the fixed section-nav rail on the left edge. */
-      padding-left: calc(var(--space-2) + 46px + var(--space-2));
-    }
-  }
-
   @media (max-width: 480px) {
     main {
+      padding-top: var(--space-4);
+      padding-right: var(--space-3);
       /* The nav rail collapses into a bottom bar at this width (see
          command-nav.astro) — clear the bottom edge instead of the left. */
       padding-left: var(--space-3);
@@ -265,6 +277,98 @@ const navItems = [
     }
   }
 
+  .hero > div {
+    max-width: 72ch;
+  }
+
+  /* Skills: the core stack leads in its own box, the other groups share a grid. */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-4) var(--space-5);
+  }
+
+  /* The core stack spans the row; related skills sit in their own boxes inside it. */
+  .core-stack {
+    grid-column: 1 / -1;
+    padding: var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(130deg, #1b3a2b, var(--color-surface) 70%) padding-box,
+      var(--glass-edge-glow),
+      var(--color-accent-gold);
+  }
+
+  .core-stack__title {
+    margin: 0 0 var(--space-3);
+    color: var(--color-accent-gold);
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  /* Four related groups: one row on wide screens, two by two below, stacked on phones. */
+  .core-stack__groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 1200px) {
+    .core-stack__groups {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .core-stack__groups {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .core-stack {
+      padding: var(--space-3);
+    }
+  }
+
+  .experience-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  /* Projects: one column on phones, two on tablets, a 7/5 mosaic on wide screens.
+     The section is the container so the same rules hold inside the map's window. */
+  #projects {
+    container-type: inline-size;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  @container (min-width: 44rem) {
+    .projects-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container (min-width: 72rem) {
+    .projects-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+    .projects-grid > :global(:nth-child(4n + 1)),
+    .projects-grid > :global(:nth-child(4n + 4)) {
+      grid-column: span 7;
+    }
+    .projects-grid > :global(:nth-child(4n + 2)),
+    .projects-grid > :global(:nth-child(4n + 3)) {
+      grid-column: span 5;
+    }
+  }
+
   .hero {
     display: flex;
     flex-direction: column;
@@ -286,8 +390,23 @@ const navItems = [
   }
 
   .hero__role {
-    margin: 0 0 var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-3);
     color: var(--color-text-muted);
+  }
+
+  /* Position and degree: a quiet chip each, brighter than the summary but below the name. */
+  .hero__highlight {
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--color-accent-gold) 35%, var(--color-border));
+    border-radius: var(--radius);
+    background: color-mix(in srgb, var(--color-accent-gold) 7%, transparent);
+    color: var(--color-text);
+    font-weight: 600;
   }
 
   .hero__links {
@@ -309,6 +428,18 @@ const navItems = [
   .education-entry__degree {
     margin: 0;
     font-size: 1rem;
+  }
+
+  /* The master's degree: a light gold edge and tint, quieter than the core-stack box. */
+  .education-entry--highlight {
+    padding: var(--space-3) var(--space-3) var(--space-3) calc(var(--space-3) - 3px);
+    border-left: 3px solid var(--color-accent-gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: color-mix(in srgb, var(--color-accent-gold) 6%, transparent);
+  }
+
+  .education-entry--highlight .education-entry__degree {
+    color: var(--color-accent-gold);
   }
 
   .education-entry__meta {
