@@ -63,7 +63,7 @@ const { promptUser } = Astro.props;
   }
 
   .terminal-window__body {
-    padding: var(--space-4) var(--space-4);
+    padding: clamp(var(--space-3), 3vw, var(--space-6));
   }
 
   @media (max-width: 480px) {

@@ -59,8 +59,10 @@ const { entry, technologiesLabel, technicalDetailsLabel } = Astro.props;
   .project-card {
     border: 1px solid transparent;
     border-radius: var(--radius);
-    padding: var(--space-3);
-    margin-bottom: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: var(--space-4);
     background: linear-gradient(130deg, #142e22, var(--color-surface) 72%) padding-box, var(--glass-edge-glow), var(--color-border);
   }
 
@@ -116,7 +118,18 @@ const { entry, technologiesLabel, technicalDetailsLabel } = Astro.props;
   }
 
   .project-card__links {
-    margin: 0;
+    margin: 0 0 var(--space-3);
     font-size: 0.875rem;
+  }
+
+  /* Keep the details toggle at the foot of the card when cards share a row. */
+  .project-card :global(.technical-details) {
+    margin-top: auto;
+  }
+
+  @media (max-width: 480px) {
+    .project-card {
+      padding: var(--space-3);
+    }
   }
 </style>

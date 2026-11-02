@@ -18,6 +18,7 @@ export const de: CvContent = {
   hero: {
     name: "Nam Nhat Pham",
     role: "Software-Ingenieur",
+    degree: "Master in Informatik", // TODO: native review
     location: "Sindelfingen, Deutschland",
     email: "nam95.pn@gmail.com",
     linkedin: "https://www.linkedin.com/in/namnhatpham1995",
@@ -84,24 +85,56 @@ export const de: CvContent = {
   },
   skills: {
     heading: "ls skills/",
+    core: {
+      title: "Kernkompetenzen", // TODO: native review
+      groups: [
+        {
+          title: "Backend",
+          items: [
+            "Java",
+            "Spring Boot",
+            "REST APIs",
+            "PostgreSQL"
+          ]
+        },
+        {
+          title: "Sprachen & Scripting", // TODO: native review
+          items: [
+            "Python",
+            "TypeScript",
+            "Bash"
+          ]
+        },
+        {
+          title: "DevOps & Delivery", // TODO: native review
+          items: [
+            "Docker",
+            "GitHub Actions",
+            "CI/CD"
+          ]
+        },
+        {
+          title: "Arbeitsweise", // TODO: native review
+          items: [
+            "Agile/Scrum",
+            "Spec-Driven Development (SDD)",
+            "KI-gestützte Entwicklung"
+          ]
+        }
+      ]
+    },
     groups: [
       {
         title: "Programmiersprachen",
         items: [
-          "Java",
-          "Python",
-          "TypeScript",
           "JavaScript",
-          "Go",
-          "Bash"
+          "Go"
         ]
       },
       {
         title: "Backend & Frontend",
         items: [
-          "Spring Boot",
           "Spring Security",
-          "REST APIs",
           "OpenAPI/Swagger",
           "Next.js",
           "React",
@@ -115,8 +148,6 @@ export const de: CvContent = {
         title: "Cloud, DevOps & Tools",
         items: [
           "AWS",
-          "GitHub Actions",
-          "Docker",
           "Kubernetes",
           "Linux",
           "Helm",
@@ -136,7 +167,6 @@ export const de: CvContent = {
       {
         title: "Datenbanken",
         items: [
-          "PostgreSQL",
           "MySQL",
           "MongoDB",
           "Redis",
@@ -158,10 +188,7 @@ export const de: CvContent = {
       {
         title: "Praktiken",
         items: [
-          "Agile/Scrum",
-          "CI/CD",
-          "Domain-Driven Design (DDD)",
-          "Spec-Driven Development (SDD)"
+          "Domain-Driven Design (DDD)"
         ]
       }
     ]
@@ -226,6 +253,7 @@ export const de: CvContent = {
     entries: [
       {
         degree: "Master of Science | High Integrity Systems",
+        highlight: true,
         institution: "Frankfurt University of Applied Sciences",
         dates: "Apr 2019 – Sep 2021",
         description: "Sicherheitskritische Systeme, formale Verifikation, verteilte Systeme."
@@ -546,11 +574,11 @@ export const de: CvContent = {
   },
   hobbies: {
     heading: "cat hobbies.txt",
-    items: [
-      "Sport",
-      "Reisen und Wandern",
-      "Kochen",
-      "Spielen und Zeit mit Freunden"
+    items: [ // TODO: native review
+      "Nebenprojekte, um neue Stacks zu lernen (Go, Next.js)",
+      "Entwickeln mit KI-Coding-Agenten (Claude Code)",
+      "Onlinekurse und Zertifizierungen (Udacity, AWS)",
+      "Sport und Wandern"
     ]
   }
 };
