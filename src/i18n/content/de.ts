@@ -298,8 +298,8 @@ export const de: CvContent = {
         ],
         links: [
           {
-            label: "Live-Vorschau",
-            url: "https://frontend-pre-prod-3a07.up.railway.app/en" // TODO: swap pre-prod preview for production URL
+            label: "Website",
+            url: "https://globaltradenetwork.org/de"
           }
         ],
         emphasis: [
