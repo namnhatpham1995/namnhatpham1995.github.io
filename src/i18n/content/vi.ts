@@ -298,8 +298,8 @@ export const vi: CvContent = {
         ],
         links: [
           {
-            label: "Bản xem trước",
-            url: "https://frontend-pre-prod-3a07.up.railway.app/en" // TODO: swap pre-prod preview for production URL
+            label: "Trang web",
+            url: "https://globaltradenetwork.org/vi"
           }
         ],
         emphasis: [
