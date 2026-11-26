@@ -196,6 +196,24 @@ export const de: CvContent = {
   experience: {
     heading: "git log --experience",
     entries: [
+      // TODO: native review
+      {
+        role: "Software-Ingenieur (freiberuflich)",
+        company: "Global Trade Network — Kunde: TradeComply, remote",
+        dates: "September 2026 - heute",
+        bullets: [
+          "Verantworte die Lieferung der Live-Plattform globaltradenetwork.org: Architektur, Implementierung, Tests, Release und Betrieb.",
+          "Zweistufiger Release-Ablauf (Vorproduktion, dann Produktion per geprüftem Pull Request) auf Railway, mit nächtlichen Backups und Wiederherstellungsprüfung.",
+          "Installierbare App, QR-Teilen und -Verbinden, Google-Anmeldung sowie einen KI-Assistenten auf der Seite und per Sprache gebaut.",
+          "Push-Benachrichtigungen, KI über Mitgliedertexte und MCP-Agentenzugriff bleiben hinter Betreiberschaltern, bis die rechtliche Prüfung abgeschlossen ist.",
+          "KI-Coding-Agenten (Claude Code, GitHub Copilot) über OpenSpec-Vorschläge gesteuert und deren Ergebnisse geprüft."
+        ],
+        emphasis: [
+          "globaltradenetwork.org",
+          "Zweistufiger Release-Ablauf",
+          "Betreiberschaltern"
+        ]
+      },
       {
         role: "Software-Ingenieur in F&E",
         company: "Cumulocity GmbH (vormals Software AG) — Digital Twin Management Team",
@@ -276,6 +294,7 @@ export const de: CvContent = {
         description: [
           "Grenzüberschreitende B2B-Networking-Plattform für TradeComply, live in Produktion, mit Seiten auf Englisch, Deutsch und Vietnamesisch.",
           "Matching-Engine bewertet die Passung von Angeboten und Bedarfen zwischen Event-Teilnehmenden und erklärt jeden Treffer.",
+          "Installierbare App mit QR-Teilen und -Verbinden, Google-Anmeldung, Web-Push, KI-Sprachassistent und MCP-Agentenzugriff; datenschutzsensible Funktionen lassen sich in Produktion abschalten.",
           "TypeScript-Monorepo mit Next.js 16/React 19, typisierter Hono-RPC-API und PostgreSQL über Drizzle (40+ Tabellen, 100+ Migrationen).",
           "Modellagnostische LLM-Schicht mit austauschbaren Modellen klassifiziert Angebote und Bedarfe; PII wird vor jedem Modellaufruf entfernt.",
           "Better Auth mit genau einer Zugriffsstufe pro API-Route; Privacy by Design mit vollständiger Kontolöschung, anonymisierter Analyse und Aufbewahrungsjobs.",
@@ -306,7 +325,7 @@ export const de: CvContent = {
           "live in Produktion",
           "Matching-Engine"
         ],
-        roleNote: "Kundenprojekt für TradeComply; Features als OpenSpec-Spezifikationen geliefert und von KI-Coding-Agenten (Claude Code, Codex) umgesetzt, die ich gesteuert und geprüft habe."
+        roleNote: "Freiberufliches Kundenprojekt für TradeComply; Features als OpenSpec-Spezifikationen geliefert und von KI-Coding-Agenten (Claude Code, GitHub Copilot) umgesetzt, die ich gesteuert und geprüft habe."
       },
       {
         title: "Portfolio-KI-Assistent",
