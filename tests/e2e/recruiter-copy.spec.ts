@@ -53,7 +53,8 @@ test('exported assistant data retains technical depth, authorship, and work-loca
   expect(response.ok()).toBe(true);
   const bio = await response.json();
   expect(bio.fingerprint).toMatch(/^[a-f0-9]{64}$/);
-  expect(bio.experience.entries[0].bullets.join(' ')).toContain('Factory Method');
+  expect(bio.experience.entries[0].bullets.join(' ')).toContain('globaltradenetwork.org');
+  expect(bio.experience.entries[1].bullets.join(' ')).toContain('Factory Method');
   expect(bio.projects.entries[2].description.join(' ')).toContain('Claude Code');
   expect(bio.projects.entries[1].description.join(' ')).toContain('90-day log deletion');
   expect(bio.workLocation.remote.vietnam.requiresFurtherDiscussion).toBe(true);

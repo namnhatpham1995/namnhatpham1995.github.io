@@ -197,6 +197,23 @@ export const en: CvContent = {
     heading: "git log --experience",
     entries: [
       {
+        role: "Software Engineer (Freelance)",
+        company: "Global Trade Network — Client: TradeComply, remote",
+        dates: "September 2026 - present",
+        bullets: [
+          "Own delivery of the live platform at globaltradenetwork.org: architecture, implementation, testing, release, and operations.",
+          "Run a two-stage release flow (pre-production, then production through a reviewed pull request) on Railway with nightly backups and restore verification.",
+          "Built an installable app, QR share and connect, Google sign-in, and an on-site and voice AI assistant.",
+          "Keep push notifications, AI over member text, and MCP agent access behind operator switches until legal review is done.",
+          "Direct AI coding agents (Claude Code, GitHub Copilot) through OpenSpec proposals that I review."
+        ],
+        emphasis: [
+          "globaltradenetwork.org",
+          "two-stage release flow",
+          "operator switches"
+        ]
+      },
+      {
         role: "Software Engineer in R&D",
         company: "Cumulocity GmbH (formerly Software AG) — Digital Twin Management team",
         dates: "October 2022 - September 2026",
@@ -275,6 +292,7 @@ export const en: CvContent = {
         description: [
           "Cross-border business networking platform for TradeComply, live in production, with pages in English, German, and Vietnamese.",
           "Matching engine ranks offer and need fit between event participants and explains each match.",
+          "Installable app with QR share and connect, Google sign-in, web push, a voice AI assistant, and MCP agent access; privacy-sensitive features can be switched off in production.",
           "TypeScript monorepo with Next.js 16/React 19, a typed Hono RPC API, and PostgreSQL via Drizzle (40+ tables, 100+ migrations).",
           "Model-agnostic LLM layer with interchangeable models classifies offers and needs; PII is scrubbed before any model call.",
           "Better Auth with exactly one access level per API route; privacy by design with full account deletion, anonymized analytics, and retention jobs.",
@@ -305,7 +323,7 @@ export const en: CvContent = {
           "live in production",
           "Matching engine"
         ],
-        roleNote: "Client project for TradeComply; features shipped as OpenSpec spec-driven proposals executed by AI coding agents (Claude Code, Codex) that I directed and reviewed."
+        roleNote: "Freelance client project for TradeComply; features shipped as OpenSpec spec-driven proposals executed by AI coding agents (Claude Code, GitHub Copilot) that I directed and reviewed."
       },
       {
         title: "Portfolio AI assistant",
