@@ -205,7 +205,7 @@ export const de: CvContent = {
           "Verantworte die Lieferung der Live-Plattform globaltradenetwork.org: Architektur, Implementierung, Tests, Release und Betrieb.",
           "Zweistufiger Release-Ablauf (Vorproduktion, dann Produktion per geprüftem Pull Request) auf Railway, mit nächtlichen Backups und Wiederherstellungsprüfung.",
           "Installierbare App, QR-Teilen und -Verbinden, Google-Anmeldung sowie einen KI-Assistenten auf der Seite und per Sprache gebaut.",
-          "Push-Benachrichtigungen, KI über Mitgliedertexte und MCP-Agentenzugriff bleiben hinter Betreiberschaltern, bis die rechtliche Prüfung abgeschlossen ist.",
+          "MCP-Zugang gebaut, damit Mitglieder ihren eigenen KI-Assistenten nutzen können; Push-Benachrichtigungen, KI über Mitgliedertexte und MCP bleiben hinter Betreiberschaltern, bis die rechtliche Prüfung abgeschlossen ist.",
           "KI-Coding-Agenten (Claude Code, GitHub Copilot) über OpenSpec-Vorschläge gesteuert und deren Ergebnisse geprüft."
         ],
         emphasis: [
@@ -294,7 +294,7 @@ export const de: CvContent = {
         description: [
           "Grenzüberschreitende B2B-Networking-Plattform für TradeComply, live in Produktion, mit Seiten auf Englisch, Deutsch und Vietnamesisch.",
           "Matching-Engine bewertet die Passung von Angeboten und Bedarfen zwischen Event-Teilnehmenden und erklärt jeden Treffer.",
-          "Installierbare App mit QR-Teilen und -Verbinden, Google-Anmeldung, Web-Push, KI-Sprachassistent und MCP-Agentenzugriff; datenschutzsensible Funktionen lassen sich in Produktion abschalten.",
+          "Installierbare App mit QR-Teilen und -Verbinden, Google-Anmeldung, Web-Push, KI-Sprachassistent und MCP-Zugang, damit Mitglieder ihren eigenen KI-Assistenten nutzen können; datenschutzsensible Funktionen lassen sich in Produktion abschalten.",
           "TypeScript-Monorepo mit Next.js 16/React 19, typisierter Hono-RPC-API und PostgreSQL über Drizzle (40+ Tabellen, 100+ Migrationen).",
           "Modellagnostische LLM-Schicht mit austauschbaren Modellen klassifiziert Angebote und Bedarfe; PII wird vor jedem Modellaufruf entfernt.",
           "Better Auth mit genau einer Zugriffsstufe pro API-Route; Privacy by Design mit vollständiger Kontolöschung, anonymisierter Analyse und Aufbewahrungsjobs.",

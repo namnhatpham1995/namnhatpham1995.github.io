@@ -204,7 +204,7 @@ export const en: CvContent = {
           "Own delivery of the live platform at globaltradenetwork.org: architecture, implementation, testing, release, and operations.",
           "Run a two-stage release flow (pre-production, then production through a reviewed pull request) on Railway with nightly backups and restore verification.",
           "Built an installable app, QR share and connect, Google sign-in, and an on-site and voice AI assistant.",
-          "Keep push notifications, AI over member text, and MCP agent access behind operator switches until legal review is done.",
+          "Built MCP access so members can use their own AI assistant; push notifications, AI over member text, and MCP stay behind operator switches until legal review is done.",
           "Direct AI coding agents (Claude Code, GitHub Copilot) through OpenSpec proposals that I review."
         ],
         emphasis: [
@@ -292,7 +292,7 @@ export const en: CvContent = {
         description: [
           "Cross-border business networking platform for TradeComply, live in production, with pages in English, German, and Vietnamese.",
           "Matching engine ranks offer and need fit between event participants and explains each match.",
-          "Installable app with QR share and connect, Google sign-in, web push, a voice AI assistant, and MCP agent access; privacy-sensitive features can be switched off in production.",
+          "Installable app with QR share and connect, Google sign-in, web push, a voice AI assistant, and MCP access so members can use their own AI assistant; privacy-sensitive features can be switched off in production.",
           "TypeScript monorepo with Next.js 16/React 19, a typed Hono RPC API, and PostgreSQL via Drizzle (40+ tables, 100+ migrations).",
           "Model-agnostic LLM layer with interchangeable models classifies offers and needs; PII is scrubbed before any model call.",
           "Better Auth with exactly one access level per API route; privacy by design with full account deletion, anonymized analytics, and retention jobs.",

@@ -205,7 +205,7 @@ export const vi: CvContent = {
           "Chịu trách nhiệm triển khai nền tảng đang chạy tại globaltradenetwork.org: kiến trúc, lập trình, kiểm thử, phát hành và vận hành.",
           "Quy trình phát hành hai bước (tiền sản xuất, rồi sản xuất qua pull request đã review) trên Railway, với backup hằng đêm và kiểm tra khôi phục.",
           "Xây dựng ứng dụng cài đặt được, chia sẻ và kết nối bằng QR, đăng nhập Google, cùng trợ lý AI trên trang và bằng giọng nói.",
-          "Thông báo đẩy, AI xử lý văn bản thành viên và truy cập agent qua MCP được giữ sau công tắc của đơn vị vận hành cho đến khi hoàn tất rà soát pháp lý.",
+          "Xây dựng truy cập MCP để thành viên dùng trợ lý AI của riêng họ; thông báo đẩy, AI xử lý văn bản thành viên và MCP được giữ sau công tắc của đơn vị vận hành cho đến khi hoàn tất rà soát pháp lý.",
           "Điều phối AI coding agent (Claude Code, GitHub Copilot) qua các đề xuất OpenSpec và review kết quả."
         ],
         emphasis: [
@@ -294,7 +294,7 @@ export const vi: CvContent = {
         description: [
           "Nền tảng kết nối doanh nghiệp xuyên biên giới cho TradeComply, đang chạy production, có trang tiếng Anh, tiếng Đức và tiếng Việt.",
           "Công cụ matching xếp hạng mức phù hợp giữa nhu cầu và đề xuất của người tham dự sự kiện, kèm giải thích cho từng kết quả.",
-          "Ứng dụng cài đặt được với chia sẻ và kết nối bằng QR, đăng nhập Google, thông báo đẩy, trợ lý AI giọng nói và truy cập agent qua MCP; các tính năng nhạy cảm về quyền riêng tư có thể tắt trên production.",
+          "Ứng dụng cài đặt được với chia sẻ và kết nối bằng QR, đăng nhập Google, thông báo đẩy, trợ lý AI giọng nói và truy cập MCP để thành viên dùng trợ lý AI của riêng họ; các tính năng nhạy cảm về quyền riêng tư có thể tắt trên production.",
           "Monorepo TypeScript gồm Next.js 16/React 19, API Hono với RPC có kiểu và PostgreSQL qua Drizzle (40+ bảng, 100+ migration).",
           "Lớp LLM không phụ thuộc mô hình, các mô hình thay thế được cho nhau, phân loại đề xuất và nhu cầu; dữ liệu cá nhân được loại bỏ trước mỗi lần gọi mô hình.",
           "Better Auth, mỗi API route khai báo đúng một mức truy cập; bảo vệ quyền riêng tư từ khâu thiết kế: xóa toàn bộ dữ liệu tài khoản, thống kê ẩn danh và job dọn dữ liệu định kỳ.",
